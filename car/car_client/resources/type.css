@@ -1,0 +1,42 @@
+/* National 2 */
+@font-face {
+	font-family: National2;
+	src: url(type/national2-regular.woff2) format("woff2"),
+		url(type/national2-regular.woff2) format("woff");
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: National2;
+	src: url(type/national2-regularitalic.woff2) format("woff2"),
+		url(type/national2-regularitalic.woff) format("woff");
+	font-weight: normal;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: National2;
+	src: url(type/national2-medium.woff2) format("woff2"),
+		url(type/national2-medium.woff) format("woff");
+	font-weight: bold;
+	font-style: normal;
+}
+
+
+/* Inconsolata */
+@font-face {
+	font-family: Inconsolata;
+	src: url(type/inconsolata-regular.woff2) format("woff2"),
+		url(type/inconsolata-regular.woff) format("woff");
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: Inconsolata;
+	src: url(type/inconsolata-bold.woff2) format("woff2"),
+		url(type/inconsolata-bold.woff) format("woff");
+	font-weight: bold;
+	font-style: normal;
+}
