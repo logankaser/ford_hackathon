@@ -14,6 +14,6 @@ view at `localhost:5000`
 view at `localhost:5000/admin`
 
 ### Team
-Theo Walton
-Zeid Tisnes
-Logan Kaser
+Theo Walton  
+Zeid Tisnes  
+Logan Kaser  
