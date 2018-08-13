@@ -3,14 +3,17 @@
 ## Client
 
 ### Running
-`cd client`
-`./run.sh`
+`cd client` and start with `./run.sh`  
 view at `localhost:5000`
 
 ## Server
 
 ### Running
 
-`cd server`
-`./run.sh`
+`cd server` and start with `./run.sh`  
 view at `localhost:5000/admin`
+
+### Team
+Theo Walton
+Zeid Tisnes
+Logan Kaser
