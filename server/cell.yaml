@@ -1,0 +1,220 @@
+# cell.yaml for cell css configuration
+# cellcss.com
+# --------------------------------------------------------------------
+# Filetypes:   Flag your template extensions for cell to scan
+# Breakpoints: Make your design responsive
+# Variables:   Great for thematic elements like color and scale
+# Helpers:     _resets and other large classes unlikely to change
+# Prefixes:    Out of the box -flexbox support
+
+# Filetypes ----------------------------------------------------------
+# Add the file extensions you would like cell scan for classes
+# here you can see we've configured cell to look for .mustache files
+# This can just as easily be .html
+
+FileTypes:
+  - .hbs
+  - .html
+
+# Breakpoints --------------------------------------------------------
+# Set custom breakpoints according to your project's needs
+# Make a cell responsive by appending a breakpoint with `@`
+# Example: `D(f)@md` will display flex at the medium breakpoint
+Breakpoints:
+  xs: "24rem"
+  sm: "32rem"
+  md: "48rem"
+  lg: "64rem"
+  xl: "80rem"
+
+# Variables ----------------------------------------------------------
+# When designing an interface from scratch you need to test
+# combinations of colors, scales (sizes). Manually updating
+# individual values can be cumbersome. Instead apply variables
+# in your markup, and adjust them here as needed.
+# We've included some proven resources to get you started.
+#
+# COLORS
+# Colors below are based on a11y color accessibility project
+# When in doubt about color, accessibility is a great place to start:
+# http://a11yproject.com
+# You can convert colors here: http://rgb.to/
+#
+# MODULAR SCALE
+# Useful for all sizing needs: Fonts, Margin, Padding etc:
+# http://www.modularscale.com/
+
+Variables:
+  # COLORS
+  # Project Specific Colors
+
+  # Cool Shades
+  ui-black:  rgb(3,5,9)
+  ui-white:  rgb(233,235,239)
+
+  ui-dark:   rgb(3,5,9)
+  ui-dim:    rgb(33,55,99)
+  ui-light:  rgb(133,135,139)
+  ui-bright: rgb(233,235,239)
+
+
+  # Greyscale
+  black: rgb(0,0,0)
+  grey:  rgb(153,153,153)
+  white: rgb(255,255,255)
+  grey-1: rgb(17,17,17)
+  grey-2: rgb(51,51,51)
+  grey-3: rgb(85,85,85)
+  grey-4: rgb(119,119,119)
+  grey-5: rgb(153,153,153)
+  grey-6: rgb(170,170,170)
+  grey-7: rgb(204,204,204)
+  grey-8: rgb(238,238,238)
+  grey-9: rgb(244,244,244)
+  grey-10: rgb(250,250,250)
+
+  # Black Alpha
+  black-90: rgba(0,0,0,.9)
+  black-80: rgba(0,0,0,.8)
+  black-70: rgba(0,0,0,.7)
+  black-60: rgba(0,0,0,.6)
+  black-50: rgba(0,0,0,.5)
+  black-40: rgba(0,0,0,.4)
+  black-30: rgba(0,0,0,.3)
+  black-20: rgba(0,0,0,.2)
+  black-10: rgba(0,0,0,.1)
+  black-05: rgba(0,0,0,.05)
+  black-025: rgba(0,0,0,.025)
+  black-0125: rgba(0,0,0,.0125)
+  clear: transparent
+
+  # White Alpha
+  white-90: rgba(255,255,255,.9)
+  white-80: rgba(255,255,255,.8)
+  white-70: rgba(255,255,255,.7)
+  white-60: rgba(255,255,255,.6)
+  white-50: rgba(255,255,255,.5)
+  white-40: rgba(255,255,255,.4)
+  white-30: rgba(255,255,255,.3)
+  white-20: rgba(255,255,255,.2)
+  white-10: rgba(255,255,255,.1)
+  white-05: rgba(255,255,255,.05)
+  white-025: rgba(255,255,255,.025)
+  white-0125: rgba(255,255,255,.0125)
+
+  # Opaque
+  red-dark: rgb(231,4,15)
+  red: rgb(255,65,54)
+  red-light: rgb(255,114,83)
+  red-washed: rgb(255,223,223)
+
+  orange: rgb(255,99,0)
+  gold: rgb(255,183,0)
+  yellow: rgb(255,215,0)
+  yellow-light: rgb(251,241,169)
+  yellow-washed: rgb(255,252,235)
+
+  purple: rgb(94,44,165)
+  purple-light: rgb(164,99,242)
+
+  pink-neon: rgb(255,65,180)
+  pink-dark: rgb(213,0,143)
+  pink: rgb(255,128,204)
+  pink-light: rgb(255,163,215)
+
+  green-dark: rgb(19,119,82)
+  green: rgb(25,169,116)
+  green-light: rgb(158,235,207)
+  green-washed: rgb(232,253,245)
+
+  navy: rgb(0,27,68)
+  blue-dark: rgb(0,68,158)
+  blue: rgb(51,126,221)
+  blue-light: rgb(150,204,255)
+  blue-lightest: rgb(205,236,255)
+  blue-washed: rgb(246,255,254)
+
+
+  # Layout -------------------------------------------------------------
+  # MODULAR SCALE
+  # 1.200 Minor Third
+  # Rounded at both extremes
+  s5: 4rem
+  s4: 2rem
+  s3: 1.44rem
+  s2: 1.2rem
+  s1: 1rem
+  s01: .833rem
+  s02: .694rem
+  s03: .5rem
+  s04: .25rem
+  s05: .125rem
+
+
+# Helpers ------------------------------------------------------------
+# Resets are prepended by _underscore so that they generate at the top
+# of your `style.css` file
+Helpers:
+  _rButton:
+    desc: Reset default input button styles.
+    template: "cursor: pointer; margin: 0; height: auto; vertical-align: middle; appearance: none; color: inherit; -moz-focus-inner: none; border: none;"
+  _rInput:
+    desc: Reset default input box styles.
+    template: "appearance: none; outline: none; box-sizing: border-box; border: none;"
+  _rLink:
+    desc: Reset default link styles.
+    template: "text-decoration: none;"
+  Irp:
+    desc: Renders images with nearest-neighbor style scaling.
+    template: "-ms-interpolation-mode: nearest-neighbor;image-rendering: -moz-crisp-edges;image-rendering: -o-crisp-edges;image-rendering: crisp-edges"
+  Ellip:
+    desc: Ensure big words break. NOTE -- you need to set a width for the Ellip to work.
+    template: "text-overflow: ellipsis; white-space: nowrap; overflow-wrap: break-word; word-wrap: break-word; -ms-word-break: break-all; word-break: break-word; -ms-hyphens: auto; -moz-hyphens: auto; -webkit-hyphens: auto; hyphens: auto; overflow: hidden"
+
+# LAYOUT HELPERS
+  #
+  Hide:
+    desc: Hidden and accesible; 1. remove document from flow, 2. collapse to a - still accessible - 1x1, 3. hide the 1x1
+    template: "position: absolute; height: 1px; width: 1px; overflow: hidden; clip: rect(1px, 1px, 1px, 1px);"
+  Hmm:
+    desc: Fill all vertical
+    template: "height: 100%; max-height: 100%;"
+  G:
+    desc: Grid - Set a 12 column grid
+    template: "display: grid; grid-template-columns: repeat(12, 1fr);"
+  F:
+    desc: Flex Row
+    template: "display: flex; flex: 1 1 auto;"
+  FC:
+    desc: Flex Column
+    template: "display: flex; flex-direction: column; flex: 1 1 auto;"
+  WR:
+    desc: Wrap a section of content
+    template: "width: 100%; padding-left: 1em; padding-right: 1em; margin-right: auto; margin-left: auto;"
+
+# Prefixes -----------------------------------------------------------
+# To keep our dependencies lean, and our build time low we added
+# common prefixes, avoiding a postprocessor
+PrefixProperties:
+  align-items: [-webkit-box-align,-ms-flex-align]
+  animation: [-webkit-animation]
+  appearance: [-webkit-appearance,-moz-appearance]
+  box-sizing: [-moz-box-sizing]
+  filter: [-webkit-filter]
+  flex: [-webkit-box-flex,-webkit-flex,-ms-flex]
+  flex-shrink: [-webkit-flex-shrink,-ms-flex-negative]
+  flex-grow: [-webkit-flex-grow,-ms-flex-positive]
+  flex-basis: [-ms-flex-preferred-size]
+  flex-direction: [-webkit-flex-direction,-ms-flex-direction]
+  flex-wrap: [-ms-flex-wrap]
+  justify-content: [-webkit-box-pack,-ms-flex-pack]
+  transform: [-webkit-transform,-ms-transform]
+  transition: [-webkit-transition]
+  user-select: [-webkit-touch-callout,-webkit-user-select,-khtml-user-select,-moz-user-select,-ms-user-select]
+  main-size: [auto]
+  fill: [-webkit-fill-available,-moz-available]
+
+PrefixValues:
+  flex: [-webkit-box,-ms-flexbox,-webkit-flex]
+  grid: [-ms-grid]
+  inline-grid: [-ms-inline-grid]

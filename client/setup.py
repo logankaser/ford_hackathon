@@ -1,7 +1,7 @@
 from setuptools import find_packages, setup
 
 setup(
-    name="car_client",
+    name="vehicle_client",
     version="1.0.0",
     packages=find_packages(),
     include_package_data=True,

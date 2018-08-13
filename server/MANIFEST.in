@@ -1,0 +1,3 @@
+graft app_server/resources
+graft app_server/templates
+global-exclude *.pyc

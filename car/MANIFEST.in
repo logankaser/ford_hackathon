@@ -1,3 +1,0 @@
-graft car_client/resources
-graft car_client/templates
-global-exclude *.pyc

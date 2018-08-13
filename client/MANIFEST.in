@@ -1,0 +1,3 @@
+graft vehicle_client/resources
+graft vehicle_client/templates
+global-exclude *.pyc
