@@ -10,7 +10,9 @@ def create_app(test_config=None):
                 static_folder="resources")
     app.config.from_mapping(
         SECRET_KEY="dev",
-        DATABASE=os.path.join(app.instance_path, "car.sqlite")
+        SQLALCHEMY_DATABASE_URI="sqlite:///" + os.path.join(
+            app.instance_path, "database.sqlite"),
+        SQLALCHEMY_TRACK_MODIFICATIONS=False
     )
 
     if test_config is None:
@@ -25,6 +27,12 @@ def create_app(test_config=None):
     except OSError:
         pass
 
+    # Initialize DB
+    from app_server.models import db
+    db.init_app(app)
+    db.create_all(app=app)
+
+    # Initialize Blueprints
     from . import admin
     app.register_blueprint(admin.bp)
 
