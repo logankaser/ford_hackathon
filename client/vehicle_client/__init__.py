@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask, render_template
+from vehicle_client.models import db
 
 
 def create_app(test_config=None):
@@ -27,7 +28,6 @@ def create_app(test_config=None):
         pass
 
     # Initialize DB
-    from vehicle_client.models import db
     db.init_app(app)
     db.create_all(app=app)
 
