@@ -2,9 +2,11 @@
 
 if ! [ -e venv ]
 then
-virtualenv venv
-pip3 install -r requirements.txt
+	virtualenv venv
+	. venv/bin/activate
+	pip3 install -r requirements.txt
+else
+	. venv/bin/activate
 fi
-. venv/bin/activate
 
 FLASK_APP="app_server" FLASK_DEBUG="TRUE" flask run
