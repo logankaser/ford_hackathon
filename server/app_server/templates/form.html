@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<main class="Mx(a) Maw(40rem)">
+	{% with errors = get_flashed_messages(category_filter=["form_error"]) %}
+	{% if errors %}
+		<ul>
+		{% for error in errors %}
+			<li>{{ error }}</li>
+		{% endfor %}
+		</ul>
+	{% endif %}
+	{% endwith %}
+	<form method="post" class="Bdx(s,s05,black) Px(1rem)">
+		{% block form %} {% endblock %}
+	</form>
+</main>
+{% endblock %}

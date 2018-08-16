@@ -1,7 +1,7 @@
 import os
 
 from flask import Flask, render_template
-from app_server.models import db
+from app_server.models import db, bcrypt
 
 
 def create_app(test_config=None):
@@ -13,7 +13,8 @@ def create_app(test_config=None):
         SECRET_KEY="dev",
         SQLALCHEMY_DATABASE_URI="sqlite:///" + os.path.join(
             app.instance_path, "database.sqlite"),
-        SQLALCHEMY_TRACK_MODIFICATIONS=False
+        SQLALCHEMY_TRACK_MODIFICATIONS=False,
+        BCRYPT_LOG_ROUNDS=12
     )
 
     if test_config is None:
@@ -32,7 +33,13 @@ def create_app(test_config=None):
     db.init_app(app)
     db.create_all(app=app)
 
+    # Initialize Password Hashing
+    bcrypt.init_app(app)
+
     # Initialize Blueprints
+    from . import auth
+    app.register_blueprint(auth.bp)
+
     from . import admin
     app.register_blueprint(admin.bp)
 

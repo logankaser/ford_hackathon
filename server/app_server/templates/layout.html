@@ -13,6 +13,15 @@
 </head>
 
 <body class="H(100%) My(0) | Bgc(grey-10) C(black-br) Ff(National2)">
+	{% with messages = get_flashed_messages(category_filter=["message"]) %}
+	{% if messages %}
+		<ul>
+		{% for message in messages %}
+			<li>{{ message }}</li>
+		{% endfor %}
+		</ul>
+	{% endif %}
+	{% endwith %}
 	{% block content %} {% endblock %}
 </body>
 </html>
