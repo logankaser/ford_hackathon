@@ -33,10 +33,28 @@ def new_app():
         appPath = os.path.join(current_app.instance_path, str(app.id) + ".tar.gz")
         request.files["app"].save(appPath)
         flash("App succesfully created")
+    print(form.errors)
     return render_template("new_app.html", form=form)
 
+@bp.route("/app/<app_id>")
+@login_required
+def dev_app_page(app_id):
+    app = None
+    try:
+        app = db.session.query(AppEntry).filter_by(id=app_id).one()
+    except:
+        return "400"
+    if (g.user.id != app.dev_id):
+        return "400"
+    return render_template("dev_app_page.html",
+        name=app.name,
+        description=app.description,
+        created=str(app.created),
+        updated=str(app.updated),
+        downloads=str(app.downloads))
 
-@bp.route("app/<app_id>/delete", methods=["POST"])
+
+@bp.route("/app/<app_id>/delete", methods=["POST"])
 @login_required
 def delete_app(app_id):
     try:
