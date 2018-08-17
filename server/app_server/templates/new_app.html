@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+	
+{% block head %}
+{% endblock %}
+
+{% block content %}
+<form method="post" enctype=multipart/form-data>
+	<lable>App name:</lable>
+	<input name="name" type="text" />
+	<lable>App binary:</lable>
+	<input name="app" type="file" accept=".png"/>
+	<input type="submit" />
+</form>
+{% endblock %}
