@@ -6,13 +6,13 @@ User Registration
 </h2>
 <fieldset class="M(0) Bd(s,s05,black) Mb(1rem)">
 	<div>Email</div>
-	<input type="email" name="email" required>
+	{{ form.email(type="email") }}
 	<div>Username</div>
-	<input type="text" name="username" required>
+	{{ form.username(pattern=".{4,}", title="Must be 4 characters minimum") }}
 </fieldset>
 <fieldset class="M(0) Bd(s,s05,black) Mb(1rem)">
 	<div>Password</div>
-	<input type="password" name="password" required>
+	{{ form.password(pattern=".{6,}", title="Must be 6 characters minimum") }}
 	<div>Password Again</div>
 	<input type="password" name="password_again" required>
 </fieldset>
