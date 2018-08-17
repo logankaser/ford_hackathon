@@ -73,4 +73,13 @@ class AppEntry(db.Model):
     __tablename__ = "app_entry"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
+    description = db.Column(db.String(1000), nullable=False)
+    created = db.Column(db.DateTime, nullable=False)
+    updated = db.Column(db.DateTime, nullable=False)
+    downloads = db.Column(db.Integer, nullable=False)
     dev_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+
+
+
+
+
