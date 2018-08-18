@@ -2,7 +2,7 @@
 
 {% block content %}
 <main class="Mx(a) Maw(40rem)">
-	<form method="post" class="Bdx(s,s05,black) Px(1rem)">
+	<form method="POST" class="Bdx(s,s05,black) Px(1rem)" enctype="multipart/form-data">
 		{{ form.hidden_tag() }}
 		{% block form %} {% endblock %}
 	</form>

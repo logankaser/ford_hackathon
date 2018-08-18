@@ -67,7 +67,7 @@ def login():
         email = request.form["email"]
         password = request.form["password"]
         user = User.query.filter_by(email=email).one_or_none()
-        if not bcrypt.check_password_hash(user.password_hash, password):
+        if not user or not bcrypt.check_password_hash(user.password_hash, password):
             flash("Login failed")
             return redirect(url_for("auth.login"))
         session["user_id"] = user.id

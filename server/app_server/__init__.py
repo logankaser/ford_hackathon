@@ -43,6 +43,9 @@ def create_app(test_config=None):
     from . import admin
     app.register_blueprint(admin.bp)
 
+    from . import dev
+    app.register_blueprint(dev.bp)
+
     @app.route("/")
     def index():
         return "test"

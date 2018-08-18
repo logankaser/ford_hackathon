@@ -1,0 +1,18 @@
+{% extends "form.html" %}
+
+{% block form %}
+<h2 class="M(0) Py(.5rem)">
+New App
+</h2>
+<fieldset class="M(0) Bd(s,s05,black) Mb(1rem)">
+	<div>App Name</div>
+	{{ form.name(type="text") }}
+	<div>Description</div>
+	{{ form.description(type="text", title="What does your app do?") }}
+</fieldset>
+<fieldset class="M(0) Bd(s,s05,black) Mb(1rem)">
+	<div>Upload</div>
+	{{ form.app(type="file") }}
+</fieldset>
+<input class="_rButton() P(.5rem) Bgc(white) Bd(s,s05,black), C(white):h Bgc(black):h" type="submit" value="Create">
+{% endblock %}
