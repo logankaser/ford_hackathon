@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+	
+{% block head %}
+{% endblock %}
+
+{% block content %}
+
+<h1>your username is: {{username}}</h1>
+	{% for app in apps %}
+	<div>
+		<a href="app/{{ app.id }}">{{app.name}}</a>
+	</div>
+	<div>
+		<h2>Description: </h2><p>{{ app.description }}</p>
+	</div>
+	<div>
+		<h2>Created: </h2><time>{{ app.created }}</time>
+	</div>
+	<div>
+		<h2>Last Updated: </h2><time>{{ app.updated }}</time>
+	</div>
+	<div>
+		<h2>Downloads: {{ app.downloads }} </h2> 
+	</div>
+	{% endfor %}
+
+{% endblock %}

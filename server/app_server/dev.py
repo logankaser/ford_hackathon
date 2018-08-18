@@ -43,9 +43,9 @@ def dev_app_page(app_id):
     try:
         app = db.session.query(AppEntry).filter_by(id=app_id).one()
     except:
-        return "400"
+        return "non existant app"
     if (g.user.id != app.dev_id):
-        return "400"
+        return "invalid user"
     return render_template("dev_app_page.html",
         name=app.name,
         description=app.description,
@@ -58,7 +58,7 @@ def dev_app_page(app_id):
 @login_required
 def delete_app(app_id):
     try:
-        app = db.session.query(AppEntry).filter_by(id=app_id).one()
+        app = db.session.query(AppEntry).filter_by(id=app_id).one
         if g.user.id != app.dev_id:
             return "400"
         os.remove(os.path.join(current_app.instance_path, app_id + ".tar.gz"))
@@ -67,6 +67,12 @@ def delete_app(app_id):
     except:
         return "400"
     return "200"
+
+@bp.route("/")
+@login_required
+def dev_profile():
+    apps = db.session.query(AppEntry).filter_by(dev_id=g.user.id)
+    return render_template("dev_profile.html", apps=apps, username=g.user.username)
 
 '''
 @bp.route("app/<app_id>/update", methods=["POST"])
