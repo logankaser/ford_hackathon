@@ -2,6 +2,7 @@
 .DS*
 ._.*
 *~
+._*
 env
 venv
 *__pycache__
