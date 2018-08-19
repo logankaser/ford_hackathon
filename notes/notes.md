@@ -11,3 +11,7 @@ To start with, learning a different language helps to grow a different architect
 1. **WSGI** (Web Server Gateway Interface): standard interface that modules and containers could implement. It helps to swap out web stack components for others, which is flexible. Also, servers promote scaling properties to thousands of requests for dynamic content at once. It handles processing requests from the web server and how it communicate between those requests to an application framework's process.
 
 ![WSGI](WSGI.png)
+
+### Sphinx
+
+Sphinx is a tool to beautify documentation built in using `pip3 install sphinx`.
