@@ -1,15 +1,35 @@
 /* ---| No helpers used |--- */
 /* ---| Cells |--- */
+.Bdrus\(s05\) {border-radius: .125rem;}
 .Bgc\(grey-10\) {background-color: rgb(250,250,250);}
+.Bgc\(white\) {background-color: rgb(255,255,255);}
+.Bxsh\(0\,0\,s05\,grey-5\) {box-shadow: 0 0 .125rem rgb(153,153,153);}
 .Bxz\(bb\) {-moz-box-sizing: border-box; box-sizing: border-box;}
 .C\(black-br\) {color: black-br;}
+.C\(blue\) {color: rgb(51,126,221);}
 .D\(f\) {display: -webkit-box; display: -ms-flexbox; display: -webkit-flex; display: flex;}
-.Ff\(National2\) {font-family: National2;}
+.Ff\(ClearSans\) {font-family: ClearSans;}
 .Fld\(c\) {-webkit-flex-direction: column; -ms-flex-direction: column; flex-direction: column;}
-.Fz\(2rem\) {font-size: 2rem;}
+.Fw\(n\) {font-weight: normal;}
+.Fz\(s2\) {font-size: 1.2rem;}
+.Fz\(s4\) {font-size: 2rem;}
 .H\(100\%\) {height: 100%;}
-.Jc\(c\) {-webkit-box-pack: center; -ms-flex-pack: center; justify-content: center;}
 .M\(0\) {margin: 0;}
+.Maw\(50rem\) {max-width: 50rem;}
+.Mt\(s03\) {margin-top: .5rem;}
 .Mx\(a\) {margin-left: auto; margin-right: auto;}
+.Mx\(s03\) {margin-left: .5rem; margin-right: .5rem;}
 .My\(0\) {margin-top: 0; margin-bottom: 0;}
+.P\(s04\) {padding: .25rem;}
+.Py\(s05\) {padding-top: .125rem; padding-bottom: .125rem;}
 .Ta\(c\) {text-align: center;}
+.W\(100\%\) {width: 100%;}
+@media all and (min-width: 48rem) {
+.W\(60\%\)\@md {width: 60%;}
+}
+@media all and (min-width: 64rem) {
+.P\(s03\)\@lg {padding: .5rem;}
+}
+@media all and (min-width: 64rem) {
+.W\(40\%\)\@lg {width: 40%;}
+}

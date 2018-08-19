@@ -9,10 +9,20 @@
 	<link rel="stylesheet" href="/resources/style.css">
 	<script src="/resources/prelude.js"></script>
 	<style>*,*:before,*:after{-moz-box-sizing:inherit;box-sizing:inherit}</style>
+	<link rel="shortcut icon" href="/resources/favicon.png" />
 	{% block head %}{% endblock %}
 </head>
 
-<body class="H(100%) My(0) | Bgc(grey-10) C(black-br) Ff(National2)">
+<body class="H(100%) My(0) | Bgc(grey-10) C(black-br) Ff(ClearSans)">
+	{% with messages = get_flashed_messages(category_filter=["message"]) %}
+	{% if messages %}
+		<ul>
+		{% for message in messages %}
+			<li>{{ message }}</li>
+		{% endfor %}
+		</ul>
+	{% endif %}
+	{% endwith %}
 	{% block content %} {% endblock %}
 </body>
 </html>
