@@ -5,7 +5,12 @@ from vehicle_client.models import db
 
 
 def create_app(test_config=None):
-    # create and configure the app
+    """
+    :param test_config: Optionaly load configuration from python dict, useful for testing.
+    :type test_config: object
+    :returns: New app:
+    :rtype: Flask
+    """
     app = Flask(__name__,
                 instance_relative_config=True,
                 static_folder="resources")

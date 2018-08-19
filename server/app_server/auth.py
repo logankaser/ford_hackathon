@@ -78,3 +78,6 @@ def login():
 def logout():
     session.clear()
     return redirect(url_for("auth.login"))
+
+#@bp.route("/get_token")
+#def get_token():

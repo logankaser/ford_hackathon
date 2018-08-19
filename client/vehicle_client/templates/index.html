@@ -1,10 +1,39 @@
 {% extends "layout.html" %}
 	
 {% block head %}
+<script src="https://unpkg.com/hyperapp@1.2.8/dist/hyperapp.js"></script>
+<script src="https://unpkg.com/@hyperapp/router@0.7.0/dist/router.js"></script>
+<script src="https://unpkg.com/@hyperapp/html@1.1.1/dist/hyperappHtml.js"></script>
 {% endblock %}
 
 {% block content %}
-<div class="D(f) Fld(c) Jc(c) H(100%)">
-	<div class="Mx(a) Fz(2rem) Ta(c)">Hello World!</div>
-</div>
+<script>
+const main = (()=>{
+
+const {Link, Route, Switch, Redirect, location} = hyperappRouter
+const {main, h1, span, div, button} = hyperappHtml;
+
+const historyItem = " Fz(s2) P(s04) P(s03)@lg Mx(s03) Mt(s03) Ta(c) Bxsh(0,0,s05,grey-5) Bgc(white) Bdrus(s05) ";
+
+const state = {
+	location: location.state
+}
+
+const view = state => actions => (
+	main({class: "D(f) Fld(c) Mx(a) W(100%) W(60%)@md W(40%)@lg H(100%) Maw(50rem) Bgc(white)"}, [
+		h1({class: "Fz(s4) Fw(n) C(blue) Mt(s03) Py(s05) Ta(c)"},
+			"Ford"
+		)
+	])
+)
+
+const actions = {
+	location: location.actions
+}
+
+return hyperapp.app(state, actions, view, document.body)
+})();
+
+const unsubscribe = location.subscribe(main.location)
+</script>
 {% endblock %}
