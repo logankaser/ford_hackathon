@@ -1,7 +1,7 @@
 import os
 
 from flask import Flask, render_template
-from app_server.models import db, bcrypt
+from app_server.models import db, bcrypt, search, ma
 
 
 def create_app(test_config=None):
@@ -14,7 +14,10 @@ def create_app(test_config=None):
         SQLALCHEMY_DATABASE_URI="sqlite:///" + os.path.join(
             app.instance_path, "database.sqlite"),
         SQLALCHEMY_TRACK_MODIFICATIONS=False,
-        BCRYPT_LOG_ROUNDS=12
+        BCRYPT_LOG_ROUNDS=12,
+        MSEARCH_INDEX_NAME = "search_index",
+        MSEARCH_BACKEND = "simple",
+        MSEARCH_ENABLE = True
     )
 
     if test_config is None:
@@ -35,6 +38,16 @@ def create_app(test_config=None):
 
     # Initialize Password Hashing
     bcrypt.init_app(app)
+
+    # Initialize Search
+    search.init_app(app)
+    if app.config.get("MSEARCH_BACKEND") == "whoosh":
+        with app.app_context():
+            search.create_index()
+            search.update_index()
+
+    # Initialize
+    ma.init_app(app)
 
     # Initialize Blueprints
     from . import auth

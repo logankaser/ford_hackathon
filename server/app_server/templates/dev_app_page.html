@@ -5,13 +5,15 @@
 
 {% block content %}
 
-<main>
-	<div>App Title: {{ name }}</div>
-	<div>Description</div>
-	<p>{{ description }}</p>
-	<div>Created: {{ created }}</div>
-	<div>Updated: {{ updated }}</div>
-	<div>Number of downloads: {{ downloads }}</div>
+<main class="Mx(a) Maw(50rem) D(f) Flc(c) H(100%) Jc(c)">
+	<section class="Px(s5) Py(s4) Bgc(white) Bxsh(0,0,s04,grey-5)">
+		<div>App Title: {{ name }}</div>
+		<div>Description</div>
+		<p>{{ description }}</p>
+		<div>Created: {{ created }}</div>
+		<div>Updated: {{ updated }}</div>
+		<div>Number of downloads: {{ downloads }}</div>
+	</section>
 </main>
 
 {% endblock %}

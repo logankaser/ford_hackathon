@@ -16,3 +16,4 @@ build/
 *.egg-info/
 *.ford_app
 *._*
+search_index

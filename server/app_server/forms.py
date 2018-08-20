@@ -15,7 +15,7 @@ class LoginForm(FlaskForm):
     submit = SubmitField("Continue")
 
 class AppCreationForm(FlaskForm):
-    name = StringField("App Name", validators=[DataRequired()])
+    name = StringField("App Title", validators=[DataRequired()])
     description = TextAreaField("Description", validators=[DataRequired(), Length(max=1000)])
     app = FileField("Upload App Package", validators=[FileRequired()])
     submit = SubmitField("Submit App")

@@ -1,12 +1,15 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
-from flask import current_app
+from flask_msearch import Search
+from flask_marshmallow import Marshmallow
+from flask import current_app, jsonify
 from datetime import datetime, timedelta
 import jwt
 
 db = SQLAlchemy()
 bcrypt = Bcrypt()
-
+search = Search()
+ma = Marshmallow()
 
 def hash_password(plain_text):
     hashed = bcrypt.generate_password_hash(
@@ -71,6 +74,7 @@ class User(db.Model):
 
 class AppEntry(db.Model):
     __tablename__ = "app_entry"
+    __searchable__ = ["name", "description"]
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     description = db.Column(db.String(1000), nullable=False)
@@ -79,7 +83,9 @@ class AppEntry(db.Model):
     downloads = db.Column(db.Integer, nullable=False)
     dev_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
 
-
+class AppSchema(ma.ModelSchema):
+    class Meta:
+        model = AppEntry
 
 
 

@@ -1,10 +1,24 @@
 {% extends "form.html" %}
 
+{% block head %}
+<style>
+body {
+	background-image: url("/resources/login_background.png");
+	background-size: cover;
+	background-position: center;
+}
+</style>
+{% endblock %}
+
 {% block form %}
 <h class="C(blue) Fz(s5) Mt(0)">Ford Store</h>
-<h2 class="M(0) Py(.5rem) Fw(n) Fz(s4) Mb(s4)">
+<h2 class="M(0) Py(.5rem) Fw(n) Fz(s4)">
 Sign up
 </h2>
+<div class="Mb(s4)">
+	<span>Or, </span>
+	<a class="_rLink() Fs(n) C(blue) Fw(n) Td(u):h" href="/login">Login</a>
+</div>
 <div class="M(0) Mb(s4)">
 	{{ form.email.label }}
 	{{ form.email(type="email", placeholder="user@email.com", class_="Bd(n) Bdb(s,s05,blue) P(.5rem) D(b) W(100%)") }}
