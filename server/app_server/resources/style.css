@@ -1,25 +1,34 @@
 /* ---| Helpers |--- */
 ._rButton\(\) {cursor: pointer; margin: 0; height: auto; vertical-align: middle; appearance: none; color: inherit; -moz-focus-inner: none; border: none;}
+._rLink\(\) {text-decoration: none;}
 /* ---| Cells |--- */
 .Ai\(c\) {-webkit-box-align: center; -ms-flex-align: center; align-items: center;}
 .Bd\(n\) {border: none;}
 .Bdb\(s\,s05\,blue\) {border-bottom: solid .125rem rgb(51,126,221);}
+.Bdrus\(s03\) {border-radius: .5rem;}
 .Bdrus\(s04\) {border-radius: .25rem;}
 .Bdrus\(s05\) {border-radius: .125rem;}
 .Bgc\(blue-dark\) {background-color: rgb(0,68,158);}
+.Bgc\(blue\) {background-color: rgb(51,126,221);}
 .Bgc\(grey-10\) {background-color: rgb(250,250,250);}
+.Bgc\(rgba\(255\,255\,255\,\.2\)\) {background-color: rgba(255,255,255,.2);}
 .Bgc\(white\) {background-color: rgb(255,255,255);}
+.Bxsh\(0\,0\,s02\,grey-5\) {box-shadow: 0 0 .694rem rgb(153,153,153);}
 .Bxsh\(0\,0\,s04\,grey-5\) {box-shadow: 0 0 .25rem rgb(153,153,153);}
-.Bxsh\(0\,0\,s05\,grey-5\) {box-shadow: 0 0 .125rem rgb(153,153,153);}
 .Bxz\(bb\) {-moz-box-sizing: border-box; box-sizing: border-box;}
 .C\(black-br\) {color: black-br;}
+.C\(black\) {color: rgb(0,0,0);}
 .C\(blue\) {color: rgb(51,126,221);}
+.C\(grey-3\) {color: rgb(85,85,85);}
 .C\(white\) {color: rgb(255,255,255);}
 .Cur\(p\) {cursor: pointer;}
 .D\(b\) {display: block;}
 .D\(f\) {display: -webkit-box; display: -ms-flexbox; display: -webkit-flex; display: flex;}
 .Ff\(ClearSans\) {font-family: ClearSans;}
 .Ff\(Inconsolata\) {font-family: Inconsolata;}
+.Fs\(i\) {font-style: italic;}
+.Fs\(n\) {font-style: normal;}
+.Fw\(b\) {font-weight: bold;}
 .Fw\(n\) {font-weight: normal;}
 .Fz\(s2\) {font-size: 1.2rem;}
 .Fz\(s3\) {font-size: 1.44rem;}
@@ -28,8 +37,10 @@
 .H\(100\%\) {height: 100%;}
 .Jc\(c\) {-webkit-box-pack: center; -ms-flex-pack: center; justify-content: center;}
 .M\(0\) {margin: 0;}
+.M\(s03\) {margin: .5rem;}
 .Maw\(50rem\) {max-width: 50rem;}
 .Mb\(s4\) {margin-bottom: 2rem;}
+.Mih\(10rem\) {min-height: 10rem;}
 .Mt\(0\) {margin-top: 0;}
 .Mt\(s04\) {margin-top: .25rem;}
 .Mt\(s1\) {margin-top: 1rem;}
@@ -39,8 +50,10 @@
 .Op\(\.85\)\:h:hover {opacity: .85;}
 .P\(0\) {padding: 0;}
 .P\(\.5rem\) {padding: .5rem;}
+.P\(s02\) {padding: .694rem;}
 .P\(s03\) {padding: .5rem;}
 .P\(s04\) {padding: .25rem;}
+.P\(s1\) {padding: 1rem;}
 .Pos\(a\) {position: absolute;}
 .Pos\(r\) {position: relative;}
 .Px\(2rem\) {padding-left: 2rem; padding-right: 2rem;}
@@ -49,4 +62,10 @@
 .Py\(s4\) {padding-top: 2rem; padding-bottom: 2rem;}
 .T\(0\) {top: 0;}
 .Ta\(c\) {text-align: center;}
+.Td\(u\)\:h:hover {text-decoration: underline;}
+.Trsdu\(1s\) {transition-duration: 1s;}
+.Trsp\(all\) {transition-property: all;}
 .W\(100\%\) {width: 100%;}
+@media all and (min-width: 32rem) {
+.W\(50\%\)\@sm {width: 50%;}
+}

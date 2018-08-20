@@ -14,14 +14,21 @@
 
 <body class="H(100%) My(0) | Bgc(grey-10) C(black-br) Ff(ClearSans)">
 	{% with messages = get_flashed_messages(category_filter=["message"]) %}
+	<div class="Pos(a) W(100%) P(s1)" onload=>
 	{% if messages %}
-		<ul>
 		{% for message in messages %}
-			<li>{{ message }}</li>
+			<div onclick="this.remove()" class="Ta(c) W(50%)@sm Mx(a) Bgc(blue) Bdrus(s04) P(s04) M(s03) C(white) Fz(s2) Trsp(all) Trsdu(1s)" >{{ message }}</div>
 		{% endfor %}
-		</ul>
 	{% endif %}
 	{% endwith %}
+	</div>
+	{% if g.user %}
+	<div class="Fw(b) Fs(i) Pos(a) C(grey-3) Bgc(rgba(255,255,255,.2)) P(s02) M(s03) Bdrus(s03)" > 
+		<span>Logged in as</span> 
+		<span class="Ff(Inconsolata) Fw(n) Fs(n) Fz(s2) C(blue)">{{ g.user.username }}</span>
+		<a class="_rLink() Fs(n) C(black) Fw(n) Td(u):h" href="/logout">Logout</a>
+	</div>
+	{% endif %}
 	{% block content %} {% endblock %}
 </body>
 </html>

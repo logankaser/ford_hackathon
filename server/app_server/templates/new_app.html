@@ -1,27 +1,38 @@
 {% extends "form.html" %}
 
+{% block head %}
+<style>
+body {
+	background-image: url("/resources/app_background.png");
+	background-size: cover;
+	background-position: center;
+}
+</style>
+{% endblock %}
+
 {% block form %}
-<h2 class="M(0) Py(.5rem) Fw(n) Fz(s4) Mb(s4)">
-Upload New App
+<h class="C(blue) Fz(s4) Mt(0)">Ford Developer Portal</h>
+<h2 class="M(0) Py(.5rem) Fw(n) Fz(s3) Mb(s4)">
+Submit new app
 </h2>
 <div class="M(0) Mb(s4)">
 	{{ form.name.label }}
 	{{ form.name(type="text", class_="Bd(n) Bdb(s,s05,blue) P(s04) D(b) W(100%)") }}
 	{{ form.description.label(class_="Mt(s1) D(b)") }}
-	{{ form.description(title="What does your app do?", placeholder="This app does...",
-		class_="Bd(n) Bgc(grey-10) Bdrus(s05) P(s04) D(b) W(100%)") }}
+	{{ form.description(title="What does your app do?", placeholder="This app does... (1000 character limit)",
+		class_="Bd(n) Bgc(grey-10) Bdrus(s05) P(s04) D(b) W(100%) Mih(10rem)") }}
 </div>
 <div class="M(0) Mb(s4)">
 	{{ form.app.label }}
 	<div class="Pos(r) Ta(c) P(s04) Mt(s04) Bgc(blue-dark) C(white) Op(.85):h Bdrus(s05) Bxsh(0,0,s04,grey-5)">
 		<span>Upload</span>
-		{{ form.app(id="upload_button", type="file", class_="D(b) P(0) M(0) Op(0) H(100%) T(0) Pos(a) Cur(p)") }}
+		{{ form.app(id="upload_app", type="file", accept=".tgz,.gz", class_="D(b) P(0) M(0) Op(0) H(100%) T(0) Pos(a) Cur(p)") }}
 	</div>
-	<input id="uploaded_file" placeholder="..." disabled class="Bd(n) Bgc(grey-10) W(100%) Ta(c) Ff(Inconsolata) Fz(s2)"/>
+	<input id="uploaded_app" placeholder="..." disabled class="Bd(n) Bgc(grey-10) W(100%) Ta(c) Ff(Inconsolata) Fz(s2)"/>
 	<script>
-	const upload_button = document.getElementById("upload_button");
+	const upload_button = document.getElementById("upload_app");
 	upload_button.onchange = () => {
-		document.getElementById("uploaded_file").value = upload_button.value.split("\\").reverse()[0];;
+		document.getElementById("uploaded_app").value = upload_button.value.split("\\").reverse()[0];;
 	};
 	</script>
 </div>
