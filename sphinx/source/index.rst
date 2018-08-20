@@ -9,12 +9,12 @@ Welcome to F.T.W documentation!
 Currently testing out how this Sphinx stuff works
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :hidden:
 
-   installguide
    intro
-
+   installguide
+   code-test
 
 =====
 F.T.W
