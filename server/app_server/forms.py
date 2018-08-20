@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, TextAreaField, SubmitField
-from wtforms.validators import DataRequired, Email, Length
+from wtforms.validators import DataRequired, Email, Length, Regexp
 from flask_wtf.file import FileField, FileRequired
 
 
@@ -23,4 +23,5 @@ class AppCreationForm(FlaskForm):
     description = TextAreaField(
         "Description", validators=[DataRequired(), Length(max=1000)])
     app = FileField("Upload App Package", validators=[FileRequired()])
+    icon = FileField("App Icon", validators=[FileRequired()])
     submit = SubmitField("Submit App")
