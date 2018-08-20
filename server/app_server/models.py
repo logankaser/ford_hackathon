@@ -77,6 +77,9 @@ class AppEntry(db.Model):
     created = db.Column(db.DateTime, nullable=False)
     updated = db.Column(db.DateTime, nullable=False)
     downloads = db.Column(db.Integer, nullable=False)
+    icon_ext = db.Column(db.String(), nullable=False)
+    approved = db.Column(db.Boolean, nullable=False)
+    checksum = db.Column(db.String(), nullable=True)
     dev_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
 
 
