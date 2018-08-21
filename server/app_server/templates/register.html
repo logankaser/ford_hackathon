@@ -21,18 +21,19 @@ Sign up
 </div>
 <div class="M(0) Mb(s4)">
 	{{ form.email.label }}
-	{{ form.email(type="email", placeholder="user@email.com", class_="Bd(n) Bdb(s,s05,blue) P(.5rem) D(b) W(100%)") }}
+	{{ form.email(type="email", placeholder="user@email.com",
+		class_="Bd(n) Bdb(s,s05,blue) Bgc(yellow-washed):f Trsp(background-color) Trsdu(.5s) P(.5rem) D(b) W(100%)") }}
 	{{ form.username.label(class_="Mt(s1) D(b)") }}
 	{{ form.username(pattern=".{4,}", title="Must be 4 characters minimum", placeholder="Username",
-		class_="Bd(n) Bdb(s,s05,blue) P(.5rem) D(b) W(100%)") }}
+		class_="Bd(n) Bdb(s,s05,blue) Bgc(yellow-washed):f Trsp(background-color) Trsdu(.5s) P(.5rem) D(b) W(100%)") }}
 </div>
 <div class="M(0) Mb(s4)">
 	{{ form.password.label }}
 	{{ form.password(pattern=".{6,}", title="Must be 6 characters minimum", placeholder="correcthorsebatterystaple", 
-		class_="Bd(n) Bdb(s,s05,blue) P(.5rem) D(b) W(100%)") }}
+		class_="Bd(n) Bdb(s,s05,blue) Bgc(yellow-washed):f Trsp(background-color) Trsdu(.5s) P(.5rem) D(b) W(100%)") }}
 	<div class="Mt(s1)">Password Again</div>
 	<input type="password" name="password_again" required placeholder="correcthorsebatterystaple", 
-		class="Bd(n) Bdb(s,s05,blue) P(.5rem) D(b) W(100%)">
+		class="Bd(n) Bdb(s,s05,blue) Bgc(yellow-washed):f Trsp(background-color) Trsdu(.5s) P(.5rem) D(b) W(100%)">
 </div>
 {{ form.submit(class_="_rButton() Fz(s3) D(b) Mx(a) P(s03) Px(2rem) Bgc(blue-dark) C(white) Op(.85):h Bdrus(s05) Bxsh(0,0,s04,grey-5)") }}
 {% endblock %}

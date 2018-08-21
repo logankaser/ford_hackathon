@@ -11,6 +11,7 @@ bcrypt = Bcrypt()
 search = Search()
 ma = Marshmallow()
 
+
 def hash_password(plain_text):
     hashed = bcrypt.generate_password_hash(
         plain_text, current_app.config.get('BCRYPT_LOG_ROUNDS')
@@ -40,7 +41,7 @@ class User(db.Model):
         self.admin = admin
         self.dev = dev
 
-    def get_token(self, user_id):
+    def get_token(self):
         """
         Generates an API auth token
         :returns: string
@@ -53,7 +54,7 @@ class User(db.Model):
             }
             return jwt.encode(
                 payload,
-                app.config.get("SECRET_KEY"),
+                current_app.config.get("SECRET_KEY"),
                 algorithm="HS256"
             )
         except Exception as e:
@@ -67,10 +68,12 @@ class User(db.Model):
         :returns: User|none
         """
         try:
-            payload = jwt.decode(auth_token, app.config.get("SECRET_KEY"))
+            payload = jwt.decode(
+                auth_token, current_app.config.get("SECRET_KEY"))
             return payload["sub"]
         except (jwt.ExpiredSignatureError, jwt.InvalidTokenError):
             return None
+
 
 class AppEntry(db.Model):
     __tablename__ = "app_entry"
@@ -82,6 +85,7 @@ class AppEntry(db.Model):
     updated = db.Column(db.DateTime, nullable=False)
     downloads = db.Column(db.Integer, nullable=False)
     dev_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+
 
 class AppSchema(ma.ModelSchema):
     class Meta:
