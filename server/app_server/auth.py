@@ -9,6 +9,7 @@ from app_server.forms import RegisterForm, LoginForm
 
 bp = Blueprint("auth", __name__)
 
+
 @bp.before_app_request
 def load_logged_in_user():
     user_id = session.get("user_id")
@@ -16,6 +17,7 @@ def load_logged_in_user():
         g.user = None
     else:
         g.user = User.query.get(user_id)
+
 
 def login_required(view):
     @functools.wraps(view)
@@ -25,6 +27,7 @@ def login_required(view):
         return view(**kwargs)
     return wrapped_view
 
+
 def admin_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
@@ -33,6 +36,7 @@ def admin_required(view):
             return redirect(url_for("auth.login"))
         return view(**kwargs)
     return wrapped_view
+
 
 @bp.route("/register", methods=("GET", "POST"))
 def register():
@@ -67,17 +71,16 @@ def login():
         email = request.form["email"]
         password = request.form["password"]
         user = User.query.filter_by(email=email).one_or_none()
-        if not user or not bcrypt.check_password_hash(user.password_hash, password):
+        if not user or not bcrypt.check_password_hash(
+                user.password_hash, password):
             flash("Login failed")
             return redirect(url_for("auth.login"))
         session["user_id"] = user.id
         flash(user.username + " Logged in")
     return render_template("login.html", form=form)
 
+
 @bp.route("/logout")
 def logout():
     session.clear()
     return redirect(url_for("auth.login"))
-
-#@bp.route("/get_token")
-#def get_token():

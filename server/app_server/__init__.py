@@ -15,9 +15,9 @@ def create_app(test_config=None):
             app.instance_path, "database.sqlite"),
         SQLALCHEMY_TRACK_MODIFICATIONS=False,
         BCRYPT_LOG_ROUNDS=12,
-        MSEARCH_INDEX_NAME = "search_index",
-        MSEARCH_BACKEND = "simple",
-        MSEARCH_ENABLE = True
+        MSEARCH_INDEX_NAME="search_index",
+        MSEARCH_BACKEND="simple",
+        MSEARCH_ENABLE=True
     )
 
     if test_config is None:

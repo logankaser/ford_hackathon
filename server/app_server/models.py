@@ -11,6 +11,7 @@ bcrypt = Bcrypt()
 search = Search()
 ma = Marshmallow()
 
+
 def hash_password(plain_text):
     hashed = bcrypt.generate_password_hash(
         plain_text, current_app.config.get('BCRYPT_LOG_ROUNDS')
@@ -72,6 +73,7 @@ class User(db.Model):
         except (jwt.ExpiredSignatureError, jwt.InvalidTokenError):
             return None
 
+
 class AppEntry(db.Model):
     __tablename__ = "app_entry"
     __searchable__ = ["name", "description"]
@@ -85,6 +87,7 @@ class AppEntry(db.Model):
     approved = db.Column(db.Boolean, nullable=False)
     checksum = db.Column(db.String(), nullable=True)
     dev_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+
 
 class AppSchema(ma.ModelSchema):
     class Meta:
