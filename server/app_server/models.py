@@ -86,6 +86,3 @@ class AppEntry(db.Model):
 class AppSchema(ma.ModelSchema):
     class Meta:
         model = AppEntry
-
-
-
