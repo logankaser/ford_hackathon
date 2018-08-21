@@ -37,4 +37,3 @@ def apps_json():
 def search(keyword):
     results = Post.query.msearch(keyword, fields=["name", "description"],
                                  limit=10)
-

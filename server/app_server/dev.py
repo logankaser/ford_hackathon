@@ -39,6 +39,7 @@ def new_app():
             dev_id=g.user.id)
         db.session.add(app)
         db.session.commit()
+
         appPath = os.path.join(
             current_app.instance_path, str(app.id) + ".tar.gz")
         appFile.seek(0)
