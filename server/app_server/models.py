@@ -82,13 +82,7 @@ class AppEntry(db.Model):
     updated = db.Column(db.DateTime, nullable=False)
     downloads = db.Column(db.Integer, nullable=False)
     dev_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
-<<<<<<< HEAD
 
 class AppSchema(ma.ModelSchema):
     class Meta:
         model = AppEntry
-
-
-
-=======
->>>>>>> 31ea605b3fc4da1dd889b782548f72cd3e27a85d
