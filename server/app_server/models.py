@@ -78,8 +78,3 @@ class AppEntry(db.Model):
     updated = db.Column(db.DateTime, nullable=False)
     downloads = db.Column(db.Integer, nullable=False)
     dev_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
-
-
-
-
-
