@@ -10,30 +10,31 @@
 <script>
 const main = (()=>{
 
-const {Link, Route, Switch, Redirect, location} = hyperappRouter
+// Imports
+const {Link, Route, location} = hyperappRouter
 const {main, h1, span, div, button} = hyperappHtml;
-
-const historyItem = " Fz(s2) P(s04) P(s03)@lg Mx(s03) Mt(s03) Ta(c) Bxsh(0,0,s05,grey-5) Bgc(white) Bdrus(s05) ";
 
 const state = {
 	location: location.state
 }
 
-const view = state => actions => (
-	main({class: "D(f) Fld(c) Mx(a) W(100%) W(60%)@md W(40%)@lg H(100%) Maw(50rem) Bgc(white)"}, [
-		h1({class: "Fz(s4) Fw(n) C(blue) Mt(s03) Py(s05) Ta(c)"},
-			"Ford"
-		)
-	])
-)
-
 const actions = {
 	location: location.actions
 }
 
+const view = state => actions => (
+	main({class: "D(f) Fld(c) Mx(a) W(100%) W(60%)@md W(40%)@lg H(100%) Maw(50rem) Bgc(white)"}, [
+		Route({path: "/",  render: () => h1("Home")}),
+		Route({path: "/about", render: () => h1("About")}),
+		Link({to: "/about"}, "About"),
+		Link({to: "/"}, "Home")
+	])
+)
+
 return hyperapp.app(state, actions, view, document.body)
 })();
 
-const unsubscribe = location.subscribe(main.location)
+hyperappRouter.location.subscribe(main.location);
 </script>
+
 {% endblock %}
