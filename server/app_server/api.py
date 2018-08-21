@@ -16,6 +16,12 @@ bp = Blueprint("api/v1", __name__, url_prefix="/api/v1")
 @bp.route("/app/<app_id>")
 @login_required
 def app_json(app_id):
+    '''
+    :param app_id: Application ID
+    :type app_id: str.
+    :returns: JSON string of the app
+    :raises 404: if is not an app, it will say App not found
+    '''
     app = AppEntry.query.filter_by(id=app_id).one_or_none()
     if not app:
         return Response("App not found", 404)
@@ -26,6 +32,13 @@ def app_json(app_id):
 @bp.route("/app")
 @login_required
 def apps_json():
+    '''
+    JSON applications
+    :param (): JSON applications
+    :type (): void.
+    :returns: JSON string of the app
+    :raises 404: No apps were found
+    '''
     apps = AppEntry.query.all()
     if not apps:
         return Response("No apps", 404)
