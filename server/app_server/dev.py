@@ -19,8 +19,8 @@ bp = Blueprint("dev", __name__, url_prefix="/dev")
 @login_required
 def new_app():
     '''
-    :param (): New app with their metadata
-    :type (): void.
+    New app with their metadata
+
     :returns: New app added to the form and render templates
     '''
     form = AppCreationForm()
@@ -47,8 +47,8 @@ def new_app():
 @login_required
 def dev_app_page(app_id):
     '''
-    :param app_id: Application ID
-    :type app_id: str.
+    Application ID
+
     :returns: Information of app metadata
     :raises Non Existant: If the app is not in the database, then is not uploaded
     :raises 400: Wrong user access to the app
@@ -94,8 +94,8 @@ def delete_app(app_id):
 @login_required
 def dev_profile():
     '''
-    :param (): Developer's profile
-    :type (): void.
+    Developer's profile
+    
     :returns: Render's to new template of the developer user
     '''
     apps = db.session.query(AppEntry).filter_by(dev_id=g.user.id)

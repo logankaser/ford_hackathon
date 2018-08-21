@@ -33,6 +33,7 @@ def app_json(app_id):
 @login_required
 def apps_json():
     '''
+    JSON applications
     :param (): JSON applications
     :type (): void.
     :returns: JSON string of the app

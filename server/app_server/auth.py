@@ -14,8 +14,8 @@ bp = Blueprint("auth", __name__)
 @bp.before_app_request
 def load_logged_in_user():
     '''
-    :param (): Login access
-    :type (): void.
+    Login access
+
     :raises None: if user_id doesn't exist in the session
     '''
     user_id = session.get("user_id")
@@ -69,8 +69,8 @@ def admin_required(view):
 @bp.route("/register", methods=["GET", "POST"])
 def register():
     '''
-    :param (): Registration form
-    :type (): void.
+    Registration form
+
     :returns: Registered user to the query
     '''
     form = RegisterForm()
@@ -100,8 +100,8 @@ def register():
 @bp.route("/login", methods=["GET", "POST"])
 def login():
     '''
-    :param (): Login screen permissions (email and password are required)
-    :type (): void.
+    Login screen permissions (email and password are required)
+
     :returns: Successful login and renders to new template
     :raises Login failed: Not matching email or password
     '''
@@ -123,8 +123,8 @@ def login():
 @bp.route("/logout")
 def logout():
     '''
-    :param (): Clears session and logout
-    :type (): void.
+    Clears session and logout
+
     :returns: Redirect to login screen
     '''
     session.clear()
@@ -134,8 +134,8 @@ def logout():
 @bp.route("/get_token", methods=["POST"])
 def get_token():
     '''
-    :param (): Stores tokenization
-    :type (): void.
+    Stores tokenization
+
     :returns: Valid response
     :raises Invalid Credentials: Not right authentication; mismatched key
     '''
