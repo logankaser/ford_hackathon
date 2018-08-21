@@ -13,6 +13,10 @@ ma = Marshmallow()
 
 
 def hash_password(plain_text):
+    """
+    :param plain_text: The password to be hashed
+    :returns: Password hash
+    """
     hashed = bcrypt.generate_password_hash(
         plain_text, current_app.config.get('BCRYPT_LOG_ROUNDS')
     )
@@ -20,6 +24,9 @@ def hash_password(plain_text):
 
 
 class User(db.Model):
+    """
+    User class representing a developer or admin.
+    """
     __tablename__ = "user"
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(255), nullable=False)
@@ -31,7 +38,6 @@ class User(db.Model):
 
     def __init__(self, email, username, password, dev=False, admin=False):
         """
-        Create a new user
         :returns: A new user
         """
         self.username = username
@@ -43,8 +49,7 @@ class User(db.Model):
 
     def get_token(self):
         """
-        Generates an API auth token
-        :returns: string
+        :returns: Token String
         """
         try:
             payload = {
@@ -63,9 +68,8 @@ class User(db.Model):
     @staticmethod
     def check_token(auth_token):
         """
-        Decodes the auth token
-        :param auth_token:
-        :returns: User|none
+        :param auth_token: auth token string to be checked
+        :returns: User|None
         """
         try:
             payload = jwt.decode(
