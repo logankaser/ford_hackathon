@@ -22,6 +22,7 @@ def new_app():
     form = AppCreationForm()
     if form.validate_on_submit():
         imageFile = request.files["icon"]
+        appFile = request.files["app"]
         print(type(imageFile))
         ext = os.path.splitext(imageFile.filename)[1]
 
@@ -34,13 +35,14 @@ def new_app():
             downloads=0,
             icon_ext=ext,
             approved=False,
-            checksum = hashlib.md5(imageFile.read()).hexdigest(),
+            checksum=hashlib.sha256(appFile.read()).hexdigest(),
             dev_id=g.user.id)
         db.session.add(app)
         db.session.commit()
         appPath = os.path.join(
             current_app.instance_path, str(app.id) + ".tar.gz")
-        request.files["app"].save(appPath)
+        appFile.seek(0)
+        appFile.save(appPath)
         imagePath = os.path.join(current_app.instance_path, str(app.id) + ext)
         imageFile.save(imagePath)
         flash("App succesfully created")
@@ -75,12 +77,14 @@ def delete_app(app_id):
         if g.user.id != app.dev_id:
             return "400"
         os.remove(os.path.join(current_app.instance_path, app_id + ".tar.gz"))
-        os.remove(os.path.join(current_app.instance_path, app_id + app.icon_ext))
+        os.remove(
+            os.path.join(current_app.instance_path, app_id + app.icon_ext))
         db.session.delete(app)
         db.session.commit()
     except Exception as e:
         return "400"
     return "200"
+
 
 @bp.route("/app/<app_id>/icon", methods=["GET"])
 @login_required
@@ -89,15 +93,20 @@ def app_icon(app_id):
         app = db.session.query(AppEntry).filter_by(id=app_id).one()
         if g.user.id != app.dev_id:
             return "400"
-        return send_file(os.path.join(current_app.instance_path, str(app.id) + app.icon_ext))
-    except:
+        file_path = os.path.join(
+            current_app.instance_path, str(app.id) + app.icon_ext)
+        return send_file(file_path)
+    except Exception as e:
         return "400"
+
 
 @bp.route("/")
 @login_required
 def dev_profile():
     apps = db.session.query(AppEntry).filter_by(dev_id=g.user.id)
-    return render_template("dev_profile.html", apps=apps, username=g.user.username)
+    return render_template(
+        "dev_profile.html", apps=apps, username=g.user.username)
+
 
 '''
 @bp.route("app/<app_id>/update", methods=["POST"])

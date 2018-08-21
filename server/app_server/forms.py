@@ -20,8 +20,8 @@ class LoginForm(FlaskForm):
 
 class AppCreationForm(FlaskForm):
     name = StringField("App Title", validators=[DataRequired()])
-    description = TextAreaField(
-        "Description", validators=[DataRequired(), Length(max=1000)])
+    description = TextAreaField("Description", validators=[DataRequired(),
+                                Length(max=1000)])
     app = FileField("Upload App Package", validators=[FileRequired()])
     icon = FileField("App Icon", validators=[FileRequired()])
     submit = SubmitField("Submit App")

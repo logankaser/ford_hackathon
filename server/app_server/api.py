@@ -31,3 +31,10 @@ def apps_json():
         return Response("No apps", 404)
     app_schema = AppSchema(many=True)
     return app_schema.jsonify(apps)
+
+
+@bp.route("/search/<keyword>", methods="GET")
+def search(keyword):
+    results = Post.query.msearch(keyword, fields=["name", "description"],
+                                 limit=10)
+
