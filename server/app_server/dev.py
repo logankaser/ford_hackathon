@@ -18,6 +18,11 @@ bp = Blueprint("dev", __name__, url_prefix="/dev")
 @bp.route("/app/new", methods=["GET", "POST"])
 @login_required
 def new_app():
+    '''
+    :param (): New app with their metadata
+    :type (): void.
+    :returns: New app added to the form and render templates
+    '''
     form = AppCreationForm()
     if form.validate_on_submit():
         date = datetime.datetime.now()
@@ -41,13 +46,20 @@ def new_app():
 @bp.route("/app/<app_id>")
 @login_required
 def dev_app_page(app_id):
+    '''
+    :param app_id: Application ID
+    :type app_id: str.
+    :returns: Information of app metadata
+    :raises Non Existant: If the app is not in the database, then is not uploaded
+    :raises 400: Wrong user access to the app
+    '''
     app = None
     try:
         app = db.session.query(AppEntry).filter_by(id=app_id).one()
     except Exception as e:
         return "non existant app"
     if (g.user.id != app.dev_id):
-        return "invalid user"
+        return "400"
     return render_template(
         "dev_app_page.html",
         name=app.name,
@@ -60,6 +72,12 @@ def dev_app_page(app_id):
 @bp.route("/app/<app_id>/delete", methods=["POST"])
 @login_required
 def delete_app(app_id):
+    '''
+    :param app_id: Application ID
+    :type app_id: str.
+    :returns: Successfully deleting the app from database
+    :raises 400: Wrong user access to the app
+    '''
     try:
         app = db.session.query(AppEntry).filter_by(id=app_id).one
         if g.user.id != app.dev_id:
@@ -75,6 +93,11 @@ def delete_app(app_id):
 @bp.route("/")
 @login_required
 def dev_profile():
+    '''
+    :param (): Developer's profile
+    :type (): void.
+    :returns: Render's to new template of the developer user
+    '''
     apps = db.session.query(AppEntry).filter_by(dev_id=g.user.id)
     return render_template(
         "dev_profile.html", apps=apps)

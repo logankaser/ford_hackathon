@@ -12,4 +12,9 @@ bp = Blueprint("admin", __name__, url_prefix="/admin")
 @bp.route("/")
 @admin_required
 def index():
+    """
+    :param (): Admin test
+    :type (): void.
+    :returns: admin requisite
+    """
     return "Admin test"

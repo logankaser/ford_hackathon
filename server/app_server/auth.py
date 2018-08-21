@@ -13,6 +13,11 @@ bp = Blueprint("auth", __name__)
 
 @bp.before_app_request
 def load_logged_in_user():
+    '''
+    :param (): Login access
+    :type (): void.
+    :raises None: if user_id doesn't exist in the session
+    '''
     user_id = session.get("user_id")
     if user_id is None:
         g.user = None
@@ -21,8 +26,19 @@ def load_logged_in_user():
 
 
 def login_required(view):
+    '''
+    :param view: Show login
+    :type view: str.
+    :returns: wrapped_views?
+    '''
     @functools.wraps(view)
     def wrapped_view(**kwargs):
+        '''
+        :param kwargs: Login name
+        :type kwargs: str.
+        :returns: FIXME
+        :raises None: if user_id doesn't exist in the session, redirect login auth
+        '''
         if g.user is None:
             return redirect(url_for("auth.login"))
         return view(**kwargs)
@@ -30,8 +46,19 @@ def login_required(view):
 
 
 def admin_required(view):
+    '''
+    :param view: Adminitration requirement
+    :type view: str.
+    :returns: wrapped_views?
+    '''
     @functools.wraps(view)
     def wrapped_view(**kwargs):
+        '''
+        :param kwargs: Admin name
+        :type kwargs: str.
+        :returns: FIXME
+        :raises None or not g.user.admin: Not authorized and redirect to login screen
+        '''
         if g.user is None or not g.user.admin:
             flash("Not authorized, must be admin")
             return redirect(url_for("auth.login"))
@@ -41,6 +68,11 @@ def admin_required(view):
 
 @bp.route("/register", methods=["GET", "POST"])
 def register():
+    '''
+    :param (): Registration form
+    :type (): void.
+    :returns: Registered user to the query
+    '''
     form = RegisterForm()
     if form.validate_on_submit():
         email = request.form["email"]
@@ -67,6 +99,12 @@ def register():
 
 @bp.route("/login", methods=["GET", "POST"])
 def login():
+    '''
+    :param (): Login screen permissions (email and password are required)
+    :type (): void.
+    :returns: Successful login and renders to new template
+    :raises Login failed: Not matching email or password
+    '''
     form = LoginForm()
     if form.validate_on_submit():
         email = request.form["email"]
@@ -84,12 +122,23 @@ def login():
 
 @bp.route("/logout")
 def logout():
+    '''
+    :param (): Clears session and logout
+    :type (): void.
+    :returns: Redirect to login screen
+    '''
     session.clear()
     return redirect(url_for("auth.login"))
 
 
 @bp.route("/get_token", methods=["POST"])
 def get_token():
+    '''
+    :param (): Stores tokenization
+    :type (): void.
+    :returns: Valid response
+    :raises Invalid Credentials: Not right authentication; mismatched key
+    '''
     email = request.form.get("email")
     password = request.form.get("password")
     user = User.query.filter_by(email=email).one_or_none()

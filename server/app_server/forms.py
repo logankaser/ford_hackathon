@@ -5,6 +5,9 @@ from flask_wtf.file import FileField, FileRequired
 
 
 class RegisterForm(FlaskForm):
+    """
+    Register Form
+    """
     email = StringField("Email", validators=[DataRequired(), Email()])
     username = StringField("Username", validators=[DataRequired(), Length(4)])
     password = PasswordField(
@@ -13,12 +16,18 @@ class RegisterForm(FlaskForm):
 
 
 class LoginForm(FlaskForm):
+    """
+    Login Form
+    """
     email = StringField("email", validators=[DataRequired(), Email()])
     password = PasswordField("password", validators=[DataRequired()])
     submit = SubmitField("Continue")
 
 
 class AppCreationForm(FlaskForm):
+    """
+    Application Creation Form
+    """
     name = StringField("App Title", validators=[DataRequired()])
     description = TextAreaField(
         "Description", validators=[DataRequired(), Length(max=1000)])
