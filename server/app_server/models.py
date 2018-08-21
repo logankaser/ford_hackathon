@@ -11,7 +11,12 @@ bcrypt = Bcrypt()
 search = Search()
 ma = Marshmallow()
 
+
 def hash_password(plain_text):
+    """
+    :param plain_text: The password to be hashed
+    :returns: Password hash
+    """
     hashed = bcrypt.generate_password_hash(
         plain_text, current_app.config.get('BCRYPT_LOG_ROUNDS')
     )
@@ -19,6 +24,9 @@ def hash_password(plain_text):
 
 
 class User(db.Model):
+    """
+    User class representing a developer or admin.
+    """
     __tablename__ = "user"
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(255), nullable=False)
@@ -30,7 +38,6 @@ class User(db.Model):
 
     def __init__(self, email, username, password, dev=False, admin=False):
         """
-        Create a new user
         :returns: A new user
         """
         self.username = username
@@ -40,10 +47,9 @@ class User(db.Model):
         self.admin = admin
         self.dev = dev
 
-    def get_token(self, user_id):
+    def get_token(self):
         """
-        Generates an API auth token
-        :returns: string
+        :returns: Token String
         """
         try:
             payload = {
@@ -53,7 +59,7 @@ class User(db.Model):
             }
             return jwt.encode(
                 payload,
-                app.config.get("SECRET_KEY"),
+                current_app.config.get("SECRET_KEY"),
                 algorithm="HS256"
             )
         except Exception as e:
@@ -62,15 +68,16 @@ class User(db.Model):
     @staticmethod
     def check_token(auth_token):
         """
-        Decodes the auth token
-        :param auth_token:
-        :returns: User|none
+        :param auth_token: auth token string to be checked
+        :returns: User|None
         """
         try:
-            payload = jwt.decode(auth_token, app.config.get("SECRET_KEY"))
+            payload = jwt.decode(
+                auth_token, current_app.config.get("SECRET_KEY"))
             return payload["sub"]
         except (jwt.ExpiredSignatureError, jwt.InvalidTokenError):
             return None
+
 
 class AppEntry(db.Model):
     __tablename__ = "app_entry"
@@ -82,6 +89,7 @@ class AppEntry(db.Model):
     updated = db.Column(db.DateTime, nullable=False)
     downloads = db.Column(db.Integer, nullable=False)
     dev_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+
 
 class AppSchema(ma.ModelSchema):
     class Meta:

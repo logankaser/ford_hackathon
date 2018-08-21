@@ -15,9 +15,9 @@ def create_app(test_config=None):
             app.instance_path, "database.sqlite"),
         SQLALCHEMY_TRACK_MODIFICATIONS=False,
         BCRYPT_LOG_ROUNDS=12,
-        MSEARCH_INDEX_NAME = "search_index",
-        MSEARCH_BACKEND = "simple",
-        MSEARCH_ENABLE = True
+        MSEARCH_INDEX_NAME="search_index",
+        MSEARCH_BACKEND="simple",
+        MSEARCH_ENABLE=True
     )
 
     if test_config is None:
@@ -46,7 +46,7 @@ def create_app(test_config=None):
             search.create_index()
             search.update_index()
 
-    # Initialize
+    # Initialize Marshmallow Serialization
     ma.init_app(app)
 
     # Initialize Blueprints
@@ -58,6 +58,9 @@ def create_app(test_config=None):
 
     from . import dev
     app.register_blueprint(dev.bp)
+
+    from . import api
+    app.register_blueprint(api.bp)
 
     @app.route("/")
     def index():

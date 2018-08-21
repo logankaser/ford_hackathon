@@ -5,23 +5,17 @@
 
 {% block content %}
 
-<h1>your username is: {{username}}</h1>
+
+<main class="Mx(a) Maw(50rem) D(f) Fld(c) H(100%)">
 	{% for app in apps %}
-	<div>
-		<a href="app/{{ app.id }}">{{app.name}}</a>
-	</div>
-	<div>
-		<h2>Description: </h2><p>{{ app.description }}</p>
-	</div>
-	<div>
-		<h2>Created: </h2><time>{{ app.created }}</time>
-	</div>
-	<div>
-		<h2>Last Updated: </h2><time>{{ app.updated }}</time>
-	</div>
-	<div>
-		<h2>Downloads: {{ app.downloads }} </h2> 
-	</div>
+	<section class="W(80%) Mx(a) Mt(s2) Px(s5) Py(s4) Bgc(white) Bxsh(0,0,s05,grey-5)">
+		<div>
+			<a class="_rLink() Fz(s3) Ff(Inconsolata) Td(u) C(grey-3) C(blue):h" href="app/{{ app.id }}">{{app.name}}</a>
+		</div>
+		<p>{{ app.description }}</p>
+		<p>Downloads: {{ app.downloads }} </p> 
+	</section>
 	{% endfor %}
+</main>
 
 {% endblock %}
