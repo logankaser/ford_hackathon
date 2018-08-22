@@ -7,14 +7,13 @@ Welcome to Ford Hackathon's documentation!
 ==========================================
 
 .. toctree::
-   :maxdepth: 4
-   :caption: Contents:
+   :maxdepth: 6
+   :caption: Table of contents:
 
    intro
    installguide
-
-.. automodule:: app_server.models
-    :members:
+   client
+   server
 
 Indices and tables
 ==================

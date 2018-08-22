@@ -10,4 +10,4 @@ else
 	. venv/bin/activate
 fi
 
-make html
+make clean && make html && open "../sphinx/build/html/index.html"

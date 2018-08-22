@@ -19,6 +19,11 @@ bp = Blueprint("dev", __name__, url_prefix="/dev")
 @bp.route("/app/new", methods=["GET", "POST"])
 @login_required
 def new_app():
+    '''
+    New app with their metadata
+
+    :returns: New app added to the form and render templates
+    '''
     form = AppCreationForm()
     if form.validate_on_submit():
         imageFile = request.files["icon"]
@@ -54,6 +59,13 @@ def new_app():
 @bp.route("/app/<app_id>")
 @login_required
 def dev_app_page(app_id):
+    '''
+    Application ID
+
+    :returns: Information of app metadata
+    :raises Non Existant: If the app is not in the database, then is not uploaded
+    :raises 400: Wrong user access to the app
+    '''
     app = None
     try:
         app = db.session.query(AppEntry).filter_by(id=app_id).one()
@@ -73,6 +85,11 @@ def dev_app_page(app_id):
 @bp.route("/")
 @login_required
 def dev_profile():
+    '''
+    Developer's profile
+    
+    :returns: Render's to new template of the developer user
+    '''
     apps = db.session.query(AppEntry).filter_by(dev_id=g.user.id)
     return render_template(
         "dev_profile.html", apps=apps, username=g.user.username)
