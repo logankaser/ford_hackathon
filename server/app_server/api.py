@@ -46,7 +46,8 @@ def apps_json():
     :limitations: top 100 apps are calculated each api call and not stored
     anywhere
     """
-    apps = AppEntry.query.order_by(AppEntry.downloads.desc()).limit(100)
+    apps = AppEntry.query.order_by(AppEntry.downloads.desc()).\
+        filter_by(approved=True).limit(100)
     app_schema = AppPublicSchema(many=True)
     output = []
     for app in apps:
@@ -197,13 +198,30 @@ def public_user_info(user_id):
 
 
 @bp.route("user/<user_id>/apps", methods=["GET"])
-def user_apps(user_id):
-    """Get a list of."""
+def public_user_apps(user_id):
+    """Get a list of public App profiles belonging to user
+
+    :returns: JSON list of public app profiles
+    """
     apps = AppEntry.query.filter_by(dev_id=user_id)
     name = User.query.get(user_id)
     app_schema = AppPublicSchema(many=True)
     output = []
     for app in apps:
         app.dev_name = name.username
-        output.append(app)
+        if app.approved:
+            output.append(app)
     return app_schema.jsonify(output)
+
+
+@bp.route("user/<user_id>/apps/private", methods=["GET"])
+def private_user_apps(user_id):
+    """Get a list of private App profiles belonging to user
+
+    :returns: JSON list of private app profiles or 401 if bad permissions
+
+    only admins and the developer have valid permissions
+    """
+    apps = AppEntry.query.filter_by(dev_id=user_id)
+    app_schema = AppSchema(many=True)
+    return app_schema.jsonify(apps)
