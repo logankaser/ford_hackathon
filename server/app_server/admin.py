@@ -14,15 +14,8 @@ bp = Blueprint("admin", __name__, url_prefix="/admin")
 @bp.route("/")
 @admin_required
 def index():
-<<<<<<< HEAD
     """Admin test.
 
     :returns: admin test
-=======
-    """
-    Admin requisite
-
-    :returns: admin requisite
->>>>>>> nothing changed
     """
     return "Admin test"
