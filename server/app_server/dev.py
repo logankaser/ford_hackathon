@@ -59,7 +59,7 @@ def dev_app_page(app_id):
         app = db.session.query(AppEntry).filter_by(id=app_id).one()
     except Exception as e:
         return "non existant app"
-    if (g.user.id != app.dev_id):
+    if g.user.id != app.dev_id and not g.user.admin:
         return "invalid user"
     return render_template(
         "dev_app_page.html",
@@ -68,37 +68,6 @@ def dev_app_page(app_id):
         created=str(app.created),
         updated=str(app.updated),
         downloads=str(app.downloads))
-
-
-@bp.route("/app/<app_id>/delete", methods=["GET", "POST"])
-@login_required
-def delete_app(app_id):
-    try:
-        app = db.session.query(AppEntry).filter_by(id=app_id).one()
-        if g.user.id != app.dev_id:
-            return "400"
-        os.remove(os.path.join(current_app.instance_path, app_id + ".tar.gz"))
-        os.remove(
-            os.path.join(current_app.instance_path, app_id + app.icon_ext))
-        db.session.delete(app)
-        db.session.commit()
-    except Exception as e:
-        return "400"
-    return "200"
-
-
-@bp.route("/app/<app_id>/icon", methods=["GET"])
-@login_required
-def app_icon(app_id):
-    try:
-        app = db.session.query(AppEntry).filter_by(id=app_id).one()
-        if g.user.id != app.dev_id:
-            return "400"
-        file_path = os.path.join(
-            current_app.instance_path, str(app.id) + app.icon_ext)
-        return send_file(file_path)
-    except Exception as e:
-        return "400"
 
 
 @bp.route("/")
@@ -111,7 +80,6 @@ def dev_profile():
 
 '''
 @bp.route("app/<app_id>/update", methods=["POST"])
->>>>>>> added picture upload and checksum
 @login_required
 def app_icon(app_id):
     try:
@@ -121,10 +89,4 @@ def app_icon(app_id):
         return send_file(os.path.join(current_app.instance_path, str(app.id) + app.icon_ext))
     except:
         return "400"
-
-@bp.route("/")
-@login_required
-def dev_profile():
-    apps = db.session.query(AppEntry).filter_by(dev_id=g.user.id)
-    return render_template(
-        "dev_profile.html", apps=apps)
+'''

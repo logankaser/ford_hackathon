@@ -2,6 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_msearch import Search
 from flask_marshmallow import Marshmallow
+from marshmallow import fields
 from flask import current_app, jsonify
 from datetime import datetime, timedelta
 import jwt
@@ -97,3 +98,16 @@ class AppEntry(db.Model):
 class AppSchema(ma.ModelSchema):
     class Meta:
         model = AppEntry
+
+
+class AppPublicSchema(ma.ModelSchema):
+    test = fields.String()
+
+    class Meta:
+        fields = (
+            "name",
+            "description",
+            "created",
+            "updated",
+            "dev_id",
+            "dev_name")
