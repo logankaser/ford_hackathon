@@ -36,20 +36,11 @@ def app_json(app_id):
 
 @bp.route("/app")
 def apps_json():
-<<<<<<< HEAD
     """JSON of all apps.
 
     :param: JSON applications
     :returns: JSON of all apps
     """
-=======
-    '''
-    JSON applications
-
-    :returns: JSON string of the app
-    :raises 404: No apps were found
-    '''
->>>>>>> nothing really changed. Just wanted to rebase:
     apps = AppEntry.query.all()
     if not apps:
         return ("No apps", 404)

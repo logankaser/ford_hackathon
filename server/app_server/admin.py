@@ -14,7 +14,7 @@ bp = Blueprint("admin", __name__, url_prefix="/admin")
 def index():
     """
     Admin requisite
-    
+
     :returns: admin requisite
     """
     return "Admin test"
