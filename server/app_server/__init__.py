@@ -1,3 +1,5 @@
+"""Initialize app_server."""
+
 import os
 
 from flask import Flask, render_template
@@ -5,6 +7,7 @@ from app_server.models import db, bcrypt, search, ma
 
 
 def create_app(test_config=None):
+    """Create app_server instance."""
     # create and configure the app
     app = Flask(__name__,
                 instance_relative_config=True,

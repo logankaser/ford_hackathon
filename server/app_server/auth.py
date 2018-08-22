@@ -1,3 +1,8 @@
+"""Authentication Blueprint.
+
+Supports session and token based authentication.
+"""
+
 import functools
 
 from flask import (
@@ -13,11 +18,7 @@ bp = Blueprint("auth", __name__)
 
 @bp.before_app_request
 def load_logged_in_user():
-    '''
-    Login access
-
-    :raises None: if user_id doesn't exist in the session
-    '''
+    """Load user model if user is logged in."""
     user_id = session.get("user_id")
     if user_id is None:
         g.user = None
@@ -26,25 +27,25 @@ def load_logged_in_user():
 
 
 def login_required(view):
-    '''
-    :param view: Show login
-    :type view: str.
-    :returns: wrapped_views?
-    '''
+    """Require a logged in user.
+
+    :param view: view to wrap
+    :returns: wrapped view
+    """
     @functools.wraps(view)
     def wrapped_view(**kwargs):
-        '''
-        :param kwargs: Login name
-        :type kwargs: str.
-        :returns: FIXME
-        :raises None: if user_id doesn't exist in the session, redirect login auth
-        '''
         if g.user is None:
             return redirect(url_for("auth.login"))
         return view(**kwargs)
     return wrapped_view
 
+
 def dev_required(view):
+    """Require a logged in dev user.
+
+    :param view: view to wrap
+    :returns: wrapped view
+    """
     @functools.wraps(view)
     def wrapped_view(**kwargs):
         if g.user is None or not (g.user.dev or g.user.admin):
@@ -53,20 +54,15 @@ def dev_required(view):
         return view(**kwargs)
     return wrapped_view
 
+
 def admin_required(view):
-    '''
-    :param view: Adminitration requirement
-    :type view: str.
-    :returns: wrapped_views?
-    '''
+    """Require a logged in admin user.
+
+    :param view: view to wrap
+    :returns: wrapped view
+    """
     @functools.wraps(view)
     def wrapped_view(**kwargs):
-        '''
-        :param kwargs: Admin name
-        :type kwargs: str.
-        :returns: FIXME
-        :raises None or not g.user.admin: Not authorized and redirect to login screen
-        '''
         if g.user is None or not g.user.admin:
             flash("Not authorized, must be admin")
             return redirect(url_for("auth.login"))
@@ -76,11 +72,10 @@ def admin_required(view):
 
 @bp.route("/register", methods=["GET", "POST"])
 def register():
-    '''
-    Registration form
+    """Registration form.
 
-    :returns: Registered user to the query
-    '''
+    :returns: Registered user form data or False on failure
+    """
     form = RegisterForm()
     if form.validate_on_submit():
         email = request.form["email"]
@@ -107,12 +102,10 @@ def register():
 
 @bp.route("/login", methods=["GET", "POST"])
 def login():
-    '''
-    Login screen permissions (email and password are required)
+    """Login with session based authentication.
 
-    :returns: Successful login and renders to new template
-    :raises Login failed: Not matching email or password
-    '''
+    :returns: On success redircts to home, otherwise back to the login page.
+    """
     form = LoginForm()
     if form.validate_on_submit():
         email = request.form["email"]
@@ -130,23 +123,21 @@ def login():
 
 @bp.route("/logout")
 def logout():
-    '''
-    Clears session and logout
+    """Clear session and logout.
 
     :returns: Redirect to login screen
-    '''
+    """
     session.clear()
     return redirect(url_for("auth.login"))
 
 
 @bp.route("/get_token", methods=["POST"])
 def get_token():
-    '''
-    Stores tokenization
+    """Get a new auth token (JWT).
 
     :returns: Valid response
-    :raises Invalid Credentials: Not right authentication; mismatched key
-    '''
+    :raises HTTP status code 401 on error.
+    """
     email = request.form.get("email")
     password = request.form.get("password")
     user = User.query.filter_by(email=email).one_or_none()

@@ -118,14 +118,21 @@ class AppSchema(ma.ModelSchema):
 
     created = JsTime()
     updated = JsTime()
+
     class Meta:
+        """All fields."""
+
         model = AppEntry
 
 
 class AppPublicSchema(ma.ModelSchema):
+    """Serialize public AppEntry information to json."""
+
     test = fields.String()
 
     class Meta:
+        """Public fields."""
+
         fields = (
             "name",
             "description",

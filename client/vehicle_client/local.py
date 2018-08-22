@@ -15,4 +15,5 @@ bp = Blueprint("local", __name__)
 
 @bp.route("/list")
 def list_installed_apps():
+    """List installed apps."""
     return "None"
