@@ -1,8 +1,8 @@
 # How it works?
 
-This is just one paragraph
+Description of the app store goes here
 
-## List
+## Something
 
 blah blah blah
 * one
@@ -11,6 +11,7 @@ blah blah blah
 
 ## Sample
 
+<<<<<<< HEAD
 ```C
 #include <stdio.h>
 
@@ -21,6 +22,8 @@ int main(void)
 }
 ```
 
+=======
+>>>>>>> nothing really changed. Just wanted to rebase:
 ```python
 from setuptools import find_packages, setup
 

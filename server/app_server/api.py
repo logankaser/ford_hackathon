@@ -39,13 +39,19 @@ def app_json(app_id):
 
 @bp.route("/app/top")
 def apps_json():
+<<<<<<< HEAD
     """Top 100 public app profiles by downloads.
+=======
+<<<<<<< HEAD
+    """JSON of all apps.
+>>>>>>> nothing really changed. Just wanted to rebase:
 
     :returns: JSON string of up to 100 public
     app profiles from most to least downloaded
     :limitations: top 100 apps are calculated each api call and not stored
     anywhere
     """
+<<<<<<< HEAD
     apps = AppEntry.query.order_by(AppEntry.downloads.desc()).limit(100)
     app_schema = AppPublicSchema(many=True)
     output = []
@@ -53,6 +59,21 @@ def apps_json():
         app.dev_name = User.query.filter_by(id=app.dev_id).one().username
         output.append(app)
     return app_schema.jsonify(output)
+=======
+=======
+    '''
+    JSON applications
+
+    :returns: JSON string of the app
+    :raises 404: No apps were found
+    '''
+>>>>>>> nothing really changed. Just wanted to rebase:
+    apps = AppEntry.query.all()
+    if not apps:
+        return ("No apps", 404)
+    app_schema = AppSchema(many=True)
+    return app_schema.jsonify(apps)
+>>>>>>> nothing really changed. Just wanted to rebase:
 
 
 @bp.route("/app/search/<keyword>", methods=["GET"])
