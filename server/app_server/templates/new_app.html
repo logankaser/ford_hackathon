@@ -26,13 +26,27 @@ Submit new app
 	{{ form.app.label }}
 	<div class="Pos(r) Ta(c) P(s04) Mt(s04) Bgc(blue-dark) C(white) Op(.85):h Bdrus(s05) Bxsh(0,0,s04,grey-5)">
 		<span>Upload</span>
-		{{ form.app(id="upload_app", type="file", accept=".tgz,.gz", class_="D(b) P(0) M(0) Op(0) H(100%) T(0) Pos(a) Cur(p)") }}
+		{{ form.app(id="upload_app", accept="application/gzip,.gz,.tgz", type="file", class_="D(b) P(0) M(0) Op(0) H(100%) T(0) Pos(a) Cur(p)") }}
 	</div>
 	<input id="uploaded_app" placeholder="..." disabled class="Bd(n) Bgc(grey-10) W(100%) Ta(c) Ff(Inconsolata) Fz(s2)"/>
 	<script>
-	const upload_button = document.getElementById("upload_app");
-	upload_button.onchange = () => {
-		document.getElementById("uploaded_app").value = upload_button.value.split("\\").reverse()[0];;
+	const upload_app_button = document.getElementById("upload_app");
+	upload_app_button.onchange = () => {
+		document.getElementById("uploaded_app").value = upload_app_button.value.split("\\").reverse()[0];;
+	};
+	</script>
+</div>
+<div class="M(0) Mb(s4)">
+	{{ form.icon.label }}
+	<div class="Pos(r) Ta(c) P(s04) Mt(s04) Bgc(blue-dark) C(white) Op(.85):h Bdrus(s05) Bxsh(0,0,s04,grey-5)">
+		<span>Upload</span>
+		{{ form.icon(id="upload_icon", accept=".png,.jpg,.jpeg", type="file", class_="D(b) P(0) M(0) Op(0) H(100%) T(0) Pos(a) Cur(p)") }}
+	</div>
+	<input id="uploaded_icon" placeholder="..." disabled class="Bd(n) Bgc(grey-10) W(100%) Ta(c) Ff(Inconsolata) Fz(s2)"/>
+	<script>
+	const upload_icon_button = document.getElementById("upload_icon");
+	upload_icon_button.onchange = () => {
+		document.getElementById("uploaded_icon").value = upload_icon_button.value.split("\\").reverse()[0];;
 	};
 	</script>
 </div>

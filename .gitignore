@@ -19,3 +19,4 @@ build/
 *.ford_app
 *._*
 search_index
+.nfs*

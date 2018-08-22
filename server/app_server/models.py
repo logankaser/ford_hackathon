@@ -2,6 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_msearch import Search
 from flask_marshmallow import Marshmallow
+from marshmallow import fields
 from flask import current_app, jsonify
 from datetime import datetime, timedelta
 import jwt
@@ -88,9 +89,25 @@ class AppEntry(db.Model):
     created = db.Column(db.DateTime, nullable=False)
     updated = db.Column(db.DateTime, nullable=False)
     downloads = db.Column(db.Integer, nullable=False)
+    icon_ext = db.Column(db.String(), nullable=False)
+    approved = db.Column(db.Boolean, nullable=False)
+    checksum = db.Column(db.String(), nullable=True)
     dev_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
 
 
 class AppSchema(ma.ModelSchema):
     class Meta:
         model = AppEntry
+
+
+class AppPublicSchema(ma.ModelSchema):
+    test = fields.String()
+
+    class Meta:
+        fields = (
+            "name",
+            "description",
+            "created",
+            "updated",
+            "dev_id",
+            "dev_name")
