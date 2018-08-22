@@ -87,6 +87,13 @@ class User(db.Model):
             return None
 
 
+class UserSchema(ma.ModelSchema):
+    """Serialize a User to JSON"""
+
+    class Meta:
+        model = User
+
+
 class AppEntry(db.Model):
     """Stores information about an app."""
 
@@ -118,6 +125,7 @@ class AppSchema(ma.ModelSchema):
 
     created = JsTime()
     updated = JsTime()
+
     class Meta:
         model = AppEntry
 
