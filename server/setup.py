@@ -1,3 +1,5 @@
+"""Package file for app_server."""
+
 from setuptools import find_packages, setup
 
 setup(

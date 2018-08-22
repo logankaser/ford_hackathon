@@ -44,6 +44,14 @@ def login_required(view):
         return view(**kwargs)
     return wrapped_view
 
+def dev_required(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if g.user is None or not (g.user.dev or g.user.admin):
+            flash("Not authorized, must be dev or admin")
+            return redirect(url_for("auth.login"))
+        return view(**kwargs)
+    return wrapped_view
 
 def admin_required(view):
     '''

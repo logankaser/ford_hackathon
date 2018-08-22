@@ -1,3 +1,5 @@
+"""Package file for vehicle_client."""
+
 from setuptools import find_packages, setup
 
 setup(

@@ -9,4 +9,4 @@ else
 	. venv/bin/activate
 fi
 
-FLASK_APP="vehicle_client" FLASK_DEBUG="TRUE" flask run
+FLASK_APP="vehicle_client" FLASK_DEBUG="TRUE" flask run --port=8080

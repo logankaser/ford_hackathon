@@ -1,3 +1,5 @@
+"""Initialize a new vehicle_client instance."""
+
 import os
 
 from flask import Flask, render_template
@@ -5,7 +7,8 @@ from vehicle_client.models import db
 
 
 def create_app(test_config=None):
-    """
+    """Create a new app.
+
     :param test_config: Optionaly load configuration from python dict,
     useful for testing.
     :type test_config: object

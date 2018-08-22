@@ -15,8 +15,10 @@ blah blah blah
 #include <stdio.h>
 
 int main(void)
-printf("Hell No");
-return (0);
+{
+	printf("Hell No");
+	return (0);
+}
 ```
 
 ```python
