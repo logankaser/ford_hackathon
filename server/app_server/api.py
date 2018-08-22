@@ -40,9 +40,12 @@ def app_json(app_id):
 @bp.route("/app/top")
 def apps_json():
 <<<<<<< HEAD
+<<<<<<< HEAD
     """Top 100 public app profiles by downloads.
 =======
 <<<<<<< HEAD
+=======
+>>>>>>> nothing changed
     """JSON of all apps.
 >>>>>>> nothing really changed. Just wanted to rebase:
 
@@ -51,6 +54,7 @@ def apps_json():
     :limitations: top 100 apps are calculated each api call and not stored
     anywhere
     """
+<<<<<<< HEAD
 <<<<<<< HEAD
     apps = AppEntry.query.order_by(AppEntry.downloads.desc()).limit(100)
     app_schema = AppPublicSchema(many=True)
@@ -68,6 +72,8 @@ def apps_json():
     :raises 404: No apps were found
     '''
 >>>>>>> nothing really changed. Just wanted to rebase:
+=======
+>>>>>>> nothing changed
     apps = AppEntry.query.all()
     if not apps:
         return ("No apps", 404)

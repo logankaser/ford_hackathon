@@ -11,19 +11,6 @@ blah blah blah
 
 ## Sample
 
-<<<<<<< HEAD
-```C
-#include <stdio.h>
-
-int main(void)
-{
-	printf("Hell No");
-	return (0);
-}
-```
-
-=======
->>>>>>> nothing really changed. Just wanted to rebase:
 ```python
 from setuptools import find_packages, setup
 
