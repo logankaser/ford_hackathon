@@ -22,8 +22,8 @@ sys.path.insert(0, os.path.abspath("../server"))
 # -- Project information -----------------------------------------------------
 
 project = 'Ford Hackathon'
-copyright = '2018, Theo Walton Zeid Tisnes Logan Kaser'
-author = 'Theo Walton Zeid Tisnes Logan Kaser'
+copyright = '2018, Theo Walton, Zeid Tisnes, Logan Kaser'
+author = 'Theo Walton, Zeid Tisnes, Logan Kaser'
 
 # The short X.Y version
 version = ''

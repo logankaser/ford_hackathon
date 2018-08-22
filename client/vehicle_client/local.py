@@ -1,3 +1,9 @@
+"""Routes for controling the local machine.
+
+For example, install and uninstall pakages,
+or query what packages are currently installed.
+"""
+
 import functools
 
 from flask import (

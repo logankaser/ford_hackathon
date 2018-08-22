@@ -1,34 +1,45 @@
-/* ---| No helpers used |--- */
+/* ---| Helpers |--- */
+._rLink\(\) {text-decoration: none;}
+.Ellip\(\) {text-overflow: ellipsis; white-space: nowrap; overflow-wrap: break-word; word-wrap: break-word; -ms-word-break: break-all; word-break: break-word; -ms-hyphens: auto; -moz-hyphens: auto; -webkit-hyphens: auto; hyphens: auto; overflow: hidde;}
 /* ---| Cells |--- */
+.Ai\(c\) {-webkit-box-align: center; -ms-flex-align: center; align-items: center;}
 .Bdrus\(s05\) {border-radius: .125rem;}
 .Bgc\(grey-10\) {background-color: rgb(250,250,250);}
 .Bgc\(white\) {background-color: rgb(255,255,255);}
 .Bxsh\(0\,0\,s05\,grey-5\) {box-shadow: 0 0 .125rem rgb(153,153,153);}
 .Bxz\(bb\) {-moz-box-sizing: border-box; box-sizing: border-box;}
+.C\(\#191919\) {color: #191919;}
 .C\(black-br\) {color: black-br;}
 .C\(blue\) {color: rgb(51,126,221);}
+.C\(blue\)\:h:hover {color: rgb(51,126,221);}
+.C\(grey-2\) {color: rgb(51,51,51);}
+.D\(b\) {display: block;}
 .D\(f\) {display: -webkit-box; display: -ms-flexbox; display: -webkit-flex; display: flex;}
 .Ff\(ClearSans\) {font-family: ClearSans;}
+.Ff\(Inconsolata\) {font-family: Inconsolata;}
 .Fld\(c\) {-webkit-flex-direction: column; -ms-flex-direction: column; flex-direction: column;}
-.Fw\(n\) {font-weight: normal;}
-.Fz\(s2\) {font-size: 1.2rem;}
+.Fz\(s3\) {font-size: 1.44rem;}
 .Fz\(s4\) {font-size: 2rem;}
 .H\(100\%\) {height: 100%;}
+.Jc\(space-evenly\) {-webkit-box-pack: space-evenly; -ms-flex-pack: space-evenly; justify-content: space-evenly;}
+.Lh\(1\.5\) {line-height: 1.5;}
 .M\(0\) {margin: 0;}
+.M\(s03\) {margin: .5rem;}
+.Maw\(100\%\) {max-width: 100%;}
 .Maw\(50rem\) {max-width: 50rem;}
-.Mt\(s03\) {margin-top: .5rem;}
+.Maw\(60\%\) {max-width: 60%;}
 .Mx\(a\) {margin-left: auto; margin-right: auto;}
-.Mx\(s03\) {margin-left: .5rem; margin-right: .5rem;}
 .My\(0\) {margin-top: 0; margin-bottom: 0;}
+.Op\(\.7\)\:h:hover {opacity: .7;}
+.Ov\(h\) {overflow: hidden;}
+.P {padding: ;}
+.P\(s02\) {padding: .694rem;}
 .P\(s04\) {padding: .25rem;}
-.Py\(s05\) {padding-top: .125rem; padding-bottom: .125rem;}
+.P\(s1\) {padding: 1rem;}
 .Ta\(c\) {text-align: center;}
 .W\(100\%\) {width: 100%;}
 @media all and (min-width: 48rem) {
 .W\(60\%\)\@md {width: 60%;}
-}
-@media all and (min-width: 64rem) {
-.P\(s03\)\@lg {padding: .5rem;}
 }
 @media all and (min-width: 64rem) {
 .W\(40\%\)\@lg {width: 40%;}

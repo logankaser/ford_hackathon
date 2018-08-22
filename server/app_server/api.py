@@ -1,30 +1,33 @@
+"""API for the client."""
+
 import functools
 import os.path
 import datetime
 
 from flask import (
     Blueprint, g, redirect, render_template, request,
-    session, Response, current_app
+    session, Response, current_app, send_file
 )
 from app_server import db
 from app_server.models import AppEntry, User, AppSchema, AppPublicSchema
 from app_server.auth import login_required
+from flask_cors import CORS
 
-bp = Blueprint("api", __name__, url_prefix="/api")
+bp = Blueprint("api/v1", __name__, url_prefix="/api/v1")
+CORS(bp)
 
 
 @bp.route("/app/<app_id>")
 @login_required
 def app_json(app_id):
-    '''
+    """JSON for a secific app.
+
     :param app_id: Application ID
-    :type app_id: str.
     :returns: JSON string of the app
-    :raises 404: if is not an app, it will say App not found
-    '''
+    """
     app = AppEntry.query.filter_by(id=app_id).one_or_none()
     if not app:
-        return Response("App not found", 404)
+        return ("App not found", 404)
     if g.user.id != app.dev_id and not g.user.admin:
         return ("", 401)
     app_schema = AppSchema()
@@ -32,25 +35,20 @@ def app_json(app_id):
 
 
 @bp.route("/app")
-@login_required
 def apps_json():
-    '''
-    JSON applications
-    :param (): JSON applications
-    :type (): void.
-    :returns: JSON string of the app
-    :raises 404: No apps were found
-    '''
+    """JSON of all apps.
+
+    :param: JSON applications
+    :returns: JSON of all apps
+    """
     apps = AppEntry.query.all()
     if not apps:
-        return Response("No apps", 404)
-    if g.user.id != app.dev_id and not g.user.admin:
-        return ("", 401)
+        return ("No apps", 404)
     app_schema = AppSchema(many=True)
     return app_schema.jsonify(apps)
 
 
-@bp.route("/search/<keyword>", methods=["GET"])
+@bp.route("/app/search/<keyword>", methods=["GET"])
 def search(keyword):
     results = AppEntry.query.msearch(keyword, fields=["name", "description"]).\
         filter_by(approved=True).limit(100)
@@ -62,7 +60,7 @@ def search(keyword):
     return app_schema.jsonify(modified_results)
 
 
-@bp.route("/approve/<app_id>", methods=["GET", "POST"])
+@bp.route("/app/<app_id>/approve", methods=["GET", "POST"])
 @login_required
 def approve(app_id):
     if not g.user.admin:
@@ -92,20 +90,17 @@ def delete_app(app_id):
     return ("", 204)
 
 
-@bp.route("/icon/<app_id>/public", methods=["GET"])
+@bp.route("/app/<app_id>/icon", methods=["GET"])
 def public_app_icon(app_id):
-    try:
-        app = db.session.query(AppEntry).filter_by(id=app_id).one()
-        if not app.approved:
-            return ("", 401)
-        file_path = os.path.join(
-            current_app.instance_path, str(app.id) + app.icon_ext)
-        return send_file(file_path)
-    except Exception as e:
-        return ("", 400)
+    app = AppEntry.query.get(app_id)
+    if not app or not app.approved:
+        return ("App not found", 400)
+    file_path = os.path.join(
+        current_app.instance_path, str(app.id) + app.icon_ext)
+    return send_file(file_path)
 
 
-@bp.route("/icon/<app_id>/private", methods=["GET"])
+@bp.route("/app/<app_id>/icon/private", methods=["GET"])
 @login_required
 def private_app_icon(app_id):
     try:

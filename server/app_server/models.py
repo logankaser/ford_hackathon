@@ -1,3 +1,5 @@
+"""App Server database models."""
+
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_msearch import Search
@@ -5,6 +7,8 @@ from flask_marshmallow import Marshmallow
 from marshmallow import fields
 from flask import current_app, jsonify
 from datetime import datetime, timedelta
+from marshmallow import fields, Schema
+from time import mktime
 import jwt
 
 db = SQLAlchemy()
@@ -14,7 +18,8 @@ ma = Marshmallow()
 
 
 def hash_password(plain_text):
-    """
+    """Hashes a password.
+
     :param plain_text: The password to be hashed
     :returns: Password hash
     """
@@ -25,9 +30,8 @@ def hash_password(plain_text):
 
 
 class User(db.Model):
-    """
-    User class representing a developer or admin.
-    """
+    """User class representing a developer or admin."""
+
     __tablename__ = "user"
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(255), nullable=False)
@@ -38,7 +42,8 @@ class User(db.Model):
     admin = db.Column(db.Boolean, nullable=False, default=False)
 
     def __init__(self, email, username, password, dev=False, admin=False):
-        """
+        """Create a new user.
+
         :returns: A new user
         """
         self.username = username
@@ -49,7 +54,8 @@ class User(db.Model):
         self.dev = dev
 
     def get_token(self):
-        """
+        """Get a new API token.
+
         :returns: Token String
         """
         try:
@@ -64,11 +70,12 @@ class User(db.Model):
                 algorithm="HS256"
             )
         except Exception as e:
-            return e
+            return None
 
     @staticmethod
     def check_token(auth_token):
-        """
+        """Check if a token is valid.
+
         :param auth_token: auth token string to be checked
         :returns: User|None
         """
@@ -81,6 +88,8 @@ class User(db.Model):
 
 
 class AppEntry(db.Model):
+    """Stores information about an app."""
+
     __tablename__ = "app_entry"
     __searchable__ = ["name", "description"]
     id = db.Column(db.Integer, primary_key=True)
@@ -95,7 +104,20 @@ class AppEntry(db.Model):
     dev_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
 
 
+class JsTime(fields.Field):
+    """Converts a python datetime to a javascript datetime."""
+
+    def _serialize(self, value, attr, obj):
+        if value is None:
+            return ""
+        return mktime(value.timetuple()) * 1000
+
+
 class AppSchema(ma.ModelSchema):
+    """Serialize an AppEntry to json."""
+
+    created = JsTime()
+    updated = JsTime()
     class Meta:
         model = AppEntry
 
