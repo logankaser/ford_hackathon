@@ -1,3 +1,5 @@
+"""Developer mangement blueprint."""
+
 import functools
 import os.path
 import datetime
@@ -89,17 +91,3 @@ def dev_profile():
     apps = db.session.query(AppEntry).filter_by(dev_id=g.user.id)
     return render_template(
         "dev_profile.html", apps=apps, username=g.user.username)
-
-
-"""
-@bp.route("app/<app_id>/update", methods=["POST"])
-@login_required
-def app_icon(app_id):
-    try:
-        app = db.session.query(AppEntry).filter_by(id=app_id).one()
-        if g.user.id != app.dev_id:
-            return "400"
-        return send_file(os.path.join(current_app.instance_path, str(app.id) + app.icon_ext))
-    except:
-        return "400"
-"""

@@ -144,6 +144,8 @@ class AppSchema(ma.ModelSchema):
     updated = JsTime()
 
     class Meta:
+        """All fields."""
+
         model = AppEntry
 
 
@@ -154,6 +156,8 @@ class AppPublicSchema(ma.ModelSchema):
     updated = JsTime()
 
     class Meta:
+        """Public fields."""
+
         fields = (
             "name",
             "description",

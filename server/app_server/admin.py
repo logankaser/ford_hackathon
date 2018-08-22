@@ -1,3 +1,5 @@
+"""Admin blueprint."""
+
 import functools
 
 from flask import (
@@ -12,9 +14,8 @@ bp = Blueprint("admin", __name__, url_prefix="/admin")
 @bp.route("/")
 @admin_required
 def index():
-    """
-    Admin requisite
-    
-    :returns: admin requisite
+    """Admin test.
+
+    :returns: admin test
     """
     return "Admin test"
