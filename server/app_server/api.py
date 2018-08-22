@@ -41,11 +41,11 @@ def app_json(app_id):
 def apps_json():
     """Top 100 public app profiles by downloads.
 
-    :returns: JSON string of up to 100 public app profiles from
-    most to least downloaded
+    :returns: JSON string of up to 100 public
+    app profiles from most to least downloaded
     :limitations: top 100 apps are calculated each api call and not stored
     anywhere
-     """
+    """
     apps = AppEntry.query.order_by(AppEntry.downloads.desc()).limit(100)
     app_schema = AppPublicSchema(many=True)
     output = []
@@ -78,7 +78,7 @@ def search(keyword):
 @bp.route("/app/<app_id>/approve", methods=["GET", "POST"])
 @login_required
 def approve(app_id):
-    """Allows an admin to approve an app.
+    """Approve an app. Requires admin.
 
     :param app_id: Application ID
     :returns: 204 - success, 400 - app does not exist, 401 - bad permission
@@ -96,7 +96,7 @@ def approve(app_id):
 @bp.route("/app/<app_id>/delete", methods=["GET", "POST"])
 @login_required
 def delete_app(app_id):
-    """Allows an admin to delete any app or dev to delete their own app.
+    """Delete any app of admin or owned app if dev.
 
     :param app_id: Application ID
     :returns: 204 - success, 400 - app does not exist, 401 - bad permission
@@ -117,7 +117,7 @@ def delete_app(app_id):
 
 @bp.route("/app/<app_id>/icon", methods=["GET"])
 def public_app_icon(app_id):
-    """Get the icon of an approved app
+    """Get the icon of an approved app.
 
     :param app_id: Application ID
     :returns: file contents of image or 400 if app does not exist
@@ -133,7 +133,7 @@ def public_app_icon(app_id):
 @bp.route("/app/<app_id>/icon/private", methods=["GET"])
 @login_required
 def private_app_icon(app_id):
-    """Get the icon of any app
+    """Get the icon of any app.
 
     :param app_id: Application ID
     :returns: file contents of image - success, 400 - app does not exist,
@@ -155,7 +155,7 @@ def private_app_icon(app_id):
 @bp.route("user/make_dev", methods=["GET", "POST"])
 @login_required
 def make_dev():
-    """Make the user a developer
+    """Make the user a developer.
 
     :returns: 204 - always succeeds
     """
@@ -167,7 +167,7 @@ def make_dev():
 @bp.route("user/<user_id>/private", methods=["GET"])
 @login_required
 def private_user_info(user_id):
-    """Get a JSON string of a user's private infomation
+    """Get a JSON string of a user's private infomation.
 
     :returns: JSON of user - success, 400 - user does not exist,
     401 - bad permission
@@ -185,7 +185,7 @@ def private_user_info(user_id):
 
 @bp.route("user/<user_id>", methods=["GET"])
 def public_user_info(user_id):
-    """Get a JSON string of a user's public infomation
+    """Get a JSON string of a user's public infomation.
 
     :returns: JSON of user - success, 400 - user does not exist
     """
@@ -198,8 +198,7 @@ def public_user_info(user_id):
 
 @bp.route("user/<user_id>/apps", methods=["GET"])
 def user_apps(user_id):
-    """Get a list of 
-    """
+    """Get a list of."""
     apps = AppEntry.query.filter_by(dev_id=user_id)
     name = User.query.get(user_id)
     app_schema = AppPublicSchema(many=True)
@@ -208,4 +207,3 @@ def user_apps(user_id):
         app.dev_name = name.username
         output.append(app)
     return app_schema.jsonify(output)
-

@@ -59,7 +59,7 @@ const app_short = (app) => (
 			to: "/" + app.id,
 			class: "_rLink() C(blue) Op(.7):h Fz(s3)"
 		}, app.name),
-		div({class: "Ellip() Ov(h) W(100%)"}, app.description),
+		div({class: "Ellip() Ov(h) W(100%) P(s04)"}, app.description),
 		time({class: "Ff(Inconsolata)"}, "Updated " + formatDate(app.updated))
 	])
 )
@@ -114,12 +114,11 @@ return hyperapp.app(state, actions, view, document.body)
 
 hyperappRouter.location.subscribe(main.location);
 
-$.get("http://localhost:5000/api/v1/app", "json", apps => {
+$.get("http://localhost:5000/api/v1/app/top", "json", apps => {
 	app_map = new Map()
 	for (let app of apps) {
 		app_map.set(app.id, app)
 	}
-	console.log(app_map);
 	window.app_map = app_map;
 	main.load_apps(app_map);
 })
