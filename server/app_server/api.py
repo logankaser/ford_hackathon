@@ -11,7 +11,7 @@ from flask import (
 from app_server import db
 from app_server.models import (
     AppEntry, User, AppSchema, AppPublicSchema,
-    UserSchema
+    UserSchema, UserPublicSchema
 )
 from app_server.auth import login_required
 from flask_cors import CORS
@@ -166,7 +166,7 @@ def make_dev():
 
 @bp.route("user/<user_id>/private", methods=["GET"])
 @login_required
-def user_info(user_id):
+def private_user_info(user_id):
     """Get a JSON string of a user's private infomation
 
     :returns: JSON of user - success, 400 - user does not exist,
@@ -183,4 +183,29 @@ def user_info(user_id):
     return user_schema.jsonify(user)
 
 
+@bp.route("user/<user_id>", methods=["GET"])
+def public_user_info(user_id):
+    """Get a JSON string of a user's public infomation
+
+    :returns: JSON of user - success, 400 - user does not exist
+    """
+    user = User.query.filter_by(id=user_id).one_or_none()
+    if not user:
+        return ("user does not exist", 400)
+    user_schema = UserPublicSchema()
+    return user_schema.jsonify(user)
+
+
+@bp.route("user/<user_id>/apps", methods=["GET"])
+def user_apps(user_id):
+    """Get a list of 
+    """
+    apps = AppEntry.query.filter_by(dev_id=user_id)
+    name = User.query.get(user_id)
+    app_schema = AppPublicSchema(many=True)
+    output = []
+    for app in apps:
+        app.dev_name = name.username
+        output.append(app)
+    return app_schema.jsonify(output)
 

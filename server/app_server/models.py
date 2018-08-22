@@ -29,6 +29,14 @@ def hash_password(plain_text):
     return hashed.decode()
 
 
+class JsTime(fields.Field):
+    """Converts a python datetime to a javascript datetime."""
+
+    def _serialize(self, value, attr, obj):
+        if value is None:
+            return ""
+        return mktime(value.timetuple()) * 1000
+
 class User(db.Model):
     """User class representing a developer or admin."""
 
@@ -90,8 +98,26 @@ class User(db.Model):
 class UserSchema(ma.ModelSchema):
     """Serialize a User to JSON"""
 
+    created = JsTime()
+    updated = JsTime()
+
     class Meta:
         model = User
+
+
+class UserPublicSchema(ma.ModelSchema):
+    """serialize public UserSchema info to json"""
+
+    created = JsTime()
+    updated = JsTime()
+
+    class Meta:
+        fields = (
+            "username",
+            "email",
+            "created",
+            "dev",
+            "admin")
 
 
 class AppEntry(db.Model):
@@ -111,15 +137,6 @@ class AppEntry(db.Model):
     dev_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
 
 
-class JsTime(fields.Field):
-    """Converts a python datetime to a javascript datetime."""
-
-    def _serialize(self, value, attr, obj):
-        if value is None:
-            return ""
-        return mktime(value.timetuple()) * 1000
-
-
 class AppSchema(ma.ModelSchema):
     """Serialize an AppEntry to json."""
 
@@ -131,7 +148,10 @@ class AppSchema(ma.ModelSchema):
 
 
 class AppPublicSchema(ma.ModelSchema):
-    test = fields.String()
+    """Serialize public AppEntry info to json"""
+
+    created = JsTime()
+    updated = JsTime()
 
     class Meta:
         fields = (
