@@ -215,6 +215,7 @@ def public_user_apps(user_id):
 
 
 @bp.route("user/<user_id>/apps/private", methods=["GET"])
+@login_required
 def private_user_apps(user_id):
     """Get a list of private App profiles belonging to user
 
@@ -222,6 +223,8 @@ def private_user_apps(user_id):
 
     only admins and the developer have valid permissions
     """
+    if int(user_id) != g.user.id and not g.user.admin:
+        return ("bad permission", 401)
     apps = AppEntry.query.filter_by(dev_id=user_id)
     app_schema = AppSchema(many=True)
     return app_schema.jsonify(apps)
