@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+	
+{% block head %}
+{% endblock %}
+
+{% block content %}
+
+
+<main class="Mx(a) Maw(50rem) D(f) Fld(c) H(100%)">
+	<section class="W(80%) Mx(a) Mt(s2) Px(s5) Py(s4) Bgc(white) Bxsh(0,0,s05,grey-5)">
+		<div>
+			{{user.username}}
+		</div>
+		<h5>User ID: {{user.id}}</h5>
+		<h5>Email: {{user.email}</h5>
+		<a href="/api/v1/app/{{app.id}}/delete">delete</a>
+		<a href="/api/v1/app/{{app.id}}/approve">approve</a>
+	</section>
+</main>
+
+{% endblock %}

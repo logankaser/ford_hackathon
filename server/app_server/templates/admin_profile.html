@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+
+
+<main class="Mx(a) Maw(50rem) D(f) Fld(c) H(100%)">
+	{% for app in apps %}
+	<section class="W(80%) Mx(a) Mt(s2) Px(s5) Py(s4) Bgc(white) Bxsh(0,0,s05,grey-5)">
+		<div>
+			<a class="_rLink() Fz(s3) Ff(Inconsolata) Td(u) C(grey-3) C(blue):h">{{app.name}}</a>
+		</div>
+		<p>{{ app.description }}</p>
+		<form method=post enctype=multipart/form-data>
+			<a href="/api/v1/app/{{app.id}}/approve">Approve</a>
+		</form>
+	</section>
+	{% endfor %}
+</main>
+
+{% endblock %}
