@@ -8,22 +8,22 @@ input.button1 { /*Make it into cellcss */
 	background-color: #4CAF50; /* Bgc(rgba(12, 150, 88, .9)) */
 	border: none; /* Bd(n) */
 	color: white; /* C(white) */
-	padding: 15px 32px; /*P(15px 32px)*/
+	padding: (1rem 2rem); /*P(1rem 2rem)*/
 	text-align: center; /* Ta(c) */
 	display: inline-block; /* D(ib) */
-	font-size: 16px; /* Fz(16px) */
-	margin: 4px 2px; /* M(4px 2px) */
+	font-size: 1rem; /* Fz(1rem) */
+	margin: 0.25rem 0.125rem; /* M(0.25rem 0.125rem) */
 	cursor: pointer; /* Cur(p) */
 }
 input.button2 { /*Make it into cellcss */
 	background-color: #f44336; /* Bgc(rgba(255, 0, 0, .9)) */
 	border: none;/* Bd(n) */
 	color: white; /* C(white) */
-	padding: 15px 32px; /*P(15px 32px)*/
+	padding: (1rem 2rem); /*P(1rem 2rem)*/
 	text-align: center; /* Ta(c) */
 	display: inline-block; /* D(ib) */
-	font-size: 16px; /* Fz(16px) */
-	margin: 4px 2px; /* M(4px 2px) */
+	font-size: 1rem; /* Fz(1rem) */
+	margin: 0.25rem 0.125rem; /* M(0.25rem 0.125rem) */
 	cursor: pointer; /* Cur(p) */
 	}
 
@@ -48,6 +48,7 @@ input.button2 { /*Make it into cellcss */
 		</div>
 		<p>Approve: {{ app.description }} </p>
 		<form method=post enctype=multipart/form-data>
+<<<<<<< HEAD
 			<input class="button1" type="button" value="Yes" onclick="window.location.href='https://www.facebook.com/'"/> <!--Yes to approve-->
 			<input class="button2" type="button" value="No" onclick="window.location.href='https://myspace.com/'"> <!--No to disapprove-->
 =======
@@ -57,6 +58,9 @@ input.button2 { /*Make it into cellcss */
 		<form method=post enctype=multipart/form-data>
 			<a href="/api/v1/app/{{app.id}}/approve">Approve</a>
 >>>>>>> ea86cd4bec32324eb20abf718d2a87c9baab7140
+=======
+			<input class="button1" type="button" value="Yes" onclick="window.location.href='https://www.facebook.com/'"
+>>>>>>> changed px to rem (ignore models.py)
 		</form>
 	</section>
 	{% endfor %}
