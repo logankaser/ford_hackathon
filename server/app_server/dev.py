@@ -52,7 +52,7 @@ def new_app():
         appFile.save(appPath)
         imagePath = os.path.join(current_app.instance_path, str(app.id) + ext)
         imageFile.save(imagePath)
-        flash("App created succesfully")
+        return redirect(url_for("dev.dev_app_page", app_id=app.id))
     print(form.errors)
     return render_template("new_app.html", form=form)
 
@@ -65,20 +65,12 @@ def dev_app_page(app_id):
     :raises 400: Wrong user access to the app.
     :returns: Information of app metadata
     """
-    app = None
-    try:
-        app = db.session.query(AppEntry).filter_by(id=app_id).one()
-    except Exception as e:
-        return "non existant app"
+    app = AppEntry.query.get(int(app_id))
+    if not app:
+        return ("Non existant app", 404)
     if g.user.id != app.dev_id and not g.user.admin:
-        return "invalid user"
-    return render_template(
-        "dev_app_page.html",
-        name=app.name,
-        description=app.description,
-        created=str(app.created),
-        updated=str(app.updated),
-        downloads=str(app.downloads))
+        return ("Invalid user", 403)
+    return render_template("dev_app_page.html", app=app)
 
 
 @bp.route("/")
@@ -88,6 +80,6 @@ def dev_profile():
 
     :returns: Renders to new template of the developer user
     """
-    apps = db.session.query(AppEntry).filter_by(dev_id=g.user.id)
+    apps = AppEntry.query.filter_by(dev_id=g.user.id)
     return render_template(
         "dev_profile.html", apps=apps, username=g.user.username)

@@ -37,6 +37,7 @@ class JsTime(fields.Field):
             return ""
         return mktime(value.timetuple()) * 1000
 
+
 class User(db.Model):
     """User class representing a developer or admin."""
 

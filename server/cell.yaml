@@ -163,7 +163,7 @@ Helpers:
     template: "appearance: none; outline: none; box-sizing: border-box; border: none;"
   _rLink:
     desc: Reset default link styles.
-    template: "text-decoration: none;"
+    template: "text-decoration: none;outline: 0;"
   Irp:
     desc: Renders images with nearest-neighbor style scaling.
     template: "-ms-interpolation-mode: nearest-neighbor;image-rendering: -moz-crisp-edges;image-rendering: -o-crisp-edges;image-rendering: crisp-edges"
