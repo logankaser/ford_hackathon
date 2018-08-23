@@ -14,14 +14,14 @@
 
 <body class="H(100%) My(0) | Bgc(grey-10) C(black-br) Ff(ClearSans)">
 	{% with messages = get_flashed_messages(category_filter=["message"]) %}
-	<div class="Pos(a) W(100%) P(s1)" onload=>
 	{% if messages %}
+		<div class="Pos(a) W(100%) P(s1)">
 		{% for message in messages %}
 			<div onclick="this.remove()" class="Ta(c) W(50%)@sm Mx(a) Bgc(blue) Bdrus(s04) P(s04) M(s03) C(white) Fz(s2) Trsp(all) Trsdu(1s)" >{{ message }}</div>
 		{% endfor %}
+		</div>
 	{% endif %}
 	{% endwith %}
-	</div>
 	{% if g.user %}
 	<div class="Fw(b) Fs(i) Pos(a)@lg C(grey-3) Bgc(rgba(255,255,255,.4))@md P(s02)@lg M(s03)@lg Bdrus(s03)" > 
 		<span>Logged in as</span> 
