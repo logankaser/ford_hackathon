@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+	
+{% block head %}
+{% endblock %}
+
+{% block content %}
+
+
+<main class="Mx(a) Maw(50rem) D(f) Fld(c) H(100%)">
+	<section class="W(80%) Mx(a) Mt(s2) Px(s5) Py(s4) Bgc(white) Bxsh(0,0,s05,grey-5)">
+		<h1>{{user.username}}</h1>
+		<h5>User ID: {{user.id}}</h5>
+		<h5>Email: {{user.email}}</h5>
+		<h5>Created On: <time>{{user.created}}</time></h5>
+		<h5>Admin: {{user.admin}}</h5>
+		<h5>Developer: {{user.dev}}</h5>
+		<hr>
+		<a>Delete Account</a>
+		<br>
+		<a href="/api/v1/user/{{user.id}}/admin/promote">Promote to Admin</a>
+		<br>
+		<a href="/api/v1/user/{{user.id}}/admin/demote">Demote from Admin</a>
+	</section>
+</main>
+
+{% endblock %}
