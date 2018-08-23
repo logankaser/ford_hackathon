@@ -41,7 +41,7 @@ def app_json(app_id):
 def apps_json():
     """Top 100 public app profiles by downloads.
 
-    :returns: JSON string of up to 100 public
+    :returns: JSON of up to 100 public
     app profiles from most to least downloaded
     :limitations: top 100 apps are calculated each api call and not stored
     anywhere
@@ -61,7 +61,7 @@ def search(keyword):
     """Best 100 public app profiles that match search phrase.
 
     :param keyword: phrase used for searching
-    :returns: JSON string of up to 100 public app profiles from
+    :returns: JSON of up to 100 public app profiles from
     most relevent to least
     relevent
     :limitations: only words in the app name and description are matched
@@ -136,7 +136,7 @@ def public_app_icon(app_id):
 def private_app_icon(app_id):
     """Get the icon of any app.
 
-    :param app_id: Application ID
+    :param app_id: AppEntry ID
     :returns: file contents of image - success, 400 - app does not exist,
     401 - bad permission
 
@@ -168,7 +168,7 @@ def make_dev():
 @bp.route("user/<user_id>/private", methods=["GET"])
 @login_required
 def private_user_info(user_id):
-    """Get a JSON string of a user's private infomation.
+    """Get a user's private infomation as JSON.
 
     :returns: JSON of user - success, 400 - user does not exist,
     401 - bad permission

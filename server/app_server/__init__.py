@@ -4,6 +4,7 @@ import os
 
 from flask import Flask, render_template
 from app_server.models import db, bcrypt, search, ma
+from app_server.auth import login_required
 
 
 def create_app(test_config=None):
@@ -66,7 +67,8 @@ def create_app(test_config=None):
     app.register_blueprint(api.bp)
 
     @app.route("/")
+    @login_required
     def index():
-        return "test"
+        return render_template("index.html")
 
     return app

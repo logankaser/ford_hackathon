@@ -95,8 +95,7 @@ def register():
         db.session.add(new_user)
         db.session.commit()
         session["user_id"] = new_user.id
-        flash("New user created")
-        return redirect(url_for("auth.login"))
+        return redirect(url_for("index"))
     return render_template("register.html", form=form)
 
 
@@ -106,6 +105,8 @@ def login():
 
     :returns: On success redircts to home, otherwise back to the login page.
     """
+    if g.user:
+        return redirect(url_for("index"))
     form = LoginForm()
     if form.validate_on_submit():
         email = request.form["email"]
@@ -117,7 +118,7 @@ def login():
             return redirect(url_for("auth.login"))
         session["user_id"] = user.id
         g.user = User.query.get(user.id)
-        flash(user.username + " Logged in")
+        return redirect(url_for("index"))
     return render_template("login.html", form=form)
 
 
@@ -135,8 +136,7 @@ def logout():
 def get_token():
     """Get a new auth token (JWT).
 
-    :returns: Valid response
-    :raises HTTP status code 401 on error.
+    :returns: Token or HTTP status code 401 on error.
     """
     email = request.form.get("email")
     password = request.form.get("password")

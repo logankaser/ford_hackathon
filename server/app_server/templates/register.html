@@ -11,15 +11,15 @@ body {
 {% endblock %}
 
 {% block form %}
-<h class="C(blue) Fz(s5) Mt(0)">Ford Store</h>
-<h2 class="M(0) Py(.5rem) Fw(n) Fz(s4)">
-Sign up
-</h2>
-<div class="Mb(s4)">
+<div>
+	<div class="C(blue) Fz(s4) Fz(s5)@md">Ford Store</div>
+	<div class="Py(.5rem) Fw(n) Fz(s2) Fz(s4)@md">
+		Sign up
+	</div>
 	<span>Or, </span>
 	<a class="_rLink() Fs(n) C(blue) Fw(n) Td(u):h" href="/login">Login</a>
 </div>
-<div class="M(0) Mb(s4)">
+<div class="Mt(s4)">
 	{{ form.email.label }}
 	{{ form.email(type="email", placeholder="user@email.com",
 		class_="Bd(n) Bdb(s,s05,blue) Bgc(yellow-washed):f Trsp(background-color) Trsdu(.5s) P(.5rem) D(b) W(100%)") }}
@@ -27,7 +27,7 @@ Sign up
 	{{ form.username(pattern=".{4,}", title="Must be 4 characters minimum", placeholder="Username",
 		class_="Bd(n) Bdb(s,s05,blue) Bgc(yellow-washed):f Trsp(background-color) Trsdu(.5s) P(.5rem) D(b) W(100%)") }}
 </div>
-<div class="M(0) Mb(s4)">
+<div class="Mt(s4)">
 	{{ form.password.label }}
 	{{ form.password(pattern=".{6,}", title="Must be 6 characters minimum", placeholder="correcthorsebatterystaple", 
 		class_="Bd(n) Bdb(s,s05,blue) Bgc(yellow-washed):f Trsp(background-color) Trsdu(.5s) P(.5rem) D(b) W(100%)") }}
@@ -35,5 +35,5 @@ Sign up
 	<input type="password" name="password_again" required placeholder="correcthorsebatterystaple", 
 		class="Bd(n) Bdb(s,s05,blue) Bgc(yellow-washed):f Trsp(background-color) Trsdu(.5s) P(.5rem) D(b) W(100%)">
 </div>
-{{ form.submit(class_="_rButton() Fz(s3) D(b) Mx(a) P(s03) Px(2rem) Bgc(blue-dark) C(white) Op(.85):h Bdrus(s05) Bxsh(0,0,s04,grey-5)") }}
+{{ form.submit(class_="_rButton() Mt(s4) Fz(s3) D(b) Mx(a) P(s03) Px(2rem) Bgc(blue-dark) C(white) Op(.85):h Bdrus(s05) Bxsh(0,0,s04,grey-5)") }}
 {% endblock %}
