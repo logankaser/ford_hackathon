@@ -28,7 +28,7 @@ def app_json(app_id):
     :param app_id: Application ID
     :returns: JSON string of the private app profile
     """
-    app = AppEntry.query.filter_by(id=app_id).one_or_none()
+    app = AppEntry.query.get(app_id)
     if not app:
         return ("App not found", 404)
     if g.user.id != app.dev_id and not g.user.admin:
@@ -51,7 +51,7 @@ def apps_json():
     app_schema = AppPublicSchema(many=True)
     output = []
     for app in apps:
-        app.dev_name = User.query.filter_by(id=app.dev_id).one().username
+        app.dev_name = User.query.get(app.dev_id).username
         output.append(app)
     return app_schema.jsonify(output)
 
@@ -71,7 +71,7 @@ def search(keyword):
     app_schema = AppPublicSchema(many=True)
     output = []
     for result in results:
-        result.dev_name = User.query.filter_by(id=result.dev_id).one().username
+        result.dev_name = User.query.get(result.dev_id).username
         output.append(result)
     return app_schema.jsonify(output)
 
@@ -87,7 +87,7 @@ def approve(app_id):
     if not g.user.admin:
         return ("", 401)
     try:
-        AppEntry.query.filter_by(id=app_id).one().approved = True
+        AppEntry.query.get(app_id).approved = True
     except Exception as e:
         return ("", 400)
     db.session.commit()
@@ -102,17 +102,16 @@ def delete_app(app_id):
     :param app_id: Application ID
     :returns: 204 - success, 400 - app does not exist, 401 - bad permission
     """
-    try:
-        app = db.session.query(AppEntry).filter_by(id=app_id).one()
-        if g.user.id != app.dev_id and not g.user.admin:
-            return ("", 401)
-        os.remove(os.path.join(current_app.instance_path, app_id + ".tar.gz"))
-        os.remove(
-            os.path.join(current_app.instance_path, app_id + app.icon_ext))
-        db.session.delete(app)
-        db.session.commit()
-    except Exception as e:
+    app = AppEntry.query.get(app_id)
+    if not app:
         return ("", 400)
+    if g.user.id != app.dev_id and not g.user.admin:
+        return ("", 401)
+    os.remove(os.path.join(current_app.instance_path, app_id + ".tar.gz"))
+    os.remove(
+        os.path.join(current_app.instance_path, app_id + app.icon_ext))
+    db.session.delete(app)
+    db.session.commit()
     return ("", 204)
 
 
@@ -142,15 +141,14 @@ def private_app_icon(app_id):
 
     only admins or the developer of the app have valid permissions
     """
-    try:
-        app = db.session.query(AppEntry).filter_by(id=app_id).one()
-        if g.user.id != app.dev_id and not g.user.admin:
-            return ("", 401)
-        file_path = os.path.join(
-            current_app.instance_path, str(app.id) + app.icon_ext)
-        return send_file(file_path)
-    except Exception as e:
-        return ("", 400)
+    app = AppEntry.query.get()
+    if not app:
+        return ("App not found", 400)
+    if g.user.id != app.dev_id and not g.user.admin:
+        return ("Bad permissions", 401)
+    file_path = os.path.join(
+        current_app.instance_path, str(app.id) + app.icon_ext)
+    return send_file(file_path)
 
 
 @bp.route("user/make_dev", methods=["GET", "POST"])
@@ -160,7 +158,7 @@ def make_dev():
 
     :returns: 204 - always succeeds
     """
-    User.query.filter_by(id=g.user.id).one().dev = True
+    User.query.get(g.user.id).dev = True
     db.session.commit()
     return ("", 204)
 
@@ -177,7 +175,7 @@ def private_user_info(user_id):
     """
     if not g.user.admin:
         return ("bad permission", 401)
-    user = User.query.filter_by(id=user_id).one_or_none()
+    user = User.query.get(user_id)
     if not user:
         return ("user does not exist", 400)
     user_schema = UserSchema()
@@ -190,7 +188,7 @@ def public_user_info(user_id):
 
     :returns: JSON of user - success, 400 - user does not exist
     """
-    user = User.query.filter_by(id=user_id).one_or_none()
+    user = User.query.get(user_id)
     if not user:
         return ("user does not exist", 400)
     user_schema = UserPublicSchema()
