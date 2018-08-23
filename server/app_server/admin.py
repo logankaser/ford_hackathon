@@ -42,7 +42,7 @@ def admin_app_view(app_id):
     if not app:
         return ("App not found", 400)
     user = User.query.get(app.dev_id)
-    return render_template("admin_app_view.html", app=app, devname=user.username)
+    return render_template("admin_app_view.html", app=app, dev=user)
 
 @bp.route("/user/<user_id>", methods=["GET"])
 @admin_required

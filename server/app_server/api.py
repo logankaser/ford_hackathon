@@ -13,7 +13,7 @@ from app_server.models import (
     AppEntry, User, AppSchema, AppPublicSchema,
     UserSchema, UserPublicSchema
 )
-from app_server.auth import login_required
+from app_server.auth import login_required, admin_required
 from flask_cors import CORS
 
 bp = Blueprint("api/v1", __name__, url_prefix="/api/v1")
@@ -77,15 +77,13 @@ def search(keyword):
 
 
 @bp.route("/app/<app_id>/approve", methods=["GET", "POST"])
-@login_required
+@admin_required
 def approve(app_id):
-    """Approve an app. Requires admin.
+    """Approve an app
 
     :param app_id: Application ID
-    :returns: 204 - success, 400 - app does not exist, 401 - bad permission
+    :returns: 204 - success, 400 - app does not exist
     """
-    if not g.user.admin:
-        return ("", 401)
     try:
         AppEntry.query.get(app_id).approved = True
     except Exception as e:
@@ -164,17 +162,13 @@ def make_dev():
 
 
 @bp.route("user/<user_id>/private", methods=["GET"])
-@login_required
+@admin_required
 def private_user_info(user_id):
     """Get a JSON string of a user's private infomation.
 
     :returns: JSON of user - success, 400 - user does not exist,
     401 - bad permission
-
-    only admins have valid permissions
     """
-    if not g.user.admin:
-        return ("bad permission", 401)
     user = User.query.get(user_id)
     if not user:
         return ("user does not exist", 400)
@@ -226,3 +220,36 @@ def private_user_apps(user_id):
     apps = AppEntry.query.filter_by(dev_id=user_id)
     app_schema = AppSchema(many=True)
     return app_schema.jsonify(apps)
+
+
+@bp.route("user/<user_id>/admin/promote", methods=["GET", "POST"])
+@admin_required
+def promote_admin(user_id):
+    """Promote user to admin
+
+    :returns: 204 - success, 400 - user does not exist
+    """
+    try:
+        User.query.get(user_id).admin = True
+    except Exception as e:
+        return ("", 400)
+    db.session.commit()
+    return ("", 204)
+
+
+@bp.route("user/<user_id>/admin/demote", methods=["GET", "POST"])
+@admin_required
+def demote_admin(user_id):
+    """Demote user to admin
+
+    :returns: 204 - success, 400 - user does not exist
+    """
+    if int(user_id) == g.user.id:
+        return ("Cannot demote self", 401)
+    try:
+        User.query.get(user_id).admin = False
+    except Exception as e:
+        return ("", 400)
+    db.session.commit()
+    return ("", 204)
+
