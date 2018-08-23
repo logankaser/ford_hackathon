@@ -5,7 +5,7 @@
 
 {% block content %}
 
-<main class="Mx(a) W(100%) Maw(40rem) D(f) Flc(c) H(100%) Jc(c)">
+<main class="Mx(a) W(100%) Maw(40rem)">
 	<section class="Px(s2) W(100%) W(80%)@sm W(a)@md Px(s5)@md Py(s2) Py(s4)@md Bgc(white) Bxsh(0,0,s02,grey-5) Fz(s2)">
 		<a href="/dev" class="_rLink() Fz(s3) Ff(Inconsolata) Td(u) C(grey-3) C(blue):h">← Back</a>
 		<a href="/" class="_rLink() Fz(s3) Ff(Inconsolata) Td(u) C(grey-3) C(blue):h Ml(s1)">Home</a>
@@ -13,11 +13,11 @@
 			{{ app.name }}
 		</div>
 		<img src="/api/v1/app/{{app.id}}/icon/private" 
-			class="D(b) W(100%) My(s2) Bdrus(s04) Bxsh(0,0,s05,grey-5)"
+			class="D(b) Mah(20rem) Maw(100%) My(s2) Mx(s04) Bdrus(s04) Bxsh(0,0,s05,grey-5)"
 		>	
 		</img>
 		<div class="C(grey-2)">Description</div>
-		<div class="Ff(Inconsolata) Py(s1) Mih(6rem) Px(s03) Mt(s03) Lh(s3) Bxsh(0,0,s05,grey-5)">
+		<div class="Ff(Inconsolata) Py(s1) Mih(6rem) Px(s04) Mt(s03) Lh(s3) Bdrus(s05) Bxsh(0,0,s05,grey-5)">
 			{{ app.description }}
 		</div>
 		<div class="Py(s04) Mt(s03) C(grey-2)">
