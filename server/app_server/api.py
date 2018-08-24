@@ -139,7 +139,7 @@ def private_app_icon(app_id):
 
     only admins or the developer of the app have valid permissions
     """
-    app = AppEntry.query.get()
+    app = AppEntry.query.get(app_id)
     if not app:
         return ("App not found", 400)
     if g.user.id != app.dev_id and not g.user.admin:
@@ -251,4 +251,24 @@ def demote_admin(user_id):
         return ("", 400)
     db.session.commit()
     return ("", 204)
+
+
+@bp.route("user/<user_id>/delete", methods=["GET", "POST"])
+@login_required
+def delete_user(user_id):
+    user = User.query.get(user_id)
+    if not user:
+        return ("User does not exist", 400)
+    if user.id != g.user.id and not g.user.admin:
+        return ("bad permission", 401)
+    apps = AppEntry.query.filter_by(dev_id=user_id)
+    for app in apps:
+        os.remove(os.path.join(current_app.instance_path, str(app.id) + ".tar.gz"))
+        os.remove(
+           os.path.join(current_app.instance_path, str(app.id) + app.icon_ext))
+        db.session.delete(app)
+    db.session.delete(user)
+    db.session.commit()
+    return ("", 204)
+
 
