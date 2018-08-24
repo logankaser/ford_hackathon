@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 
 {% block head %}
+<<<<<<< HEAD
 
 <style>
 input.button1 { /*Make it into cellcss */
@@ -28,23 +29,41 @@ input.button2 { /*Make it into cellcss */
 
 </style>
 
+=======
+>>>>>>> ea86cd4bec32324eb20abf718d2a87c9baab7140
 {% endblock %}
 
 {% block content %}
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> ea86cd4bec32324eb20abf718d2a87c9baab7140
 <main class="Mx(a) Maw(50rem) D(f) Fld(c) H(100%)">
 	{% for app in apps %}
 	<section class="W(80%) Mx(a) Mt(s2) Px(s5) Py(s4) Bgc(white) Bxsh(0,0,s05,grey-5)">
 		<div>
+<<<<<<< HEAD
 			<a class="_rLink() Fz(s3) Ff(Inconsolata) Td(u) C(grey-3) C(blue):h" href="app/{{ app.id }}">{{app.name}}</a>
 		</div>
 		<p>Approve: {{ app.description }} </p>
 		<form method=post enctype=multipart/form-data>
 			<input class="button1" type="button" value="Yes" onclick="window.location.href='https://www.facebook.com/'"/> <!--Yes to approve-->
 			<input class="button2" type="button" value="No" onclick="window.location.href='https://myspace.com/'"> <!--No to disapprove-->
+=======
+			<a class="_rLink() Fz(s3) Ff(Inconsolata) Td(u) C(grey-3) C(blue):h">{{app.name}}</a>
+		</div>
+		<p>{{ app.description }}</p>
+		<form method=post enctype=multipart/form-data>
+			<a href="/api/v1/app/{{app.id}}/approve">Approve</a>
+>>>>>>> ea86cd4bec32324eb20abf718d2a87c9baab7140
 		</form>
 	</section>
 	{% endfor %}
 </main>
 
+<<<<<<< HEAD
 {% endblock %}
+=======
+{% endblock %}
+>>>>>>> ea86cd4bec32324eb20abf718d2a87c9baab7140

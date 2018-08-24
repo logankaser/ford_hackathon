@@ -6,14 +6,13 @@
 {% block content %}
 
 
-<main class="Mx(a) Maw(40rem) D(f) Fld(c) H(100%)">
+<main class="Mx(a) Maw(50rem) D(f) Fld(c) H(100%)">
 	{% for app in apps %}
 	<section class="W(80%) Mx(a) Mt(s2) Px(s5) Py(s4) Bgc(white) Bxsh(0,0,s05,grey-5)">
 		<div>
-			<a class="_rLink() Fz(s3) Ff(Inconsolata) Td(u) C(grey-3) C(blue):h" href="app/{{ app.id }}">{{app.name}}</a>
+			<a href="/admin/app/{{app.id}}">{{app.name}}</a>
 		</div>
-		<p>{{ app.description }}</p>
-		<p>Downloads: {{ app.downloads }} </p> 
+		<img class="D(b) W(100%)" src="/api/v1/app/{{app.id}}/icon/private"></img> 
 	</section>
 	{% endfor %}
 </main>

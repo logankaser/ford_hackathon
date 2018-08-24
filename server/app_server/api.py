@@ -13,7 +13,7 @@ from app_server.models import (
     AppEntry, User, AppSchema, AppPublicSchema,
     UserSchema, UserPublicSchema
 )
-from app_server.auth import login_required
+from app_server.auth import login_required, admin_required
 from flask_cors import CORS
 
 bp = Blueprint("api/v1", __name__, url_prefix="/api/v1")
@@ -28,7 +28,7 @@ def app_json(app_id):
     :param app_id: Application ID
     :returns: JSON string of the private app profile
     """
-    app = AppEntry.query.filter_by(id=app_id).one_or_none()
+    app = AppEntry.query.get(app_id)
     if not app:
         return ("App not found", 404)
     if g.user.id != app.dev_id and not g.user.admin:
@@ -41,7 +41,7 @@ def app_json(app_id):
 def apps_json():
     """Top 100 public app profiles by downloads.
 
-    :returns: JSON string of up to 100 public
+    :returns: JSON of up to 100 public
     app profiles from most to least downloaded
     :limitations: top 100 apps are calculated each api call and not stored
     anywhere
@@ -51,7 +51,7 @@ def apps_json():
     app_schema = AppPublicSchema(many=True)
     output = []
     for app in apps:
-        app.dev_name = User.query.filter_by(id=app.dev_id).one().username
+        app.dev_name = User.query.get(app.dev_id).username
         output.append(app)
     return app_schema.jsonify(output)
 
@@ -61,7 +61,7 @@ def search(keyword):
     """Best 100 public app profiles that match search phrase.
 
     :param keyword: phrase used for searching
-    :returns: JSON string of up to 100 public app profiles from
+    :returns: JSON of up to 100 public app profiles from
     most relevent to least
     relevent
     :limitations: only words in the app name and description are matched
@@ -71,23 +71,21 @@ def search(keyword):
     app_schema = AppPublicSchema(many=True)
     output = []
     for result in results:
-        result.dev_name = User.query.filter_by(id=result.dev_id).one().username
+        result.dev_name = User.query.get(result.dev_id).username
         output.append(result)
     return app_schema.jsonify(output)
 
 
 @bp.route("/app/<app_id>/approve", methods=["GET", "POST"])
-@login_required
+@admin_required
 def approve(app_id):
-    """Approve an app. Requires admin.
+    """Approve an app
 
     :param app_id: Application ID
-    :returns: 204 - success, 400 - app does not exist, 401 - bad permission
+    :returns: 204 - success, 400 - app does not exist
     """
-    if not g.user.admin:
-        return ("", 401)
     try:
-        AppEntry.query.filter_by(id=app_id).one().approved = True
+        AppEntry.query.get(app_id).approved = True
     except Exception as e:
         return ("", 400)
     db.session.commit()
@@ -102,17 +100,16 @@ def delete_app(app_id):
     :param app_id: Application ID
     :returns: 204 - success, 400 - app does not exist, 401 - bad permission
     """
-    try:
-        app = db.session.query(AppEntry).filter_by(id=app_id).one()
-        if g.user.id != app.dev_id and not g.user.admin:
-            return ("", 401)
-        os.remove(os.path.join(current_app.instance_path, app_id + ".tar.gz"))
-        os.remove(
-            os.path.join(current_app.instance_path, app_id + app.icon_ext))
-        db.session.delete(app)
-        db.session.commit()
-    except Exception as e:
+    app = AppEntry.query.get(app_id)
+    if not app:
         return ("", 400)
+    if g.user.id != app.dev_id and not g.user.admin:
+        return ("", 401)
+    os.remove(os.path.join(current_app.instance_path, app_id + ".tar.gz"))
+    os.remove(
+        os.path.join(current_app.instance_path, app_id + app.icon_ext))
+    db.session.delete(app)
+    db.session.commit()
     return ("", 204)
 
 
@@ -136,21 +133,20 @@ def public_app_icon(app_id):
 def private_app_icon(app_id):
     """Get the icon of any app.
 
-    :param app_id: Application ID
+    :param app_id: AppEntry ID
     :returns: file contents of image - success, 400 - app does not exist,
     401 - bad permission
 
     only admins or the developer of the app have valid permissions
     """
-    try:
-        app = db.session.query(AppEntry).filter_by(id=app_id).one()
-        if g.user.id != app.dev_id and not g.user.admin:
-            return ("", 401)
-        file_path = os.path.join(
-            current_app.instance_path, str(app.id) + app.icon_ext)
-        return send_file(file_path)
-    except Exception as e:
-        return ("", 400)
+    app = AppEntry.query.get()
+    if not app:
+        return ("App not found", 400)
+    if g.user.id != app.dev_id and not g.user.admin:
+        return ("Bad permissions", 401)
+    file_path = os.path.join(
+        current_app.instance_path, str(app.id) + app.icon_ext)
+    return send_file(file_path)
 
 
 @bp.route("user/make_dev", methods=["GET", "POST"])
@@ -160,24 +156,20 @@ def make_dev():
 
     :returns: 204 - always succeeds
     """
-    User.query.filter_by(id=g.user.id).one().dev = True
+    User.query.get(g.user.id).dev = True
     db.session.commit()
     return ("", 204)
 
 
 @bp.route("user/<user_id>/private", methods=["GET"])
-@login_required
+@admin_required
 def private_user_info(user_id):
-    """Get a JSON string of a user's private infomation.
+    """Get a user's private infomation as JSON.
 
     :returns: JSON of user - success, 400 - user does not exist,
     401 - bad permission
-
-    only admins have valid permissions
     """
-    if not g.user.admin:
-        return ("bad permission", 401)
-    user = User.query.filter_by(id=user_id).one_or_none()
+    user = User.query.get(user_id)
     if not user:
         return ("user does not exist", 400)
     user_schema = UserSchema()
@@ -190,7 +182,7 @@ def public_user_info(user_id):
 
     :returns: JSON of user - success, 400 - user does not exist
     """
-    user = User.query.filter_by(id=user_id).one_or_none()
+    user = User.query.get(user_id)
     if not user:
         return ("user does not exist", 400)
     user_schema = UserPublicSchema()
@@ -199,7 +191,7 @@ def public_user_info(user_id):
 
 @bp.route("user/<user_id>/apps", methods=["GET"])
 def public_user_apps(user_id):
-    """Get a list of public App profiles belonging to user
+    """Get a list of public App profiles belonging to user.
 
     :returns: JSON list of public app profiles
     """
@@ -217,10 +209,9 @@ def public_user_apps(user_id):
 @bp.route("user/<user_id>/apps/private", methods=["GET"])
 @login_required
 def private_user_apps(user_id):
-    """Get a list of private App profiles belonging to user
+    """Get a list of private App profiles belonging to user.
 
     :returns: JSON list of private app profiles or 401 if bad permissions
-
     only admins and the developer have valid permissions
     """
     if int(user_id) != g.user.id and not g.user.admin:
@@ -228,3 +219,36 @@ def private_user_apps(user_id):
     apps = AppEntry.query.filter_by(dev_id=user_id)
     app_schema = AppSchema(many=True)
     return app_schema.jsonify(apps)
+
+
+@bp.route("user/<user_id>/admin/promote", methods=["GET", "POST"])
+@admin_required
+def promote_admin(user_id):
+    """Promote user to admin
+
+    :returns: 204 - success, 400 - user does not exist
+    """
+    try:
+        User.query.get(user_id).admin = True
+    except Exception as e:
+        return ("", 400)
+    db.session.commit()
+    return ("", 204)
+
+
+@bp.route("user/<user_id>/admin/demote", methods=["GET", "POST"])
+@admin_required
+def demote_admin(user_id):
+    """Demote user to admin
+
+    :returns: 204 - success, 400 - user does not exist
+    """
+    if int(user_id) == g.user.id:
+        return ("Cannot demote self", 401)
+    try:
+        User.query.get(user_id).admin = False
+    except Exception as e:
+        return ("", 400)
+    db.session.commit()
+    return ("", 204)
+

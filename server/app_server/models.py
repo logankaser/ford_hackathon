@@ -37,10 +37,12 @@ class JsTime(fields.Field):
             return ""
         return mktime(value.timetuple()) * 1000
 
+
 class User(db.Model):
     """User class representing a developer or admin."""
 
     __tablename__ = "user"
+    __searchable__ = ["id", "username", "email"]
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(255), unique=True, nullable=False)
@@ -124,7 +126,7 @@ class AppEntry(db.Model):
     """Stores information about an app."""
 
     __tablename__ = "app_entry"
-    __searchable__ = ["name", "description"]
+    __searchable__ = ["id", "name", "description"]
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     description = db.Column(db.String(1000), nullable=False)

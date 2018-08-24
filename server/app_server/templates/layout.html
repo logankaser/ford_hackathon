@@ -14,19 +14,19 @@
 
 <body class="H(100%) My(0) | Bgc(grey-10) C(black-br) Ff(ClearSans)">
 	{% with messages = get_flashed_messages(category_filter=["message"]) %}
-	<div class="Pos(a) W(100%) P(s1)" onload=>
 	{% if messages %}
+		<div class="Pos(a) W(100%) P(s1)">
 		{% for message in messages %}
 			<div onclick="this.remove()" class="Ta(c) W(50%)@sm Mx(a) Bgc(blue) Bdrus(s04) P(s04) M(s03) C(white) Fz(s2) Trsp(all) Trsdu(1s)" >{{ message }}</div>
 		{% endfor %}
+		</div>
 	{% endif %}
 	{% endwith %}
-	</div>
 	{% if g.user %}
-	<div class="Fw(b) Fs(i) Pos(a) C(grey-3) Bgc(rgba(255,255,255,.2)) P(s02) M(s03) Bdrus(s03)" > 
+	<div class="Fw(b) Fs(i) Pos(a)@lg C(grey-3) Bgc(rgba(255,255,255,.4))@md P(s02)@lg M(s03)@lg Bdrus(s03)" > 
 		<span>Logged in as</span> 
 		<span class="Ff(Inconsolata) Fw(n) Fs(n) Fz(s2) C(grey-4)">{{ g.user.username }}</span>
-		<a class="_rLink() Fs(n) C(grey-3) Fw(n) Td(u):h Td(u)" href="/logout">Logout</a>
+		<a class="_rLink() Fs(n) C(grey-3) C(blue):h Fw(n) Td(u):h Td(u)" href="/logout">Logout</a>
 	</div>
 	{% endif %}
 	{% block content %} {% endblock %}
