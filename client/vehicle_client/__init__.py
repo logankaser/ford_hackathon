@@ -22,7 +22,8 @@ def create_app(test_config=None):
         SECRET_KEY="dev",
         SQLALCHEMY_DATABASE_URI="sqlite:///" + os.path.join(
             app.instance_path, "database.sqlite"),
-        SQLALCHEMY_TRACK_MODIFICATIONS=False
+        SQLALCHEMY_TRACK_MODIFICATIONS=False,
+        API_DOMAIN="http://localhost:5000"
     )
     if test_config is None:
         # load the instance config, if it exists, when not testing
@@ -44,8 +45,11 @@ def create_app(test_config=None):
     from . import local
     app.register_blueprint(local.bp)
 
-    @app.route("/")
-    def index():
-        return render_template("index.html")
+    @app.route("/", defaults={"path": ""})
+    @app.route("/<path:path>")
+    def index(path):
+        return render_template(
+            "index.html", api_domain=app.config.get("API_DOMAIN")
+        )
 
     return app
