@@ -139,7 +139,7 @@ def private_app_icon(app_id):
 
     only admins or the developer of the app have valid permissions
     """
-    app = AppEntry.query.get()
+    app = AppEntry.query.get(app_id)
     if not app:
         return ("App not found", 400)
     if g.user.id != app.dev_id and not g.user.admin:
