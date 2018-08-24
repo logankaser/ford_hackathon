@@ -3,6 +3,7 @@
 {% block head %}
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> added admin_profile for approving apps. Needs some Cell CSS
 
@@ -26,10 +27,13 @@ input.button1 { /*Make it into cellcss */
 >>>>>>> ea86cd4bec32324eb20abf718d2a87c9baab7140
 =======
 >>>>>>> added admin_profile for approving apps. Needs some Cell CSS
+=======
+>>>>>>> styles and approval button so far. More fixes incoming
 {% endblock %}
 
 {% block content %}
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -66,6 +70,25 @@ input.button1 { /*Make it into cellcss */
 			<input class="button1" type="button" value="Yes" onclick="window.location.href='https://www.facebook.com/'"
 >>>>>>> changed px to rem (ignore models.py)
 		</form>
+=======
+<script>
+const approve = id => {
+    $.get("/api/v1/app/" + id + "/approve")
+    window.location.reload();
+}
+</script>
+
+<main class="Mx(a) Maw(50rem) D(f) Fld(c) H(100%)">
+	{% for app in apps %}
+	<section class="W(80%) Mx(a) Mt(s2) Px(s5) Py(s4) Bgc(white) Bxsh(0,0,s05,grey-5)">
+		<div class="Fz(s3) Ff(Inconsolata) C(grey-3)">
+			{{app.name}}
+		</div>
+		<p>{{ app.description }}</p>
+		<div class="_rLink() Ta(c) Fs(n) Cur(p) Fz(s2) Bd(s,s04,blue) Bdrus(s05) Bgc(blue):h C(blue) C(white):h P(s03)" onclick="approve({{app.id}})">
+			Approve button
+		</div>
+>>>>>>> styles and approval button so far. More fixes incoming
 	</section>
 =======
 <main class="Mx(a) Maw(50rem) D(f)">
@@ -112,10 +135,8 @@ input.button1 { /*Make it into cellcss */
 
 </main>
 
+{% endblock %}
 <<<<<<< HEAD
-{% endblock %}
-=======
-{% endblock %}
 >>>>>>> ea86cd4bec32324eb20abf718d2a87c9baab7140
 =======
 =======
@@ -131,3 +152,5 @@ input.button1 { /*Make it into cellcss */
 
 {% endblock %}
 >>>>>>> added admin_profile for approving apps. Needs some Cell CSS
+=======
+>>>>>>> styles and approval button so far. More fixes incoming
