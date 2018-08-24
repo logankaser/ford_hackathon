@@ -25,11 +25,12 @@ def new_app():
 
     :returns: New app added to the form and render templates
     """
+    if not g.user.dev:
+        return redirect(url_for("dev.dev_tos"))
     form = AppCreationForm()
     if form.validate_on_submit():
         imageFile = request.files["icon"]
         appFile = request.files["app"]
-        print(type(imageFile))
         ext = os.path.splitext(imageFile.filename)[1]
 
         date = datetime.datetime.now()
@@ -53,7 +54,10 @@ def new_app():
         imagePath = os.path.join(current_app.instance_path, str(app.id) + ext)
         imageFile.save(imagePath)
         return redirect(url_for("dev.dev_app_page", app_id=app.id))
-    print(form.errors)
+
+    for fieldName, errorMessages in form.errors.items():
+        for error in errorMessages:
+            flash(fieldName.capitalize() + ": " + error)
     return render_template("dev_app_new.html", form=form)
 
 
@@ -83,3 +87,15 @@ def dev_profile():
     apps = AppEntry.query.filter_by(dev_id=g.user.id)
     return render_template(
         "dev_app_list.html", apps=apps, username=g.user.username)
+
+
+@bp.route("/tos", methods=["GET", "POST"])
+@login_required
+def dev_tos():
+    form = DevTOSForm()
+    if form.validate_on_submit():
+        User.query.get(g.user.id).dev = True
+        db.session.commit()
+        return redirect(url_for("dev.dev_profile"))
+    return render_template("dev_tos.html")
+
