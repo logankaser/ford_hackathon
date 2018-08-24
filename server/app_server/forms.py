@@ -1,9 +1,13 @@
 """Form validation classes."""
 
 from flask_wtf import FlaskForm
+<<<<<<< HEAD
 from wtforms import (
     StringField, PasswordField, TextAreaField, SubmitField, BooleanField
 )
+=======
+from wtforms import StringField, PasswordField, TextAreaField, SubmitField, BooleanField
+>>>>>>> added tos form
 from wtforms.validators import DataRequired, Email, Length, Regexp
 from flask_wtf.file import FileField, FileRequired
 
@@ -73,4 +77,14 @@ class DevTOSForm(FlaskForm):
 =======
     search = StringField("", validators=[DataRequired()])
     submit = SubmitField("Search")
+<<<<<<< HEAD
 >>>>>>> edit for linter pycodestyle
+=======
+
+
+class DevTOSForm(FlaskForm):
+    """Dev TOS acceptance form"""
+
+    accept = BooleanField("I Accept Developer TOS")
+    sumbit = SubmitField("")
+>>>>>>> added tos form

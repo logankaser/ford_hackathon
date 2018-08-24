@@ -97,13 +97,22 @@ def dev_profile():
 @bp.route("/tos", methods=["GET", "POST"])
 @login_required
 def dev_tos():
+<<<<<<< HEAD
     """Form for User to accept developer ToS.
 
     :returns: ToS Form, or redirection to profile if form filled out
     """
+=======
+>>>>>>> added tos form
     form = DevTOSForm()
     if form.validate_on_submit():
         User.query.get(g.user.id).dev = True
         db.session.commit()
+<<<<<<< HEAD
         return redirect(url_for("index"))
     return render_template("dev_tos.html", form=form)
+=======
+        return redirect(url_for("dev.dev_profile"))
+    return render_template("dev_tos.html")
+
+>>>>>>> added tos form
