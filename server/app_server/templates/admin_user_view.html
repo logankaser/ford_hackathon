@@ -15,7 +15,7 @@
 		<h5>Admin: {{user.admin}}</h5>
 		<h5>Developer: {{user.dev}}</h5>
 		<hr>
-		<a>Delete Account</a>
+		<a href="/api/v1/user/{{user.id}}/delete">Delete Account</a>
 		<br>
 		<a href="/api/v1/user/{{user.id}}/admin/promote">Promote to Admin</a>
 		<br>

@@ -6,18 +6,47 @@
 {% block content %}
 
 
-<main class="Mx(a) Maw(50rem) D(f) Fld(c) H(100%)">
-	{% for app in apps %}
-	<section class="W(80%) Mx(a) Mt(s2) Px(s5) Py(s4) Bgc(white) Bxsh(0,0,s05,grey-5)">
+<main class="Mx(a) Maw(50rem) D(f)">
+
+<div class="Bgc(red) Flx(.5)">
+	<form method="POST" class="P(s03)">
+		{{ form.hidden_tag() }}
+		{{ form.search(class_="Bd(n) Bdb(s,s05,blue) Bgc(yellow-washed):f Trsp(background-color) Trsdu(.5s) P(.5rem) W(100%)")
+		}}
+		{{form.submit(class_="_rButton() Fz(s2) P(s04) Px(2rem) Bgc(blue) C(white) Op(.85):h Bdrus(s05) Bxsh(0,0,s04,grey-5)")}}
+	</form>
+	{% for result in results %}
+		{% if result.app %}
+		<section class="W(80%) Mx(a) Mt(s2) Px(s5) Py(s4) Bgc(white) Bxsh(0,0,s05,grey-5)">
 		<div>
-			<a class="_rLink() Fz(s3) Ff(Inconsolata) Td(u) C(grey-3) C(blue):h">{{app.name}}</a>
+			<a href="/admin/app/{{result.app.id}}">{{result.app.name}}</a>
 		</div>
-		<p>{{ app.description }}</p>
-		<form method=post enctype=multipart/form-data>
-			<a href="/api/v1/app/{{app.id}}/approve">Approve</a>
-		</form>
-	</section>
+		<img class="D(b) W(100%)" src="/api/v1/app/{{result.app.id}}/icon/private"></img> 
+		</section>
+		{% endif %}
+		{% if result.user %}
+		<section class="W(80%) Mx(a) Mt(s2) Px(s5) Py(s4) Bgc(white) Bxsh(0,0,s05,grey-5)">
+		<div>
+			Username: <a href="/admin/user/{{result.user.id}}">{{result.user.username}}</a>
+		</div>
+		<p>Email: {{ result.user.email }} </p> 
+		</section>
+		{% endif %}
 	{% endfor %}
+</div>
+
+<div class="Bgc(blue) Flx(.5)">
+	{% for app in apps %}
+	<article class="W(80%) Mx(a) My(s1) Px(s5) Py(s4) Bgc(white) Bxsh(0,0,s05,grey-5)">
+		<img class="D(b) W(10%)" src="/api/v1/app/{{app.id}}/icon/private"></img>
+		<h1><a class="_rLink() Fz(s3) Ff(Inconsolata) Td(u) C(grey-3) C(blue):h"
+			href="/admin/app/{{app.id}}">{{app.name}}</a></h1>
+		<h5>Creator: <a href="/admin/user/{{app.dev_id}}">{{app.dev_name}}</a></h5>
+		<h4><a href="/api/v1/app/{{app.id}}/approve">Approve</a></h4>
+	</article>
+	{% endfor %}
+</div>
+
 </main>
 
 {% endblock %}

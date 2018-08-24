@@ -250,4 +250,28 @@ def demote_admin(user_id):
     except Exception as e:
         return ("", 400)
     db.session.commit()
-    return ("", 204)
+    return ("Success", 204)
+
+
+@bp.route("user/<user_id>/delete", methods=["GET", "POST"])
+@login_required
+def delete_user(user_id):
+    """Delete a user, requires admin or account ownership.
+
+    :returns: 404 on user not found, 401 on bad permissions
+    """
+    user = User.query.get(user_id)
+    if not user:
+        return ("User does not exist", 404)
+    if user.id != g.user.id and not g.user.admin:
+        return ("bad permission", 401)
+    apps = AppEntry.query.filter_by(dev_id=user_id)
+    for app in apps:
+        os.remove(
+            os.path.join(current_app.instance_path, str(app.id) + ".tar.gz"))
+        os.remove(
+           os.path.join(current_app.instance_path, str(app.id) + app.icon_ext))
+        db.session.delete(app)
+    db.session.delete(user)
+    db.session.commit()
+    return ("Success", 204)
