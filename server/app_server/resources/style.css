@@ -4,6 +4,7 @@
 /* ---| Cells |--- */
 .Ai\(c\) {-webkit-box-align: center; -ms-flex-align: center; align-items: center;}
 .Bd\(n\) {border: none;}
+.Bd\(s\,s04\,blue\) {border: solid .25rem rgb(51,126,221);}
 .Bdb\(s\,s05\,blue\) {border-bottom: solid .125rem rgb(51,126,221);}
 .Bdrus\(s03\) {border-radius: .5rem;}
 .Bdrus\(s04\) {border-radius: .25rem;}
@@ -11,6 +12,7 @@
 .Bdt\(s\,s04\,grey-2\) {border-top: solid .25rem rgb(51,51,51);}
 .Bgc\(blue-dark\) {background-color: rgb(0,68,158);}
 .Bgc\(blue\) {background-color: rgb(51,126,221);}
+.Bgc\(blue\)\:h:hover {background-color: rgb(51,126,221);}
 .Bgc\(grey-10\) {background-color: rgb(250,250,250);}
 .Bgc\(grey-8\) {background-color: rgb(238,238,238);}
 .Bgc\(white\) {background-color: rgb(255,255,255);}
@@ -29,6 +31,7 @@
 .C\(grey-3\) {color: rgb(85,85,85);}
 .C\(grey-4\) {color: rgb(119,119,119);}
 .C\(white\) {color: rgb(255,255,255);}
+.C\(white\)\:h:hover {color: rgb(255,255,255);}
 .Cur\(p\) {cursor: pointer;}
 .D\(b\) {display: block;}
 .D\(f\) {display: -webkit-box; display: -ms-flexbox; display: -webkit-flex; display: flex;}
