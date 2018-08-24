@@ -44,7 +44,9 @@ def create_app(test_config=None):
         if not User.query.filter_by(username="admin").count():
             admin = User(
                 "admin@admin.admin",
-                "admin", app.config.get("ADMIN_PASSWORD", "password"))
+                "admin", app.config.get("ADMIN_PASSWORD", "password"),
+                admin=True
+            )
             db.session.add(admin)
             db.session.commit()
 
@@ -77,6 +79,6 @@ def create_app(test_config=None):
     @app.route("/")
     @login_required
     def index():
-        return render_template("index.html")
+        return render_template("dev_home.html")
 
     return app

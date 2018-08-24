@@ -1,0 +1,21 @@
+{% extends "layout_dev.html" %}
+	
+{% block title %}
+My Apps
+{% endblock %}
+
+{% block nav %}
+<a href="/" class="_rLink() Ff(Inconsolata) Td(u) C(grey-3) C(blue):h">← Back</a>
+<a href="/" class="_rLink() Ff(Inconsolata) Td(u) C(grey-3) C(blue):h">Profile</a>
+{% endblock %}
+
+{% block body %}
+	{% for app in apps %}
+	<article class="Mt(s2) Px(s5) Py(s4) Bgc(white) Bxsh(0,0,s05,grey-5)">
+		<div>
+			<a class="_rLink() Fz(s3) Ff(Inconsolata) Td(u) C(grey-3) C(blue):h" href="app/{{ app.id }}">{{app.name}}</a>
+		</div>
+		<p>{{ app.description }}</p>
+	</article>
+	{% endfor %}
+{% endblock %}

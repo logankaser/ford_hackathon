@@ -161,6 +161,7 @@ class AppPublicSchema(ma.ModelSchema):
         """Public fields."""
 
         fields = (
+            "id",
             "name",
             "description",
             "created",
