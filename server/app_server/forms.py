@@ -45,5 +45,4 @@ class AdminSearchForm(FlaskForm):
 class DevTOSForm(FlaskForm):
     """Dev TOS acceptance form"""
 
-    accept = BooleanField("I Accept Developer TOS")
-    sumbit = SubmitField("")
+    submit = SubmitField("I agree to the Terms of Service")
