@@ -146,6 +146,9 @@ def dev_tos():
 =======
         return redirect("/")
     return render_template("dev_tos.html", form=form)
+<<<<<<< HEAD
 >>>>>>> added tos page
 
 >>>>>>> added tos form
+=======
+>>>>>>> whitespace issue
