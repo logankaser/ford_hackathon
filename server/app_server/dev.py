@@ -10,10 +10,10 @@ from flask import (
     session, url_for, Response, current_app, send_file
 )
 from app_server import db
-from app_server.models import AppEntry
+from app_server.models import AppEntry, User
 from sqlalchemy import *
 from app_server.auth import login_required
-from app_server.forms import AppCreationForm
+from app_server.forms import AppCreationForm, DevTOSForm
 
 bp = Blueprint("dev", __name__, url_prefix="/dev")
 
@@ -21,9 +21,9 @@ bp = Blueprint("dev", __name__, url_prefix="/dev")
 @bp.route("/app/new", methods=["GET", "POST"])
 @login_required
 def new_app():
-    """Create a new app.
+    """Page for uploading new apps.
 
-    :returns: New app added to the form and render templates
+    :returns: app creation page, or redirection to app page on succesful form submission
     """
     if not g.user.dev:
         return redirect(url_for("dev.dev_tos"))
@@ -64,10 +64,9 @@ def new_app():
 @bp.route("/app/<app_id>")
 @login_required
 def dev_app_page(app_id):
-    """Developer status page.
+    """App view page
 
-    :raises 400: Wrong user access to the app.
-    :returns: Information of app metadata
+    :returns: app page for developer or 403/404 if invalid id/bad permission
     """
     app = AppEntry.query.get(int(app_id))
     if not app:
@@ -80,9 +79,9 @@ def dev_app_page(app_id):
 @bp.route("/")
 @login_required
 def dev_profile():
-    """Developer's profile.
+    """The 'my apps' page for the developer.
 
-    :returns: Renders to new template of the developer user
+    :returns: 'my apps' page
     """
     apps = AppEntry.query.filter_by(dev_id=g.user.id)
     return render_template(
@@ -92,10 +91,14 @@ def dev_profile():
 @bp.route("/tos", methods=["GET", "POST"])
 @login_required
 def dev_tos():
+    """Form for user to accept developer ToS.
+
+    :returns: ToS Form, or redirection to profile if form filled out
+    """
     form = DevTOSForm()
     if form.validate_on_submit():
         User.query.get(g.user.id).dev = True
         db.session.commit()
-        return redirect(url_for("dev.dev_profile"))
-    return render_template("dev_tos.html")
+        return redirect("/")
+    return render_template("dev_tos.html", form=form)
 
