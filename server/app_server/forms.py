@@ -85,6 +85,10 @@ class DevTOSForm(FlaskForm):
 class DevTOSForm(FlaskForm):
     """Dev TOS acceptance form"""
 
+<<<<<<< HEAD
     accept = BooleanField("I Accept Developer TOS")
     sumbit = SubmitField("")
 >>>>>>> added tos form
+=======
+    submit = SubmitField("I agree to the Terms of Service")
+>>>>>>> added tos page

@@ -10,7 +10,12 @@ from flask import (
     session, url_for, Response, current_app, send_file, safe_join
 )
 from app_server import db
+<<<<<<< HEAD
 from app_server.models import db, AppEntry, User
+=======
+from app_server.models import AppEntry, User
+from sqlalchemy import *
+>>>>>>> added tos page
 from app_server.auth import login_required
 from app_server.forms import AppCreationForm, DevTOSForm
 
@@ -22,8 +27,12 @@ bp = Blueprint("dev", __name__, url_prefix="/dev")
 def new_app():
     """Page for uploading new apps.
 
+<<<<<<< HEAD
     :returns: app creation page,
     or redirection to app page on succesful form submission
+=======
+    :returns: app creation page, or redirection to app page on succesful form submission
+>>>>>>> added tos page
     """
     if not g.user.dev:
         return redirect(url_for("dev.dev_tos"))
@@ -64,6 +73,7 @@ def new_app():
 @bp.route("/app/<app_id>")
 @login_required
 def dev_app_page(app_id):
+<<<<<<< HEAD
     """App view page.
 
 <<<<<<< HEAD
@@ -73,6 +83,11 @@ def dev_app_page(app_id):
     :raises 404: Not the right app
     :returns: Information of app metadata
 >>>>>>> edit for linter pycodestyle
+=======
+    """App view page
+
+    :returns: app page for developer or 403/404 if invalid id/bad permission
+>>>>>>> added tos page
     """
     app = AppEntry.query.get(int(app_id))
     if not app:
@@ -85,9 +100,15 @@ def dev_app_page(app_id):
 @bp.route("/")
 @login_required
 def dev_profile():
+<<<<<<< HEAD
     """My Apps page for the developer.
 
     :returns: My Apps page
+=======
+    """The 'my apps' page for the developer.
+
+    :returns: 'my apps' page
+>>>>>>> added tos page
     """
     apps = AppEntry.query.filter_by(dev_id=g.user.id)
     return render_template(
@@ -98,21 +119,33 @@ def dev_profile():
 @login_required
 def dev_tos():
 <<<<<<< HEAD
+<<<<<<< HEAD
     """Form for User to accept developer ToS.
 
     :returns: ToS Form, or redirection to profile if form filled out
     """
 =======
 >>>>>>> added tos form
+=======
+    """Form for user to accept developer ToS.
+
+    :returns: ToS Form, or redirection to profile if form filled out
+    """
+>>>>>>> added tos page
     form = DevTOSForm()
     if form.validate_on_submit():
         User.query.get(g.user.id).dev = True
         db.session.commit()
+<<<<<<< HEAD
 <<<<<<< HEAD
         return redirect(url_for("index"))
     return render_template("dev_tos.html", form=form)
 =======
         return redirect(url_for("dev.dev_profile"))
     return render_template("dev_tos.html")
+=======
+        return redirect("/")
+    return render_template("dev_tos.html", form=form)
+>>>>>>> added tos page
 
 >>>>>>> added tos form
