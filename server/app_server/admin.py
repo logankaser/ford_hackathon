@@ -8,31 +8,40 @@ from flask import (
 from app_server import db
 from app_server.auth import admin_required
 from app_server.models import AppEntry, User
+from app_server.forms import AdminSearchForm
 
 bp = Blueprint("admin", __name__, url_prefix="/admin")
 
 
-@bp.route("/", methods=["GET"])
+@bp.route("/", methods=["GET", "POST"])
 @admin_required
 def admin_home():
     apps = AppEntry.query.filter_by(approved=False).limit(20)
-    return render_template("admin_profile.html", apps=apps)
+    output = []
+    for app in apps:
+        app.dev_name = User.query.get(app.dev_id).username
+        output.append(app)
 
+    form = AdminSearchForm()
+    results = []
+    if form.validate_on_submit():
+        appResults = list(AppEntry.query.msearch(
+            request.form["search"], fields=["id", "name", "description"]).limit(10))
+        userResults = list(User.query.msearch(
+            request.form["search"], fields=["id", "username", "email"]).limit(10))
 
-@bp.route("/user/search/<keyword>", methods=["GET", "POST"])
-@admin_required
-def admin_user_search(keyword):
-    users = User.query.msearch(keyword, fields=["id", "username", "email"]).\
-        limit(100)
-    return render_template("admin_user_search.html", users=users)
+        pushApp = False
+        while appResults or userResults:
+            if appResults and pushApp is True:
+                results.append({"app": appResults.pop(0)})
+                pushApp = False
+            elif userResults:
+                results.append({"user": userResults.pop(0)})
+                pushApp = True
+            else:
+                pushApp = True
 
-
-@bp.route("/app/search/<keyword>", methods=["GET", "POST"])
-@admin_required
-def admin_app_search(keyword):
-    apps = AppEntry.query.msearch(keyword, fields=["id", "name", "description"]).\
-        limit(100)
-    return render_template("admin_app_search.html", apps=apps)
+    return render_template("admin_profile.html", apps=output, form=form, results=results)
 
 
 @bp.route("/app/<app_id>", methods=["GET"])

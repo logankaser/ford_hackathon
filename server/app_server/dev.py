@@ -54,7 +54,7 @@ def new_app():
         imageFile.save(imagePath)
         return redirect(url_for("dev.dev_app_page", app_id=app.id))
     print(form.errors)
-    return render_template("new_app.html", form=form)
+    return render_template("dev_app_new.html", form=form)
 
 
 @bp.route("/app/<app_id>")
@@ -70,7 +70,7 @@ def dev_app_page(app_id):
         return ("Non existant app", 404)
     if g.user.id != app.dev_id and not g.user.admin:
         return ("Invalid user", 403)
-    return render_template("dev_app_page.html", app=app)
+    return render_template("dev_app_view.html", app=app)
 
 
 @bp.route("/")
@@ -82,4 +82,4 @@ def dev_profile():
     """
     apps = AppEntry.query.filter_by(dev_id=g.user.id)
     return render_template(
-        "dev_profile.html", apps=apps, username=g.user.username)
+        "dev_app_list.html", apps=apps, username=g.user.username)

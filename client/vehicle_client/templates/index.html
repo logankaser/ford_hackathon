@@ -35,13 +35,13 @@ function formatDate(t) {
 }
 
 // Imports
-const {Link, Route, location} = hyperappRouter
+const {Link, Route, location, Redirect} = hyperappRouter
 const {main, h1, span, div, button, section, img, article, time, a} = hyperappHtml;
 
 const state = {
 	location: location.state,
 	test: "bird is the word",
-	apps: []
+	apps: new Map()
 }
 
 const actions = {
@@ -50,25 +50,35 @@ const actions = {
 }
 
 const app_short = (app) => (
-	article({class: "M(s03) P(s02) Bxsh(0,0,s05,grey-5) Bdrus(s05) Bgc(white) D(f) Ai(c) Fld(c)"}, [
+	article({class: "M(s03) P(s02) W(50%) Bxsh(0,0,s05,grey-5) Bgc(white) D(f) Ai(c) Fld(c) Flx(1)"}, [
 		img({
 			src: "http://localhost:5000/api/v1/app/" + app.id + "/icon",
-			class: "Maw(60%) D(b) Bdrus(s05)"
+			class: "Maw(60%) D(b) Bdrus(s05) Cur(p)",
+			onclick: () => history.pushState(location.pathname, "", "/" + app.id)
 		}),
 		Link({
+			id: app.id,
 			to: "/" + app.id,
 			class: "_rLink() C(blue) Op(.7):h Fz(s3)"
 		}, app.name),
-		div({class: "Ellip() Ov(h) W(100%) P(s04)"}, app.description),
+		div({class: "Ellip() Ov(h) W(20rem) P(s04)"}, app.description),
 		time({class: "Ff(Inconsolata)"}, "Updated " + formatDate(app.updated))
 	])
 )
 
-const app_long = (app) => (
-	article({class: "M(s03) P(s1) Bxsh(0,0,s05,grey-5) Bdrus(s05) Bgc(white) D(f) Ai(c) Fld(c)"}, [
+const home = () => (state, actions) => (
+	section({class: "D(f) W(100%) Flw(w)"},
+		Array.from(state.apps.values()).map(app_short)
+	)
+);
+
+const detail = ({match, _}) => (state, actions) => {
+	const app = state.apps.get(parseInt(match.params["app_id"]))
+	return article({class: "M(s03) P(s1) Bxsh(0,0,s05,grey-5) Bgc(white) D(f) Fld(c)"}, [
+		Link({to: "/", class: "_rLink() Fz(s3) Ff(Inconsolata) Td(u) C(grey-3) C(blue):h"}, "← Back"),
 		img({
 			src: "http://localhost:5000/api/v1/app/" + app.id + "/icon",
-			class: "Maw(100%) D(b) Bdrus(s05)"
+			class: "Maw(100%) Mx(a) D(b) Bdrus(s05) Bd(s,s05,grey-5) My(s02)"
 		}),
 		Link({
 			to: "/" + app.id,
@@ -77,28 +87,14 @@ const app_long = (app) => (
 		div({class: "Lh(1.5) P (s03)"}, app.description),
 		time({class: "Ff(Inconsolata)"}, "Updated " + formatDate(app.updated))
 	])
-)
-
-const home = () => (state, actions) => (
-	section({}, [
-		h1({class: "Ta(c)"}, "Apps"),
-			Array.from(state.apps.values()).map(app_short)
-	])
-);
-
-const detail = ({match, _}) => (state, actions) => (
-	section({}, [
-		h1({class: "Ta(c)"}, "Apps"),
-			app_long(state.apps.get(parseInt(match.params["app_id"])))
-	])
-);
+};
 
 const installed = () => (
 	h1("Installed")
 );
 
 const view = (state, actions) => (
-	main({class: "Mx(a) W(100%) W(60%)@md W(40%)@lg H(100%) Maw(50rem)"}, [
+	main({class: "Mx(a) W(100%) H(100%) Maw(50rem)"}, [
 		div({class: "D(f) Jc(space-evenly) P(s04) Fz(s3)"}, [
 			Link({to: "/installed", class: "_rLink() C(grey-2) P(s04) C(blue):h"}, "Installed Apps"),
 			Link({to: "/", class: "_rLink() C(grey-2) P(s04) C(blue):h"}, "Home")
@@ -114,7 +110,7 @@ return hyperapp.app(state, actions, view, document.body)
 
 hyperappRouter.location.subscribe(main.location);
 
-$.get("http://localhost:5000/api/v1/app/top", "json", apps => {
+$.get("{{api_domain}}/api/v1/app/top", "json", apps => {
 	app_map = new Map()
 	for (let app of apps) {
 		app_map.set(app.id, app)

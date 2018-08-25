@@ -79,7 +79,7 @@ def search(keyword):
 @bp.route("/app/<app_id>/approve", methods=["GET", "POST"])
 @admin_required
 def approve(app_id):
-    """Approve an app
+    """Approve an app.
 
     :param app_id: Application ID
     :returns: 204 - success, 400 - app does not exist
@@ -139,7 +139,7 @@ def private_app_icon(app_id):
 
     only admins or the developer of the app have valid permissions
     """
-    app = AppEntry.query.get()
+    app = AppEntry.query.get(app_id)
     if not app:
         return ("App not found", 400)
     if g.user.id != app.dev_id and not g.user.admin:
@@ -224,7 +224,7 @@ def private_user_apps(user_id):
 @bp.route("user/<user_id>/admin/promote", methods=["GET", "POST"])
 @admin_required
 def promote_admin(user_id):
-    """Promote user to admin
+    """Promote user to admin.
 
     :returns: 204 - success, 400 - user does not exist
     """
@@ -239,7 +239,7 @@ def promote_admin(user_id):
 @bp.route("user/<user_id>/admin/demote", methods=["GET", "POST"])
 @admin_required
 def demote_admin(user_id):
-    """Demote user to admin
+    """Demote user to admin.
 
     :returns: 204 - success, 400 - user does not exist
     """
@@ -250,5 +250,28 @@ def demote_admin(user_id):
     except Exception as e:
         return ("", 400)
     db.session.commit()
-    return ("", 204)
+    return ("Success", 204)
 
+
+@bp.route("user/<user_id>/delete", methods=["GET", "POST"])
+@login_required
+def delete_user(user_id):
+    """Delete a user, requires admin or account ownership.
+
+    :returns: 404 on user not found, 401 on bad permissions
+    """
+    user = User.query.get(user_id)
+    if not user:
+        return ("User does not exist", 404)
+    if user.id != g.user.id and not g.user.admin:
+        return ("bad permission", 401)
+    apps = AppEntry.query.filter_by(dev_id=user_id)
+    for app in apps:
+        os.remove(
+            os.path.join(current_app.instance_path, str(app.id) + ".tar.gz"))
+        os.remove(
+           os.path.join(current_app.instance_path, str(app.id) + app.icon_ext))
+        db.session.delete(app)
+    db.session.delete(user)
+    db.session.commit()
+    return ("Success", 204)
