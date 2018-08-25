@@ -101,4 +101,3 @@ def dev_tos():
         db.session.commit()
         return redirect("/")
     return render_template("dev_tos.html", form=form)
-
