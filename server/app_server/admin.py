@@ -16,20 +16,18 @@ bp = Blueprint("admin", __name__, url_prefix="/admin")
 @bp.route("/", methods=["GET", "POST"])
 @admin_required
 def admin_home():
+    """Admin home."""
     apps = AppEntry.query.filter_by(approved=False).limit(20)
-    output = []
-    for app in apps:
-        app.dev_name = User.query.get(app.dev_id).username
-        output.append(app)
 
     form = AdminSearchForm()
     results = []
-    if form.validate_on_submit():
+    if form.validate_on_submit() and request.form["search"]:
         appResults = list(AppEntry.query.msearch(
-            request.form["search"], fields=["id", "name", "description"]).limit(10))
+            request.form["search"],
+            fields=["id", "name", "description"]).limit(10))
         userResults = list(User.query.msearch(
-            request.form["search"], fields=["id", "username", "email"]).limit(10))
-
+            request.form["search"],
+            fields=["id", "username", "email"]).limit(10))
         pushApp = False
         while appResults or userResults:
             if appResults and pushApp is True:
@@ -41,21 +39,25 @@ def admin_home():
             else:
                 pushApp = True
 
-    return render_template("admin_profile.html", apps=output, form=form, results=results)
+    return render_template(
+        "admin_profile.html", apps=apps, form=form, results=results)
 
 
 @bp.route("/app/<app_id>", methods=["GET"])
 @admin_required
 def admin_app_view(app_id):
+    """Admin app view."""
     app = AppEntry.query.get(app_id)
     if not app:
         return ("App not found", 400)
     user = User.query.get(app.dev_id)
     return render_template("admin_app_view.html", app=app, dev=user)
 
+
 @bp.route("/user/<user_id>", methods=["GET"])
 @admin_required
 def admmin_app_view(user_id):
+    """Admin user view."""
     user = User.query.get(user_id)
     if not user:
         return ("User not found", 400)

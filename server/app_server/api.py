@@ -1,12 +1,11 @@
 """API for the client."""
 
 import functools
-import os.path
 import datetime
 
 from flask import (
     Blueprint, g, redirect, render_template, request,
-    session, Response, current_app, send_file
+    session, Response, current_app, send_file, safe_join
 )
 from app_server import db
 from app_server.models import (
@@ -23,7 +22,6 @@ CORS(bp)
 
 
 @bp.route("/app/<app_id>")
-@login_required
 def app_json(app_id):
     """JSON for private app profile.
 
@@ -31,11 +29,10 @@ def app_json(app_id):
     :returns: JSON string of the private app profile
     """
     app = AppEntry.query.get(app_id)
+    app.dev_name = User.query.get(app.dev_id).username
     if not app:
         return ("App not found", 404)
-    if g.user.id != app.dev_id and not g.user.admin:
-        return ("", 401)
-    app_schema = AppSchema()
+    app_schema = AppPublicSchema()
     return app_schema.jsonify(app)
 
 
@@ -104,12 +101,11 @@ def delete_app(app_id):
     """
     app = AppEntry.query.get(app_id)
     if not app:
-        return ("", 400)
+        return ("App not found", 404)
     if g.user.id != app.dev_id and not g.user.admin:
-        return ("", 401)
-    os.remove(os.path.join(current_app.instance_path, app_id + ".tar.gz"))
-    os.remove(
-        os.path.join(current_app.instance_path, app_id + app.icon_ext))
+        return ("Bad permissions", 401)
+    os.remove(safe_join(current_app.instance_path, app_id + ".tar.gz"))
+    os.remove(safe_join(current_app.instance_path, app_id + app.icon_ext))
     db.session.delete(app)
     db.session.commit()
     return ("", 204)
@@ -120,14 +116,28 @@ def public_app_icon(app_id):
     """Get the icon of an approved app.
 
     :param app_id: Application ID
-    :returns: file contents of image or 400 if app does not exist
+    :returns: file contents of image or 404 if app does not exist
     """
     app = AppEntry.query.get(app_id)
     if not app or not app.approved:
-        return ("App not found", 400)
-    file_path = os.path.join(
+        return ("App not found", 404)
+    file_path = safe_join(
         current_app.instance_path, str(app.id) + app.icon_ext)
     return send_file(file_path)
+
+
+@bp.route("/app/<app_id>/download", methods=["GET"])
+def public_app_download(app_id):
+    """Get and app package.
+
+    :param app_id: Application ID
+    :returns: App package file or 404 if app does not exist
+    """
+    app = AppEntry.query.get(app_id)
+    if not app or not app.approved:
+        return ("App not found", 404)
+    file_path = safe_join(current_app.instance_path, str(app.id) + ".tar.gz")
+    return send_file(file_path, conditional=True)
 
 
 @bp.route("/app/<app_id>/icon/private", methods=["GET"])
@@ -143,10 +153,10 @@ def private_app_icon(app_id):
     """
     app = AppEntry.query.get(app_id)
     if not app:
-        return ("App not found", 400)
+        return ("App not found", 404)
     if g.user.id != app.dev_id and not g.user.admin:
         return ("Bad permissions", 401)
-    file_path = os.path.join(
+    file_path = safe_join(
         current_app.instance_path, str(app.id) + app.icon_ext)
     return send_file(file_path)
 
@@ -270,9 +280,9 @@ def delete_user(user_id):
     apps = AppEntry.query.filter_by(dev_id=user_id)
     for app in apps:
         os.remove(
-            os.path.join(current_app.instance_path, str(app.id) + ".tar.gz"))
+            safe_join(current_app.instance_path, str(app.id) + ".tar.gz"))
         os.remove(
-           os.path.join(current_app.instance_path, str(app.id) + app.icon_ext))
+           safe_join(current_app.instance_path, str(app.id) + app.icon_ext))
         db.session.delete(app)
     db.session.delete(user)
     db.session.commit()

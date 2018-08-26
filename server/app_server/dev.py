@@ -1,17 +1,16 @@
 """Developer mangement blueprint."""
 
 import functools
-import os.path
 import datetime
 import hashlib
+import os.path
 
 from flask import (
     Blueprint, flash, g, redirect, render_template, request,
-    session, url_for, Response, current_app, send_file
+    session, url_for, Response, current_app, send_file, safe_join
 )
 from app_server import db
-from app_server.models import AppEntry, User
-from sqlalchemy import *
+from app_server.models import db, AppEntry
 from app_server.auth import login_required
 from app_server.forms import AppCreationForm, DevTOSForm
 
@@ -23,7 +22,8 @@ bp = Blueprint("dev", __name__, url_prefix="/dev")
 def new_app():
     """Page for uploading new apps.
 
-    :returns: app creation page, or redirection to app page on succesful form submission
+    :returns: app creation page,
+    or redirection to app page on succesful form submission
     """
     if not g.user.dev:
         return redirect(url_for("dev.dev_tos"))
@@ -47,11 +47,11 @@ def new_app():
         db.session.add(app)
         db.session.commit()
 
-        appPath = os.path.join(
+        appPath = safe_join(
             current_app.instance_path, str(app.id) + ".tar.gz")
         appFile.seek(0)
         appFile.save(appPath)
-        imagePath = os.path.join(current_app.instance_path, str(app.id) + ext)
+        imagePath = safe_join(current_app.instance_path, str(app.id) + ext)
         imageFile.save(imagePath)
         return redirect(url_for("dev.dev_app_page", app_id=app.id))
 
@@ -64,7 +64,7 @@ def new_app():
 @bp.route("/app/<app_id>")
 @login_required
 def dev_app_page(app_id):
-    """App view page
+    """App view page.
 
     :returns: app page for developer or 403/404 if invalid id/bad permission
     """
@@ -79,9 +79,9 @@ def dev_app_page(app_id):
 @bp.route("/")
 @login_required
 def dev_profile():
-    """The 'my apps' page for the developer.
+    """My Apps page for the developer.
 
-    :returns: 'my apps' page
+    :returns: My Apps page
     """
     apps = AppEntry.query.filter_by(dev_id=g.user.id)
     return render_template(
@@ -91,7 +91,7 @@ def dev_profile():
 @bp.route("/tos", methods=["GET", "POST"])
 @login_required
 def dev_tos():
-    """Form for user to accept developer ToS.
+    """Form for User to accept developer ToS.
 
     :returns: ToS Form, or redirection to profile if form filled out
     """

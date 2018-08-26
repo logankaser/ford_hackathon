@@ -1,23 +1,27 @@
 /* ---| Helpers |--- */
 ._rButton\(\) {cursor: pointer; margin: 0; height: auto; vertical-align: middle; appearance: none; color: inherit; -moz-focus-inner: none; border: none;}
 ._rLink\(\) {text-decoration: none;outline: 0;}
+.Ellip\(\) {text-overflow: ellipsis; white-space: nowrap; overflow-wrap: break-word; word-wrap: break-word; -ms-word-break: break-all; word-break: break-word; -ms-hyphens: auto; -moz-hyphens: auto; -webkit-hyphens: auto; hyphens: auto; overflow: hidde;}
 /* ---| Cells |--- */
 .Ai\(c\) {-webkit-box-align: center; -ms-flex-align: center; align-items: center;}
 .Bd\(n\) {border: none;}
 .Bdb\(s\,s05\,blue\) {border-bottom: solid .125rem rgb(51,126,221);}
+.Bdb\(s\,s05\,grey-7\) {border-bottom: solid .125rem rgb(204,204,204);}
 .Bdrus\(s04\) {border-radius: .25rem;}
 .Bdrus\(s05\) {border-radius: .125rem;}
+.Bdrus\(s2\) {border-radius: 1.2rem;}
 .Bdt\(s\,s04\,grey-2\) {border-top: solid .25rem rgb(51,51,51);}
 .Bgc\(blue-dark\) {background-color: rgb(0,68,158);}
 .Bgc\(blue\) {background-color: rgb(51,126,221);}
 .Bgc\(grey-10\) {background-color: rgb(250,250,250);}
-.Bgc\(red\) {background-color: rgb(255,65,54);}
 .Bgc\(rgba\(255\,255\,255\,\.4\)\) {background-color: rgba(255,255,255,.4);}
 .Bgc\(white\) {background-color: rgb(255,255,255);}
 .Bgc\(yellow-washed\) {background-color: rgb(255,252,235);}
 .Bgc\(yellow-washed\)\:f:focus {background-color: rgb(255,252,235);}
 .Bxsh\(0\,0\,s04\,grey-5\) {box-shadow: 0 0 .25rem rgb(153,153,153);}
 .Bxsh\(0\,0\,s05\,grey-5\) {box-shadow: 0 0 .125rem rgb(153,153,153);}
+.Bxsh\(0\,0\,s05\,grey-6\) {box-shadow: 0 0 .125rem rgb(170,170,170);}
+.Bxsh\(0\,0\,s05\,grey-7\) {box-shadow: 0 0 .125rem rgb(204,204,204);}
 .Bxz\(bb\) {-moz-box-sizing: border-box; box-sizing: border-box;}
 .C\(\#191919\) {color: #191919;}
 .C\(black\) {color: rgb(0,0,0);}
@@ -33,6 +37,7 @@
 .Ff\(ClearSans\) {font-family: ClearSans;}
 .Ff\(Inconsolata\) {font-family: Inconsolata;}
 .Fld\(c\) {-webkit-flex-direction: column; -ms-flex-direction: column; flex-direction: column;}
+.Flx\(1\) {-webkit-box-flex: 1; -webkit-flex: 1; -ms-flex: 1; flex: 1;}
 .Flx\(\.5\) {-webkit-box-flex: .5; -webkit-flex: .5; -ms-flex: .5; flex: .5;}
 .Fs\(n\) {font-style: normal;}
 .Fw\(b\) {font-weight: bold;}
@@ -45,14 +50,18 @@
 .Lh\(s3\) {line-height: 1.44rem;}
 .M\(0\) {margin: 0;}
 .M\(s03\) {margin: .5rem;}
+.M\(s05\) {margin: .125rem;}
 .Mah\(20rem\) {max-height: 20rem;}
 .Maw\(100\%\) {max-width: 100%;}
+.Maw\(30\%\) {max-width: 30%;}
 .Maw\(40rem\) {max-width: 40rem;}
 .Maw\(50rem\) {max-width: 50rem;}
 .Mb\(s4\) {margin-bottom: 2rem;}
 .Mih\(10rem\) {min-height: 10rem;}
 .Mih\(6rem\) {min-height: 6rem;}
+.Ml\(s02\) {margin-left: .694rem;}
 .Ml\(s1\) {margin-left: 1rem;}
+.Mr\(s02\) {margin-right: .694rem;}
 .Mt\(0\) {margin-top: 0;}
 .Mt\(s02\) {margin-top: .694rem;}
 .Mt\(s03\) {margin-top: .5rem;}
@@ -68,14 +77,19 @@
 .My\(s2\) {margin-top: 1.2rem; margin-bottom: 1.2rem;}
 .Op\(0\) {opacity: 0;}
 .Op\(\.85\)\:h:hover {opacity: .85;}
+.Ov\(h\) {overflow: hidden;}
+.Ovy\(s\) {overflow-y: scroll;}
 .P\(0\) {padding: 0;}
 .P\(\.5rem\) {padding: .5rem;}
 .P\(s02\) {padding: .694rem;}
 .P\(s03\) {padding: .5rem;}
 .P\(s04\) {padding: .25rem;}
 .P\(s1\) {padding: 1rem;}
+.P\(s2\) {padding: 1.2rem;}
+.Pl\(s03\) {padding-left: .5rem;}
 .Pos\(a\) {position: absolute;}
 .Pos\(r\) {position: relative;}
+.Pt\(s04\) {padding-top: .25rem;}
 .Px\(2rem\) {padding-left: 2rem; padding-right: 2rem;}
 .Px\(s04\) {padding-left: .25rem; padding-right: .25rem;}
 .Px\(s2\) {padding-left: 1.2rem; padding-right: 1.2rem;}
@@ -83,7 +97,6 @@
 .Py\(\.5rem\) {padding-top: .5rem; padding-bottom: .5rem;}
 .Py\(s03\) {padding-top: .5rem; padding-bottom: .5rem;}
 .Py\(s04\) {padding-top: .25rem; padding-bottom: .25rem;}
-.Py\(s1\) {padding-top: 1rem; padding-bottom: 1rem;}
 .Py\(s2\) {padding-top: 1.2rem; padding-bottom: 1.2rem;}
 .Py\(s4\) {padding-top: 2rem; padding-bottom: 2rem;}
 .T\(0\) {top: 0;}
@@ -94,9 +107,10 @@
 .Trsdu\(\.5s\) {transition-duration: .5s;}
 .Trsp\(all\) {transition-property: all;}
 .Trsp\(background-color\) {transition-property: background-color;}
+.Tt\(c\) {text-transform: capitalize;}
 .W\(100\%\) {width: 100%;}
-.W\(10\%\) {width: 10%;}
 .W\(80\%\) {width: 80%;}
+.Wob\(ba\) {word-break: break-all;}
 @media all and (min-width: 32rem) {
 .Bdrus\(s05\)\@sm {border-radius: .125rem;}
 }
