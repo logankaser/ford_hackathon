@@ -10,7 +10,7 @@ from flask import (
     session, url_for, Response, current_app, send_file, safe_join
 )
 from app_server import db
-from app_server.models import db, AppEntry
+from app_server.models import db, AppEntry, User
 from app_server.auth import login_required
 from app_server.forms import AppCreationForm, DevTOSForm
 
@@ -99,5 +99,5 @@ def dev_tos():
     if form.validate_on_submit():
         User.query.get(g.user.id).dev = True
         db.session.commit()
-        return redirect("/")
+        return redirect(url_for("index"))
     return render_template("dev_tos.html", form=form)
