@@ -13,6 +13,7 @@
 .C\(black-br\) {color: black-br;}
 .C\(blue\) {color: rgb(51,126,221);}
 .C\(blue\)\:h:hover {color: rgb(51,126,221);}
+.C\(green\) {color: rgb(25,169,116);}
 .C\(grey-2\) {color: rgb(51,51,51);}
 .C\(grey-3\) {color: rgb(85,85,85);}
 .Cur\(p\) {cursor: pointer;}
@@ -33,6 +34,7 @@
 .Maw\(100\%\) {max-width: 100%;}
 .Maw\(50rem\) {max-width: 50rem;}
 .Maw\(60\%\) {max-width: 60%;}
+.Mb\(s02\) {margin-bottom: .694rem;}
 .Mx\(a\) {margin-left: auto; margin-right: auto;}
 .My\(0\) {margin-top: 0; margin-bottom: 0;}
 .My\(s02\) {margin-top: .694rem; margin-bottom: .694rem;}
@@ -42,7 +44,9 @@
 .P\(s02\) {padding: .694rem;}
 .P\(s04\) {padding: .25rem;}
 .P\(s1\) {padding: 1rem;}
+.Py\(s04\) {padding-top: .25rem; padding-bottom: .25rem;}
 .Td\(u\) {text-decoration: underline;}
 .W\(100\%\) {width: 100%;}
 .W\(20rem\) {width: 20rem;}
 .W\(50\%\) {width: 50%;}
+.Wob\(ba\) {word-break: break-all;}

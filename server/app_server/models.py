@@ -138,7 +138,7 @@ class AppEntry(db.Model):
     downloads = db.Column(db.Integer, nullable=False)
     icon_ext = db.Column(db.String(), nullable=False)
     approved = db.Column(db.Boolean, nullable=False)
-    checksum = db.Column(db.String(), nullable=True)
+    checksum = db.Column(db.String(64), nullable=True)
     dev_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
 
 
@@ -166,8 +166,8 @@ class AppPublicSchema(ma.ModelSchema):
         fields = (
             "id",
             "name",
+            "checksum",
             "description",
             "created",
             "updated",
-            "dev_id",
             "dev_name")

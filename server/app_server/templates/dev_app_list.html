@@ -1,7 +1,7 @@
-{% extends "layout_dev.html" %}
+{% extends "layout_page.html" %}
 	
 {% block title %}
-My Apps
+Apps developed by you
 {% endblock %}
 
 {% block nav %}
@@ -15,7 +15,9 @@ My Apps
 		<div>
 			<a class="_rLink() Fz(s3) Ff(Inconsolata) Td(u) C(grey-3) C(blue):h" href="app/{{ app.id }}">{{app.name}}</a>
 		</div>
-		<p>{{ app.description }}</p>
+		<div class="Ff(Inconsolata) P(s03) Mt(s03) Lh(s3) Bxsh(0,0,s05,grey-5) Ellip() Ov(h)">
+			{{ app.description }}
+		</div>
 	</article>
 	{% endfor %}
 {% endblock %}

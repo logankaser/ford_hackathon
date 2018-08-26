@@ -1,0 +1,24 @@
+{% extends "layout_page.html" %}
+	
+{% block title %}
+Developer Resources
+{% endblock %}
+
+{% block nav %}
+{% if g.user.dev %}
+	<a class="_rLink() Ff(Inconsolata) Td(u) C(grey-3) C(blue):h" href="/dev/">View Apps</a>
+	<a class="_rLink() Ff(Inconsolata) Td(u) C(grey-3) C(blue):h" href="/dev/app/new">Submit App</a>
+{% endif %}
+{% if not g.user.dev %}
+	<a class="_rLink() Ff(Inconsolata) Td(u) C(grey-3) C(blue):h" href="/dev/tos">Become a Developer</a>
+{% endif %}
+{% if g.user.admin%}
+	<a class="_rLink() Ff(Inconsolata) Td(u) C(grey-3) C(blue):h" href="/admin/">Admin Panel</a>
+{% endif %}
+{% endblock %}
+
+{% block body %}
+<article class="Mt(s02) Px(s5) Py(s4) Bgc(white) Bxsh(0,0,s05,grey-7)">
+	<div class="Bdt(s,s04,grey-2) Mt(s1) Fz(s4) C(#191919)">Documentation</div>
+</article>
+{% endblock %}
