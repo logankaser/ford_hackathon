@@ -13,6 +13,7 @@ Welcome to Ford Hackathon's documentation!
 
    intro
    installguide
+   api
    client
    server
 
