@@ -5,7 +5,7 @@ It provides user creation, application submission, database handling, giving
 admin rights to other users, password recovery, and security to prevent
 user's theft.
 
-## Dependecies used
+## Dependecies used (maybe this is unnecessary?)
 
 * bcrypt==3.1.4
 * blinker==1.4
@@ -56,13 +56,3 @@ setup(
 [Zeid Tisnes](https://github.com/zedin27)
 
 [Theo Walton](https://github.com/theo-walton)
-
-<!-- ## MVP
-
-![login](images/login.png)
-![My Apps (before)](images/myapps.png)
-![Submission (before)](images/submission.png)
-![Submission (after)](images/submission2.png)
-![App #1](images/app1.png)
-![My Apps (after)](images/myapps2.png)
-![App #2](images/app2.png) -->
