@@ -6,10 +6,14 @@ admin rights to other users, password recovery, and security to prevent
 user's theft.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 ## Dependecies used (maybe this is unnecessary?)
 =======
 ## Dependecies used
 >>>>>>> polished sphinx
+=======
+## Dependecies used (maybe this is unnecessary?)
+>>>>>>> added more documentation for API, new requirement
 
 * bcrypt==3.1.4
 * blinker==1.4
@@ -61,6 +65,7 @@ setup(
 
 [Theo Walton](https://github.com/theo-walton)
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 <!-- ## MVP
@@ -73,3 +78,5 @@ setup(
 ![My Apps (after)](images/myapps2.png)
 ![App #2](images/app2.png) -->
 >>>>>>> polished sphinx
+=======
+>>>>>>> added more documentation for API, new requirement
