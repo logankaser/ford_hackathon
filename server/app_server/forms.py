@@ -1,7 +1,7 @@
 """Form validation classes."""
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, TextAreaField, SubmitField
+from wtforms import StringField, PasswordField, TextAreaField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Email, Length, Regexp
 from flask_wtf.file import FileField, FileRequired
 
@@ -34,6 +34,7 @@ class AppCreationForm(FlaskForm):
     icon = FileField("App Icon", validators=[FileRequired()])
     submit = SubmitField("Submit App")
 
+
 class AdminSearchForm(FlaskForm):
     """Admin Search Form."""
 
@@ -47,3 +48,9 @@ class ChangePasswordForm(FlaskForm):
     newPassword2 = PasswordField("Confirm New Password",
         validators=[DataRequired(), Length(6)])
     submit = SubmitField("Change Password")
+
+
+class DevTOSForm(FlaskForm):
+    """Dev TOS acceptance form"""
+
+    submit = SubmitField("I agree to the Terms of Service")
