@@ -86,8 +86,17 @@ def dev_app_page(app_id):
 =======
     """App view page
 
+<<<<<<< HEAD
     :returns: app page for developer or 403/404 if invalid id/bad permission
+<<<<<<< HEAD
 >>>>>>> added tos page
+=======
+=======
+    :raises 403: Wrong user access to the app.
+    :raises 404: Not the right app
+    :returns: Information of app metadata
+>>>>>>> edit for linter pycodestyle
+>>>>>>> edit for linter pycodestyle
     """
     app = AppEntry.query.get(int(app_id))
     if not app:

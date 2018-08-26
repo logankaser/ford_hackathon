@@ -78,13 +78,17 @@ class DevTOSForm(FlaskForm):
     search = StringField("", validators=[DataRequired()])
     submit = SubmitField("Search")
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> edit for linter pycodestyle
 =======
+=======
+>>>>>>> edit for linter pycodestyle
 
 
 class DevTOSForm(FlaskForm):
     """Dev TOS acceptance form"""
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     accept = BooleanField("I Accept Developer TOS")
     sumbit = SubmitField("")
@@ -92,3 +96,8 @@ class DevTOSForm(FlaskForm):
 =======
     submit = SubmitField("I agree to the Terms of Service")
 >>>>>>> added tos page
+=======
+    submit = SubmitField("I agree to the Terms of Service")
+=======
+>>>>>>> edit for linter pycodestyle
+>>>>>>> edit for linter pycodestyle

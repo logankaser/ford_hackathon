@@ -17,13 +17,19 @@ bp = Blueprint("admin", __name__, url_prefix="/admin")
 @admin_required
 def admin_home():
 <<<<<<< HEAD
+<<<<<<< HEAD
     """Admin home."""
 =======
+=======
+>>>>>>> edit for linter pycodestyle
     """
     Admin homepage screen
 
     :return: Renders the admin homepage with the query search options and admin powers
     """
+<<<<<<< HEAD
+>>>>>>> edit for linter pycodestyle
+=======
 >>>>>>> edit for linter pycodestyle
     apps = AppEntry.query.filter_by(approved=False).limit(20)
 
@@ -55,13 +61,19 @@ def admin_home():
 @admin_required
 def admin_app_view(app_id):
 <<<<<<< HEAD
+<<<<<<< HEAD
     """Admin app view."""
 =======
+=======
+>>>>>>> edit for linter pycodestyle
     """
     Admin application viewer
 
     :return: Views the developer app with admin powers
     """
+<<<<<<< HEAD
+>>>>>>> edit for linter pycodestyle
+=======
 >>>>>>> edit for linter pycodestyle
     app = AppEntry.query.get(app_id)
     if not app:
@@ -74,13 +86,19 @@ def admin_app_view(app_id):
 @admin_required
 def admmin_app_view(user_id):
 <<<<<<< HEAD
+<<<<<<< HEAD
     """Admin user view."""
 =======
+=======
+>>>>>>> edit for linter pycodestyle
     """
     Admin user viewer
 
     :return: Views the developer app with admin powers
     """
+<<<<<<< HEAD
+>>>>>>> edit for linter pycodestyle
+=======
 >>>>>>> edit for linter pycodestyle
     user = User.query.get(user_id)
     if not user:
