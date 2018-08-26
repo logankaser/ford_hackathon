@@ -288,6 +288,12 @@ def random_hash256():
 
 
 @bp.route("user/<user_email>/password/reset", methods=["GET", "POST"])
+"""Send a password reset link to the users email.
+
+:returns: 404 if no user has that email, or 200 if user exists.
+:limitations: no cooldown, so a user could be blocked from changing their
+password if this api is spammed
+"""
 def forgot_password(user_email):
     user = User.query.filter_by(email=user_email).one_or_none()
     if not user:
@@ -301,10 +307,6 @@ def forgot_password(user_email):
             "from": "No Reply <" + "noreply@" + current_app.config.get("MAILGUN_DOMAIN") + ">",
             "to": [user_email],
             "subject": "FordApps password reset",
-            "html": f"<a href=\"{request.url_root}/password/{user.reset_hash}\"> click here to reset your password</a>"
+            "html": f"<a href=\"{request.url_root}password/{user.reset_hash}\"> click here to reset your password</a>"
         })
     return (res.text, 200)
-
-
-
-

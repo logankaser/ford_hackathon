@@ -50,6 +50,13 @@ class ChangePasswordForm(FlaskForm):
     submit = SubmitField("Change Password")
 
 
+class ResetPasswordForm(FlaskForm):
+    newPassword1 = PasswordField("New Password", validators=[DataRequired(), Length(6)])
+    newPassword2 = PasswordField("Confirm New Password",
+        validators=[DataRequired(), Length(6)])
+    submit = SubmitField("Set Password")
+
+
 class DevTOSForm(FlaskForm):
     """Dev TOS acceptance form"""
 
