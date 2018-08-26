@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+	
+{% block head %}
+{% endblock %}
+
+{% block content %}
+
+<main class="Mx(a) Maw(40rem) W(100%) D(f) Fld(c) H(100%)">
+	<div class="Fz(s4) Ta(c) P(s02) Mt(s02) Bgc(white) Bxsh(0,0,s05,grey-7)">
+		{% block title %} {% endblock %}
+	</div>
+	<div class="Fz(s3) Ta(c) P(s03) Mt(s02) Bgc(white) Bxsh(0,0,s05,grey-7)">
+		{% block nav %} {% endblock %}
+	</div>
+	{% block body %} {% endblock %}
+</main>
+
+{% endblock %}
