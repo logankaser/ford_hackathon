@@ -39,3 +39,11 @@ class AdminSearchForm(FlaskForm):
 
     search = StringField("", validators=[DataRequired()])
     submit = SubmitField("Search")
+
+
+class ChangePasswordForm(FlaskForm):
+    oldPassword = PasswordField("Old Password", validators=[DataRequired()])
+    newPassword1 = PasswordField("New Password", validators=[DataRequired(), Length(6)])
+    newPassword2 = PasswordField("Confirm New Password",
+        validators=[DataRequired(), Length(6)])
+    submit = SubmitField("Change Password")

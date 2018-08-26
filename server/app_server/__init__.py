@@ -23,7 +23,7 @@ def create_app(test_config=None):
         MSEARCH_BACKEND="simple",
         MSEARCH_ENABLE=True,
         ADMIN_PASSWORD="password",
-        MAILGUN_DOMAIN="sandbox16d71a724c014a2da34c98b959f1e84b.mailgun.org",
+        MAILGUN_DOMAIN="mail.fordhackathon.com",
         MAILGUN_KEY="key-88a8a25eb4a4b21be0150838cfe141c0"
     )
 

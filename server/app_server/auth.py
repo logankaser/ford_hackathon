@@ -11,7 +11,7 @@ from flask import (
 )
 from app_server import db, bcrypt
 from app_server.models import User, hash_password
-from app_server.forms import RegisterForm, LoginForm
+from app_server.forms import RegisterForm, LoginForm, ChangePasswordForm
 from secrets import randbelow
 
 bp = Blueprint("auth", __name__)
@@ -173,4 +173,23 @@ def reset_forgotten_password(reset_hash):
     user.password = hash_password(newPassword)
     db.session.commit()
     return ("your new password is: " + newPassword, 200)
+
+
+@bp.route("/password/change", methods=["GET", "POST"])
+@login_required
+def change_password():
+    form = ChangePasswordForm()
+    if form.validate_on_submit():
+        if request.form["newPassword1"] != request.form["newPassword2"]:
+            flash("Your passwords must match")
+        elif hash_password(request.form["oldPassword"]) == g.user.password_hash:
+            User.query.get(g.user.id).password_hash = hash_password(request.form["newPassword1"])
+            db.session.commit()
+            flash("Password succesfully changed")
+        else:
+            flash("Old password incorrect")
+    return render_template("password_change.html", form=form)
+
+
+
 

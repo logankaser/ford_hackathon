@@ -294,18 +294,14 @@ def forgot_password(user_email):
         return ("User does not exist", 404)
     user.reset_hash = random_hash256()
     db.session.commit()
-    #msg = Message("ford appstore password reset",
-    #    recipients=[user.email])
-    #msg.html = f"""<a href=\"{request.url_root}/password/{user.reset_hash}\">
-    #    click here to reset your password</a>"""
     res = requests.post(
         "https://api.mailgun.net/v3/" + current_app.config.get("MAILGUN_DOMAIN") + "/messages",
         auth=("api", current_app.config.get("MAILGUN_KEY")),
         data={
-            "from": "Excited User <" + "mailgun@" + current_app.config.get("MAILGUN_DOMAIN") + ">",
+            "from": "No Reply <" + "noreply@" + current_app.config.get("MAILGUN_DOMAIN") + ">",
             "to": [user_email],
             "subject": "FordApps password reset",
-            "text": f"a href=\"{request.url_root}/password/{user.reset_hash}\"> click here to reset your password</a>"
+            "html": f"<a href=\"{request.url_root}/password/{user.reset_hash}\"> click here to reset your password</a>"
         })
     return (res.text, 200)
 
