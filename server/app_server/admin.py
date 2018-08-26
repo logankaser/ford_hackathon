@@ -16,6 +16,11 @@ bp = Blueprint("admin", __name__, url_prefix="/admin")
 @bp.route("/", methods=["GET", "POST"])
 @admin_required
 def admin_home():
+    """
+    Admin homepage screen
+
+    :return: Renders the admin homepage with the query search options and admin powers
+    """
     apps = AppEntry.query.filter_by(approved=False).limit(20)
     output = []
     for app in apps:
@@ -47,15 +52,26 @@ def admin_home():
 @bp.route("/app/<app_id>", methods=["GET"])
 @admin_required
 def admin_app_view(app_id):
+    """
+    Admin application viewer
+
+    :return: Views the developer app with admin powers
+    """
     app = AppEntry.query.get(app_id)
     if not app:
         return ("App not found", 400)
     user = User.query.get(app.dev_id)
     return render_template("admin_app_view.html", app=app, dev=user)
 
+
 @bp.route("/user/<user_id>", methods=["GET"])
 @admin_required
 def admmin_app_view(user_id):
+    """
+    Admin user viewer
+
+    :return: Views the developer app with admin powers
+    """
     user = User.query.get(user_id)
     if not user:
         return ("User not found", 400)
