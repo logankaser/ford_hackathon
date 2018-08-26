@@ -41,9 +41,9 @@ def app_json(app_id):
 def apps_json():
     """Top 100 public app profiles by downloads.
 
-    :returns: JSON of up to 100 public
-    app profiles from most to least downloaded
-    :limitations: top 100 apps are calculated each api call and not stored
+    :returns: JSON of up to 100 public app profiles from most to least downloaded\n
+
+    **Limitations:** top 100 apps are calculated each api call and not stored
     anywhere
     """
     apps = AppEntry.query.order_by(AppEntry.downloads.desc()).\
@@ -61,10 +61,9 @@ def search(keyword):
     """Best 100 public app profiles that match search phrase.
 
     :param keyword: phrase used for searching
-    :returns: JSON of up to 100 public app profiles from
-    most relevent to least
-    relevent
-    :limitations: only words in the app name and description are matched
+    :returns: JSON of up to 100 public app profiles from most relevant to least relevant\n
+
+    **Limitations:** only words in the app name and description are matched
     """
     results = AppEntry.query.msearch(keyword, fields=["name", "description"]).\
         filter_by(approved=True).limit(100)
@@ -204,7 +203,7 @@ def public_user_info(user_id):
 
 @bp.route("user/<user_id>/apps", methods=["GET"])
 def public_user_apps(user_id):
-    """Get a list of public App profiles belonging to user.
+    """Get a list of public apps profiles belonging to user.
 
     :returns: JSON list of public app profiles
     """

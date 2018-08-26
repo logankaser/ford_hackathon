@@ -40,6 +40,7 @@ class AppCreationForm(FlaskForm):
 class AdminSearchForm(FlaskForm):
     """Admin Search Form."""
 
+<<<<<<< HEAD
     search = StringField("", validators=[])
     submit = SubmitField("Search")
 
@@ -69,3 +70,7 @@ class DevTOSForm(FlaskForm):
     """Dev TOS acceptance form."""
 
     submit = SubmitField("I agree to the Terms of Service")
+=======
+    search = StringField("", validators=[DataRequired()])
+    submit = SubmitField("Search")
+>>>>>>> edit for linter pycodestyle
