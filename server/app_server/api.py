@@ -23,10 +23,10 @@ CORS(bp)
 
 @bp.route("/app/<app_id>")
 def app_json(app_id):
-    """JSON for private app profile.
+    """JSON for public App.
 
     :param app_id: Application ID
-    :returns: JSON string of the private app profile
+    :returns: JSON string of the public App
     """
     app = AppEntry.query.get(app_id)
     app.dev_name = User.query.get(app.dev_id).username
