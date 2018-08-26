@@ -15,6 +15,8 @@ from app_server.models import (
 )
 from app_server.auth import login_required, admin_required
 from flask_cors import CORS
+from secrets import randbelow
+import requests
 
 bp = Blueprint("api/v1", __name__, url_prefix="/api/v1")
 CORS(bp)
@@ -275,3 +277,38 @@ def delete_user(user_id):
     db.session.delete(user)
     db.session.commit()
     return ("Success", 204)
+
+
+def random_hash256():
+    hex_string = "0123456789abcdef"
+    output = ""
+    for _ in range (64):
+        output += hex_string[randbelow(16)]
+    return output
+
+
+@bp.route("user/<user_email>/password/reset", methods=["GET", "POST"])
+def forgot_password(user_email):
+    user = User.query.filter_by(email=user_email).one_or_none()
+    if not user:
+        return ("User does not exist", 404)
+    user.reset_hash = random_hash256()
+    db.session.commit()
+    #msg = Message("ford appstore password reset",
+    #    recipients=[user.email])
+    #msg.html = f"""<a href=\"{request.url_root}/password/{user.reset_hash}\">
+    #    click here to reset your password</a>"""
+    res = requests.post(
+        "https://api.mailgun.net/v3/" + current_app.config.get("MAILGUN_DOMAIN") + "/messages",
+        auth=("api", current_app.config.get("MAILGUN_KEY")),
+        data={
+            "from": "Excited User <" + "mailgun@" + current_app.config.get("MAILGUN_DOMAIN") + ">",
+            "to": [user_email],
+            "subject": "FordApps password reset",
+            "text": f"a href=\"{request.url_root}/password/{user.reset_hash}\"> click here to reset your password</a>"
+        })
+    return (res.text, 200)
+
+
+
+

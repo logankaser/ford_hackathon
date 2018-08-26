@@ -12,6 +12,7 @@ from flask import (
 from app_server import db, bcrypt
 from app_server.models import User, hash_password
 from app_server.forms import RegisterForm, LoginForm
+from secrets import randbelow
 
 bp = Blueprint("auth", __name__)
 
@@ -150,3 +151,26 @@ def get_token():
         {"WWWAuthenticate":
             "Basic realm=\"email and password must be present and valid\""}
     )
+
+
+def random_hash64():
+    hex_string = "0123456789abcdef"
+    output = ""
+    for _ in range (16):
+        output += hex_string[randbelow(16)]
+    return output
+
+
+@bp.route("/password/<reset_hash>", methods=["GET"])
+def reset_forgotten_password(reset_hash):
+    if len(reset_hash) != 64:
+        return ("Page not found", 404)
+    user = User.query.filter_by(reset_hash=reset_hash).one_or_none()
+    if not user:
+        return ("Page not found", 404)
+    user.reset_hash = ""
+    newPassword = random_hash64()
+    user.password = hash_password(newPassword)
+    db.session.commit()
+    return ("your new password is: " + newPassword, 200)
+
