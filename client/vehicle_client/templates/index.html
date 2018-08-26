@@ -59,7 +59,7 @@ const actions = {
 const app_short = (app) => (
 	article({class: "M(s03) P(s02) W(50%) Bxsh(0,0,s05,grey-5) Bgc(white) D(f) Ai(c) Fld(c) Flx(1)"}, [
 		img({
-			src: "http://localhost:5000/api/v1/app/" + app.id + "/icon",
+			src: "{{api_domain}}/api/v1/app/" + app.id + "/icon",
 			class: "Maw(60%) D(b) Bdrus(s05) Cur(p)",
 			onclick: () => history.pushState(location.pathname, "", "/" + app.id)
 		}),
@@ -86,7 +86,7 @@ const detail = ({match, _}) => (state, actions) => {
 	return article({class: "M(s03) P(s1) Bxsh(0,0,s05,grey-5) Bgc(white)"}, [
 		Link({to: "/", class: "_rLink() Fz(s3) Ff(Inconsolata) Td(u) C(grey-3) C(blue):h"}, "← Back"),
 		img({
-			src: "http://localhost:5000/api/v1/app/" + app.id + "/icon",
+			src: "{{api_domain}}/api/v1/app/" + app.id + "/icon",
 			class: "Maw(100%) Mx(a) D(b) Bdrus(s05) Bd(s,s05,grey-5) My(s02)"
 		}),
 		div({class: "C(#191919) Fz(s4)"}, app.name),
