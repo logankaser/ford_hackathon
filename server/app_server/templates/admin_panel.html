@@ -1,9 +1,14 @@
-{% extends "layout.html" %}
+{% extends "layout_page.html" %}
 
-{% block head %}
+{% block title %}
+Admin Panel
 {% endblock %}
 
-{% block content %}
+{% block nav %}
+<a href="/" class="_rLink() Ff(Inconsolata) Td(u) C(grey-3) C(blue):h">← Back</a>
+{% endblock %}
+
+{% block body %}
 
 <main class="Mx(a) W(100%) Maw(50rem) D(f) Pt(s04) Px(s04) Flx(1) Ov(h)">
 
@@ -18,10 +23,10 @@
 	{% for result in results %}
 		{% if result.app %}
 	<article class="My(s1) P(s2) Bgc(white) Bxsh(0,0,s05,grey-7) D(f) Js(sb)">
-		<img class="Maw(30%) Bdrus(s2) D(b) M(s05) Bxsh(0,0,s05,grey-6)" src="/api/v1/app/{{result.app.id}}/icon/private">
+		<img class="W(30%) H(30%) Bdrus(s2) D(b) M(s05) Bxsh(0,0,s05,grey-6)" src="/api/v1/app/{{result.app.id}}/icon/private">
 		<div class="W(100%) D(f) Fld(c) Jc(c)">
 			<a href="/admin/app/{{result.app.id}}"
-				class="Pl(s03) _rLink() Fz(s4) Tt(c) C(grey-3) C(blue):h D(b)">
+				class="Pl(s03) _rLink() Fz(s3) Tt(c) C(grey-2) C(blue):h D(b)">
 				{{result.app.name}}
 			</a>
 		</div>
@@ -45,10 +50,10 @@
 	<div class="Ovy(s) H(100%)">
 	{% for app in apps %}
 	<article class="My(s1) P(s2) Bgc(white) Bxsh(0,0,s05,grey-7) D(f) Js(sb)">
-		<img class="Maw(30%) Bdrus(s2) D(b) M(s05) Bxsh(0,0,s05,grey-6)" src="/api/v1/app/{{app.id}}/icon/private">
+		<img class="W(30%) H(30%) Bdrus(s2) D(b) M(s05) Bxsh(0,0,s05,grey-6)" src="/api/v1/app/{{app.id}}/icon/private">
 		<div class="W(100%) D(f) Fld(c) Jc(c)">
 			<a href="/admin/app/{{app.id}}"
-				class="Pl(s03) _rLink() Fz(s4) Tt(c) C(grey-3) C(blue):h D(b)">
+				class="Pl(s03) _rLink() Fz(s3) Tt(c) C(grey-2) C(blue):h D(b)">
 				{{app.name}}
 			</a>
 		</div>

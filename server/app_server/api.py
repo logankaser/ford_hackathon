@@ -75,29 +75,29 @@ def search(keyword):
     return app_schema.jsonify(output)
 
 
-@bp.route("/app/<app_id>/approve", methods=["GET", "POST"])
+@bp.route("/app/<app_id>/approve", methods=["POST"])
 @admin_required
 def approve(app_id):
     """Approve an app.
 
     :param app_id: Application ID
-    :returns: 204 - success, 400 - app does not exist
+    :returns: 200 - success, 404 - app does not exist
     """
     try:
         AppEntry.query.get(app_id).approved = True
     except Exception as e:
-        return ("", 400)
+        return ("App not found", 404)
     db.session.commit()
-    return ("", 204)
+    return ("App approved", 200)
 
 
-@bp.route("/app/<app_id>/delete", methods=["GET", "POST"])
+@bp.route("/app/<app_id>/delete", methods=["DELETE", "POST"])
 @login_required
 def delete_app(app_id):
     """Delete any app of admin or owned app if dev.
 
     :param app_id: Application ID
-    :returns: 204 - success, 400 - app does not exist, 401 - bad permission
+    :returns: 200 - success, 404 - app does not exist, 401 - bad permission
     """
     app = AppEntry.query.get(app_id)
     if not app:
@@ -108,7 +108,7 @@ def delete_app(app_id):
     os.remove(safe_join(current_app.instance_path, app_id + app.icon_ext))
     db.session.delete(app)
     db.session.commit()
-    return ("", 204)
+    return ("App Deleted", 200)
 
 
 @bp.route("/app/<app_id>/icon", methods=["GET"])
@@ -248,7 +248,7 @@ def promote_admin(user_id):
     return ("", 204)
 
 
-@bp.route("user/<user_id>/admin/demote", methods=["GET", "POST"])
+@bp.route("user/<user_id>/admin/demote", methods=["POST"])
 @admin_required
 def demote_admin(user_id):
     """Demote user to admin.
@@ -265,7 +265,7 @@ def demote_admin(user_id):
     return ("Success", 204)
 
 
-@bp.route("user/<user_id>/delete", methods=["GET", "POST"])
+@bp.route("user/<user_id>/delete", methods=["DELETE", "POST"])
 @login_required
 def delete_user(user_id):
     """Delete a user, requires admin or account ownership.
@@ -286,7 +286,7 @@ def delete_user(user_id):
         db.session.delete(app)
     db.session.delete(user)
     db.session.commit()
-    return ("Success", 204)
+    return ("Success", 200)
 
 
 def random_hash256():

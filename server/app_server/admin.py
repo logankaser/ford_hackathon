@@ -40,7 +40,7 @@ def admin_home():
                 pushApp = True
 
     return render_template(
-        "admin_profile.html", apps=apps, form=form, results=results)
+        "admin_panel.html", apps=apps, form=form, results=results)
 
 
 @bp.route("/app/<app_id>", methods=["GET"])
