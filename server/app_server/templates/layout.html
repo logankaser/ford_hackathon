@@ -17,7 +17,7 @@
 	{% if messages %}
 		<div class="Pos(a) W(100%) P(s1)">
 		{% for message in messages %}
-			<div onclick="this.remove()" class="Ta(c) W(50%)@sm Mx(a) Bgc(blue) Bdrus(s04) P(s04) M(s03) C(white) Fz(s2) Trsp(all) Trsdu(1s)" >{{ message }}</div>
+			<div onclick="this.parentNode.remove()" class="Ta(c) W(50%)@sm Mx(a) Bgc(blue) Bdrus(s04) P(s04) M(s03) C(white) Fz(s2) Trsp(all) Trsdu(1s)" >{{ message }}</div>
 		{% endfor %}
 		</div>
 	{% endif %}

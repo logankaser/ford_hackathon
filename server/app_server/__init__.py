@@ -81,6 +81,6 @@ def create_app(test_config=None):
     @app.route("/")
     @login_required
     def index():
-        return render_template("dev_home.html")
+        return render_template("home.html")
 
     return app

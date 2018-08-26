@@ -1,7 +1,7 @@
 #!/bin/sh
 
 NAME=example_app
-virtualenv -p $(which python3.7) .build_env
+virtualenv -p $(which python3) .build_env
 source .build_env/bin/activate
 pip install pex wheel
 mkdir -p build
