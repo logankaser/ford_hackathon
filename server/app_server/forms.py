@@ -34,6 +34,7 @@ class AppCreationForm(FlaskForm):
     icon = FileField("App Icon", validators=[FileRequired()])
     submit = SubmitField("Submit App")
 
+
 class AdminSearchForm(FlaskForm):
     """Admin Search Form."""
 

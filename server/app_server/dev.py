@@ -62,7 +62,8 @@ def new_app():
 def dev_app_page(app_id):
     """Developer status page.
 
-    :raises 400: Wrong user access to the app.
+    :raises 403: Wrong user access to the app.
+    :raises 404: Not the right app
     :returns: Information of app metadata
     """
     app = AppEntry.query.get(int(app_id))
