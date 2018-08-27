@@ -24,13 +24,24 @@ bp = Blueprint("local", __name__)
 
 @bp.route("/list")
 def list_installed_apps():
-    """List installed apps."""
+    """List installed apps.
+
+    :return: None
+    """
     return "None"
 
 
 @bp.route("/install_app/<app_id>", methods=["POST"])
 def install_app(app_id):
+<<<<<<< HEAD
     """Install an app."""
+=======
+    """Install an app.
+
+    :returns: App installed
+    :raises 500: Checksum not found; failed to fetch app package; unmatched checksum
+    """
+>>>>>>> client documentation
     app_json = requests.get(
         current_app.config.get("API_DOMAIN") + "/api/v1/app/" + app_id).json()
     checksum = app_json.get("checksum")
@@ -76,7 +87,14 @@ def install_app(app_id):
 
 @bp.route("/run_app/<app_id>")#, methods=["POST"])
 def run_app(app_id):
+<<<<<<< HEAD
     """Run an installed app."""
+=======
+    """Run an installed app.
+
+    :returns: Execute app
+    """
+>>>>>>> client documentation
     app_install = AppInstallation.query.filter_by(app_id=app_id).one_or_none()
     if not app_install:
         return ("App not installed", 400)

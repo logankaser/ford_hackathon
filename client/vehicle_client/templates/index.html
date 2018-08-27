@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-	
+
 {% block head %}
 <script src="https://unpkg.com/hyperapp@1.2.8/dist/hyperapp.js"></script>
 <script src="https://unpkg.com/@hyperapp/router@0.7.0/dist/router.js"></script>
@@ -92,7 +92,11 @@ const detail = ({match, _}) => (state, actions) => {
 		div({class: "C(#191919) Fz(s4)"}, app.name),
 		div({class: "Lh(1.5) P (s03) Wob(ba)"}, app.description),
 		time({class: "Ff(Inconsolata) Mb(s02)"}, "Updated " + formatDate(app.updated)),
+<<<<<<< HEAD
 		(state.installing ? 
+=======
+		(state.installing ?
+>>>>>>> client documentation
 			div({
 				class: "Py(s04) C(green)"
 			}, "Installing " + state.installing) :
