@@ -3,6 +3,13 @@ Client
 ======
 
 -----
+Init
+-----
+
+.. automodule:: vehicle_client.__init__
+    :members:
+
+-----
 Local
 -----
 
