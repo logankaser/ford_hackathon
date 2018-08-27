@@ -3,6 +3,7 @@ Client
 ======
 
 -----
+<<<<<<< HEAD
 Init
 -----
 
@@ -10,6 +11,8 @@ Init
     :members:
 
 -----
+=======
+>>>>>>> 766a9ae1c9f1792d3d543ed9e3aa6b4fe56c4681
 Local
 -----
 
