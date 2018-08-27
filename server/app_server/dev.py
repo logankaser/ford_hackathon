@@ -28,11 +28,15 @@ def new_app():
     """Page for uploading new apps.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     :returns: app creation page,
     or redirection to app page on succesful form submission
 =======
     :returns: app creation page, or redirection to app page on succesful form submission
 >>>>>>> added tos page
+=======
+    :returns: App creation page, or redirection to app page on succesful form submission
+>>>>>>> changed 'raises' into 'returns'
     """
     if not g.user.dev:
         return redirect(url_for("dev.dev_tos"))
@@ -88,6 +92,7 @@ def dev_app_page(app_id):
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     :returns: app page for developer or 403/404 if invalid id/bad permission
 <<<<<<< HEAD
 >>>>>>> added tos page
@@ -103,6 +108,11 @@ def dev_app_page(app_id):
     :raises 404: Not the right app
     :returns: Information of app metadata
 >>>>>>> server
+=======
+    :returns: Success - Information of app metadata
+    :returns: 403 - Wrong user access to the app.
+    :returns: 404 - Not the right app
+>>>>>>> changed 'raises' into 'returns'
     """
     app = AppEntry.query.get(int(app_id))
     if not app:

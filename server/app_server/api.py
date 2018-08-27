@@ -41,7 +41,7 @@ def app_json(app_id):
 def apps_json():
     """Top 100 public app profiles by downloads.
 
-    :returns: JSON of up to 100 public app profiles from most to least downloaded
+    :returns: Success - JSON of up to 100 public app profiles from most to least downloaded
     **Limitations:** top 100 apps are calculated each api call and not stored
     anywhere
     """
@@ -79,7 +79,13 @@ def approve(app_id):
     """Approve an app.
 
     :param app_id: Application ID
+<<<<<<< HEAD
     :returns: 200 - success, 404 - app does not exist
+=======
+    :returns: 200 - success
+    :returns: 404 - app does not exist
+    :returns: 401 - bad permission
+>>>>>>> changed 'raises' into 'returns'
     """
     try:
         AppEntry.query.get(app_id).approved = True
@@ -95,7 +101,13 @@ def delete_app(app_id):
     """Delete any app of admin or owned app if dev.
 
     :param app_id: Application ID
+<<<<<<< HEAD
     :returns: 200 - success, 404 - app does not exist, 401 - bad permission
+=======
+    :returns: 200 - success
+    :returns: 404 - app does not exist
+    :returns: 401 - bad permission
+>>>>>>> changed 'raises' into 'returns'
     """
     app = AppEntry.query.get(app_id)
     if not app:
@@ -114,7 +126,12 @@ def public_app_icon(app_id):
     """Get the icon of an approved app.
 
     :param app_id: Application ID
+<<<<<<< HEAD
     :returns: file contents of image or 404 if app does not exist
+=======
+    :returns: Success - file contents of image
+    :returns: 400 - app does not exist
+>>>>>>> changed 'raises' into 'returns'
     """
     app = AppEntry.query.get(app_id)
     if not app or not app.approved:
@@ -144,8 +161,9 @@ def private_app_icon(app_id):
     """Get the icon of any app.
 
     :param app_id: AppEntry ID
-    :returns: file contents of image - success, 400 - app does not exist,
-    401 - bad permission
+    :returns: Success - file contents of image
+    :returns: 400 - app does not exist
+    :returns: 401 - bad permission
 
     only admins or the developer of the app have valid permissions
     """
@@ -176,8 +194,9 @@ def make_dev():
 def private_user_info(user_id):
     """Get a user's private infomation as JSON.
 
-    :returns: JSON of user - success, 400 - user does not exist,
-    401 - bad permission
+    :returns: Success - JSON of user
+    :returns: 400 - user does not exist
+    :returns: 401 - bad permission
     """
     user = User.query.get(user_id)
     if not user:
@@ -190,7 +209,8 @@ def private_user_info(user_id):
 def public_user_info(user_id):
     """Get a JSON string of a user's public infomation.
 
-    :returns: JSON of user - success, 400 - user does not exist
+    :returns: Success - JSON of user
+    :returns: 400 - user does not exist
     """
     user = User.query.get(user_id)
     if not user:
@@ -221,7 +241,9 @@ def public_user_apps(user_id):
 def private_user_apps(user_id):
     """Get a list of private App profiles belonging to user.
 
-    :returns: JSON list of private app profiles or 401 if bad permissions
+    :returns: Success - JSON list of private app profiles
+    :returns: 401 - bad permissions
+
     only admins and the developer have valid permissions
     """
     if int(user_id) != g.user.id and not g.user.admin:
@@ -251,7 +273,8 @@ def promote_admin(user_id):
 def demote_admin(user_id):
     """Demote user to admin.
 
-    :returns: 204 - success, 400 - user does not exist
+    :returns: 204 - success
+    :returns: 400 - user does not exist
     """
     if int(user_id) == g.user.id or user.id == 1:
         return ("Cannot demote self", 401)
@@ -268,7 +291,8 @@ def demote_admin(user_id):
 def delete_user(user_id):
     """Delete a user, requires admin or account ownership.
 
-    :returns: 404 on user not found, 401 on bad permissions
+    :returns: 404 on user not found
+    :returns: 401 on bad permissions
     """
     user = User.query.get(user_id)
     if not user or user.id == 1:
