@@ -107,6 +107,8 @@ class UserSchema(ma.ModelSchema):
     updated = JsTime()
 
     class Meta:
+        """Use all fields."""
+
         model = User
 
 
@@ -117,7 +119,8 @@ class UserPublicSchema(ma.ModelSchema):
     updated = JsTime()
 
     class Meta:
-        """This is a test.""""
+        """Public safe fields."""
+
     fields = (
         "username",
         "created",
