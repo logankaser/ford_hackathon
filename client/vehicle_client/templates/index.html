@@ -83,31 +83,6 @@ const actions = {
 	show_installed: () => state => {console.log(state)}
 }
 
-const app_short = (app) => (
-	article({class: "M(s03) W(50%) P(s02) Bxsh(0,0,s05,grey-7) Bgc(white) D(f) Ai(c) Fld(c) Flx(1)"}, [
-		img({
-			src: "{{api_domain}}/api/v1/app/" + app.id + "/icon",
-			class: "D(b) Mah(20rem) W(80%) My(s2) Mx(a) Bdrus(s05) Bxsh(0,0,s05,grey-7) Cur(p)",
-			onclick: () => history.pushState(location.pathname, "", "/" + app.id)
-		}),
-		Link({
-			id: app.id,
-			to: "/" + app.id,
-			class: "_rLink() C(blue) Op(.7):h Fz(s3)"
-		}, app.name),
-		div({class: "Ff(Inconsolata) M(s03) Bxsh(0,0,s05,grey-7) Ellip() Ov(h) W(100%) P(s04)"}, app.description),
-		div({class: "Py(s04) Mt(s03) C(grey-2)"},[
-			"Updated: ", time({class: "C(black) Ff(Inconsolata)"}, formatDate(app.updated))
-		])
-	])
-)
-
-const home = () => (state, actions) => (
-	section({class: "D(f) W(100%) Flw(w)"},
-		Array.from(state.apps.values()).map(app_short)
-	)
-);
-
 const install_button = (app, app_id) => (state, actions) => {
 	if (state.installed.has(app_id))
 		return div({
@@ -127,7 +102,7 @@ const detail = ({match, _}) => (state, actions) => {
 	app_id = parseInt(match.params["app_id"])
 	const app = state.apps.get(app_id)
 	if (!app)
-		return div("Loading..")
+		return div({class: "Ta(c) Fz(s4) C(blue)"}, "Loading..")
 	return main({class: "Maw(40rem) Mx(a) Mt(s2) Px(s2) Px(s5)@md Py(s4) Bgc(white) Bxsh(0,0,s05,grey-7) Fz(s2)"}, [
 		Link({to: "/", class: "_rLink() Fz(s3) Ff(Inconsolata) Td(u) C(grey-3) C(blue):h"}, "← Back"),
 		img({
@@ -143,19 +118,56 @@ const detail = ({match, _}) => (state, actions) => {
 	])
 };
 
-const installed = () => (
-	h1("Installed")
+const app_short = (app) => (
+	article({class: "My(s03) Mx(s03)@md Maw(100%) Miw(100%) Miw(40%)@md Maw(40%)@md P(s02) Bxsh(0,0,s05,grey-7) Bgc(white) D(f) Ai(c) Fld(c) Flx(1)"}, [
+		img({
+			src: "{{api_domain}}/api/v1/app/" + app.id + "/icon",
+			class: "D(b) Mah(20rem) W(80%) My(s2) Mx(a) Bdrus(s05) Bxsh(0,0,s05,grey-7) Cur(p)",
+			onclick: () => history.pushState(location.pathname, "", "/store/" + app.id)
+		}),
+		Link({
+			to: "/store/" + app.id,
+			class: "_rLink() C(blue) Op(.7):h Fz(s3)"
+		}, app.name),
+		div({class: "Ff(Inconsolata) M(s03) Bxsh(0,0,s05,grey-7) Ellip() W(100%) Ov(h) P(s04) Wob(ba)"}, app.description),
+		div({class: "Py(s04) Mt(s03) C(grey-2)"},[
+			"Updated: ", time({class: "C(black) Ff(Inconsolata)"}, formatDate(app.updated))
+		])
+	])
+)
+
+const store = () => (state, actions) => (
+	section({class: "D(f) W(100%) Flw(w) Jc(c)"},
+		Array.from(state.apps.values()).map(app_short)
+	)
+);
+
+const launch_tile = (app) => (
+	article({class: "My(s03) Mx(s03)@md Maw(100%) Miw(100%) Miw(40%)@md Maw(40%)@md P(s02) Bxsh(0,0,s05,grey-7) Bgc(white) D(f) Ai(c) Fld(c) Flx(1)"}, [
+		img({
+			src: "{{api_domain}}/api/v1/app/" + app.id + "/icon",
+			class: "D(b) Mah(20rem) W(80%) My(s2) Mx(a) Bdrus(s05) Bxsh(0,0,s05,grey-7) Cur(p)",
+			onclick: () => $.post("/run_app/" + app.id, "text", 0, console.log)
+		}),
+		div({class: "Ta(c) Fz(s3) C(black) Fw(b) Ff(Inconsolata) Py(s03)"}, app.name)
+	])
+)
+
+const installed = () => (state, actions) => (
+	section({class: "D(f) W(100%) Flw(w) Jc(c)"},
+		Array.from(state.installed.values()).map(launch_tile)
+	)
 );
 
 const view = (state, actions) => (
-	main({class: "Mx(a) W(100%) H(100%) Maw(40rem)"}, [
+	main({class: "Mx(a) W(100%) H(100%) Maw(60rem)"}, [
 		div({class: "D(f) Jc(space-evenly) P(s04) Fz(s3)"}, [
 			Link({to: "/installed", class: "_rLink() C(grey-2) P(s04) C(blue):h"}, "Installed Apps"),
-			Link({to: "/", class: "_rLink() C(grey-2) P(s04) C(blue):h"}, "Home")
+			Link({to: "/", class: "_rLink() C(grey-2) P(s04) C(blue):h"}, "Get Apps")
 		]),
-		Route({path: "/",  render: home}),
-		Route({path: `/:app_id`,  render: detail}),
-		Route({path: "/installed", render: installed})
+		Route({path: "/",  render: store}),
+		Route({path: "/installed", render: installed}),
+		Route({path: `/store/:app_id`,  render: detail})
 	])
 )
 

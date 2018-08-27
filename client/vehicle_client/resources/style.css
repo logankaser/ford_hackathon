@@ -28,19 +28,25 @@
 .Fw\(b\) {font-weight: bold;}
 .Fz\(s2\) {font-size: 1.2rem;}
 .Fz\(s3\) {font-size: 1.44rem;}
+.Fz\(s4\) {font-size: 2rem;}
 .H\(100\%\) {height: 100%;}
+.Jc\(c\) {-webkit-box-pack: center; -ms-flex-pack: center; justify-content: center;}
 .Jc\(space-evenly\) {-webkit-box-pack: space-evenly; -ms-flex-pack: space-evenly; justify-content: space-evenly;}
 .Lh\(s3\) {line-height: 1.44rem;}
 .M\(0\) {margin: 0;}
 .M\(s03\) {margin: .5rem;}
 .Mah\(20rem\) {max-height: 20rem;}
+.Maw\(100\%\) {max-width: 100%;}
 .Maw\(40rem\) {max-width: 40rem;}
+.Maw\(60rem\) {max-width: 60rem;}
 .Mih\(6rem\) {min-height: 6rem;}
+.Miw\(100\%\) {min-width: 100%;}
 .Mt\(s03\) {margin-top: .5rem;}
 .Mt\(s2\) {margin-top: 1.2rem;}
 .Mx\(a\) {margin-left: auto; margin-right: auto;}
 .My\(0\) {margin-top: 0; margin-bottom: 0;}
 .My\(s02\) {margin-top: .694rem; margin-bottom: .694rem;}
+.My\(s03\) {margin-top: .5rem; margin-bottom: .5rem;}
 .My\(s2\) {margin-top: 1.2rem; margin-bottom: 1.2rem;}
 .Op\(\.7\)\:h:hover {opacity: .7;}
 .Op\(\.8\)\:h:hover {opacity: .8;}
@@ -55,9 +61,17 @@
 .Ta\(c\) {text-align: center;}
 .Td\(u\) {text-decoration: underline;}
 .W\(100\%\) {width: 100%;}
-.W\(50\%\) {width: 50%;}
 .W\(80\%\) {width: 80%;}
 .Wob\(ba\) {word-break: break-all;}
+@media all and (min-width: 48rem) {
+.Maw\(40\%\)\@md {max-width: 40%;}
+}
+@media all and (min-width: 48rem) {
+.Miw\(40\%\)\@md {min-width: 40%;}
+}
+@media all and (min-width: 48rem) {
+.Mx\(s03\)\@md {margin-left: .5rem; margin-right: .5rem;}
+}
 @media all and (min-width: 48rem) {
 .Px\(s5\)\@md {padding-left: 4rem; padding-right: 4rem;}
 }
