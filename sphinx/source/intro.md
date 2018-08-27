@@ -1,38 +1,74 @@
-# How it works?
+# About
 
-This is just one paragraph
+Car Appstore from scratch for the Ford hackathon using Flask.
 
-## List
+### Features
+* User creation
+* User roles
+* Application submission and approval
+* Application checksum verification
+* Multiple Application Types
+* Password recovery
+* SPA Client
 
-blah blah blah
-* one
-* two
-* three
+## Requirements
 
-## Sample
-
-```C
-#include <stdio.h>
-
-int main(void)
-{
-	printf("Hell No");
-	return (0);
-}
+*Server*
+```
+bcrypt==3.1.4
+blinker==1.4
+certifi==2018.8.24
+cffi==1.11.5
+chardet==3.0.4
+click==6.7
+Flask==1.0.2
+Flask-Bcrypt==0.7.1
+Flask-Cors==3.0.6
+flask-marshmallow==0.9.0
+flask-msearch==0.1.7
+Flask-SQLAlchemy==2.3.2
+Flask-WTF==0.14.2
+idna==2.7
+itsdangerous==0.24
+Jinja2==2.10
+MarkupSafe==1.0
+marshmallow==2.15.4
+marshmallow-sqlalchemy==0.14.1
+pycparser==2.18
+PyJWT==1.6.4
+requests==2.19.1
+six==1.11.0
+SQLAlchemy==1.2.10
+urllib3==1.23
+Werkzeug==0.14.1
+Whoosh==2.7.4
+WTForms==2.2.1
+```
+*Client*
+```
+certifi==2018.8.24
+chardet==3.0.4
+click==6.7
+Flask==1.0.2
+flask-marshmallow==0.9.0
+Flask-SQLAlchemy==2.3.2
+idna==2.7
+itsdangerous==0.24
+Jinja2==2.10
+MarkupSafe==1.0
+marshmallow==2.15.4
+marshmallow-sqlalchemy==0.14.1
+requests==2.19.1
+six==1.11.0
+SQLAlchemy==1.2.10
+urllib3==1.23
+Werkzeug==0.14.1
 ```
 
-```python
-from setuptools import find_packages, setup
+## Team
 
-setup(
-    name="vehicle_client",
-    version="1.0.0",
-    packages=find_packages(),
-    include_package_data=True,
-    zip_safe=False,
-    install_requires=[
-        "flask",
-        "flask-sqlalchemy"
-    ],
-)
-```
+[Logan Kaser](https://github.com/logankaser)
+
+[Zeid Tisnes](https://github.com/zedin27)
+
+[Theo Walton](https://github.com/theo-walton)

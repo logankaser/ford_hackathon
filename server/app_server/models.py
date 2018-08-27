@@ -101,27 +101,31 @@ class User(db.Model):
 
 
 class UserSchema(ma.ModelSchema):
-    """Serialize a User to JSON"""
+    """Serialize a User to JSON."""
 
     created = JsTime()
     updated = JsTime()
 
     class Meta:
+        """Use all fields."""
+
         model = User
 
 
 class UserPublicSchema(ma.ModelSchema):
-    """serialize public UserSchema info to json"""
+    """Serialize public UserSchema info to JSON."""
 
     created = JsTime()
     updated = JsTime()
 
     class Meta:
-        fields = (
-            "username",
-            "created",
-            "dev",
-            "admin")
+        """Public safe fields."""
+
+    fields = (
+        "username",
+        "created",
+        "dev",
+        "admin")
 
 
 class AppEntry(db.Model):
@@ -154,7 +158,7 @@ class AppSchema(ma.ModelSchema):
 
 
 class AppPublicSchema(ma.ModelSchema):
-    """Serialize public AppEntry info to json"""
+    """Serialize public AppEntry info to JSON."""
 
     created = JsTime()
     updated = JsTime()

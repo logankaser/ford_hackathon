@@ -32,8 +32,8 @@ def load_logged_in_user():
 def login_required(view):
     """Require a logged in user.
 
-    :param view: view to wrap
-    :returns: wrapped view
+    :param view: View to wrap.
+    :returns: Wrapped view.
     """
     @functools.wraps(view)
     def wrapped_view(**kwargs):
@@ -46,8 +46,8 @@ def login_required(view):
 def dev_required(view):
     """Require a logged in dev user.
 
-    :param view: view to wrap
-    :returns: wrapped view
+    :param view: View to wrap.
+    :returns: Wrapped view.
     """
     @functools.wraps(view)
     def wrapped_view(**kwargs):
@@ -61,8 +61,8 @@ def dev_required(view):
 def admin_required(view):
     """Require a logged in admin user.
 
-    :param view: view to wrap
-    :returns: wrapped view
+    :param view: View to wrap.
+    :returns: Wrapped view.
     """
     @functools.wraps(view)
     def wrapped_view(**kwargs):
@@ -77,7 +77,8 @@ def admin_required(view):
 def register():
     """Registration form.
 
-    :returns: Registered user form data or False on failure
+    :returns: True - registered user form data
+    :returns: False - on failure.
     """
     form = RegisterForm()
     if form.validate_on_submit():
@@ -106,7 +107,8 @@ def register():
 def login():
     """Login with session based authentication.
 
-    :returns: On success redircts to home, otherwise back to the login page.
+    :returns: Success - Redircts to home
+    :returns: False - Redirects to login page.
     """
     if g.user:
         return redirect(url_for("index"))
@@ -141,7 +143,8 @@ def logout():
 def get_token():
     """Get a new auth token (JWT).
 
-    :returns: Token or HTTP status code 401 on error.
+    :returns: Success - Token
+    :returns: 401 - HTTP status code on error.
     """
     email = request.form.get("email")
     password = request.form.get("password")
@@ -159,7 +162,7 @@ def get_token():
 
 @bp.route("/password/<reset_hash>", methods=["GET", "POST"])
 def reset_forgotten_password(reset_hash):
-    """A form where user can reset password.
+    """Form where user can reset password.
 
     :returns: Password reset form, or redirection when succesful
 
@@ -186,7 +189,7 @@ def reset_forgotten_password(reset_hash):
 @bp.route("/password/change", methods=["GET", "POST"])
 @login_required
 def change_password():
-    """A form where user can change password.
+    """Form where user can change password.
 
     :returns: Password change form
 
@@ -205,7 +208,3 @@ def change_password():
         else:
             flash("Old password incorrect")
     return render_template("password_change.html", form=form)
-
-
-
-
