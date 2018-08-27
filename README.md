@@ -7,18 +7,7 @@
 Car Appstore from scratch for the Ford hackathon using Flask.
 
 ![test](resources/login.png)
-![test](resources/register.png)
-![test](resources/register2.png)
-![test](resources/home_user.png)
-![test](resources/tos.png)
-![test](resources/home_dev.png)
-![test](resources/app_submission.png)
 ![test](resources/app_overview.png)
-![test](resources/home_admin.png)
-![test](resources/admin_panel.png)
-![test](resources/admin_approve.png)
-![test](resources/admin_search.png)
-![test](resources/admin_management.png)
 
 ### Features
 * User creation
