@@ -161,6 +161,7 @@ def get_token():
 
 @bp.route("/password/forgot", methods=["GET", "POST"])
 def forgotten_password():
+    """A form where you can enter your email to recieve a reset link."""
     form = ForgottenPasswordForm()
     if form.validate_on_submit():
         user_email = request.form["email"]
