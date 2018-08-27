@@ -115,10 +115,10 @@ def approve(app_id):
     :param app_id: Application ID
     :returns: 200 - success, 404 - app does not exist
     """
-    try:
-        AppEntry.query.get(app_id).approved = True
-    except Exception as e:
-        return ("App not found", 404)
+    app = AppEntry.query.get(app_id)
+    if not app:
+        return ("App does not exist", 400)
+    app.approved = True
     db.session.commit()
     send_email(User.query.get(app.dev_id).email,
                "Congratulations, your app is now in our store!",
