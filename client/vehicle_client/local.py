@@ -35,8 +35,11 @@ def list_installed_apps():
 def install_app(app_id):
     """Install an app.
 
-    :returns: App installed
-    :raises 500: Checksum not found; failed to fetch app package; unmatched checksum
+    :returns: Success- App installed
+    :returns: 500 - Checksum not found; failed to fetch app package; unmatched checksum
+    :returns: 500 - Failed to fetch app package
+    :returns: 500 - Unmatched checksum
+    :returns: 500 - Error unpacking app package
     """
     app_json = requests.get(
         current_app.config.get("API_DOMAIN") + "/api/v1/app/" + app_id).json()
@@ -85,7 +88,8 @@ def install_app(app_id):
 def run_app(app_id):
     """Run an installed app.
 
-    :returns: Execute app
+    :returns: Success - Execute app
+    :returns: 400 - App not installed
     """
     app_install = AppInstallation.query.filter_by(app_id=app_id).one_or_none()
     if not app_install:

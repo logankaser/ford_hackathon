@@ -29,8 +29,8 @@ def load_logged_in_user():
 def login_required(view):
     """Require a logged in user.
 
-    :param view: view to wrap.
-    :returns: wrapped view.
+    :param view: View to wrap.
+    :returns: Wrapped view.
     """
     @functools.wraps(view)
     def wrapped_view(**kwargs):
@@ -43,8 +43,8 @@ def login_required(view):
 def dev_required(view):
     """Require a logged in dev user.
 
-    :param view: view to wrap.
-    :returns: wrapped view.
+    :param view: View to wrap.
+    :returns: Wrapped view.
     """
     @functools.wraps(view)
     def wrapped_view(**kwargs):
@@ -58,8 +58,8 @@ def dev_required(view):
 def admin_required(view):
     """Require a logged in admin user.
 
-    :param view: view to wrap.
-    :returns: wrapped view.
+    :param view: View to wrap.
+    :returns: Wrapped view.
     """
     @functools.wraps(view)
     def wrapped_view(**kwargs):
@@ -74,7 +74,8 @@ def admin_required(view):
 def register():
     """Registration form.
 
-    :returns: Registered user form data or False on failure.
+    :returns: True - registered user form data
+    :returns: False - on failure.
     """
     form = RegisterForm()
     if form.validate_on_submit():
@@ -103,7 +104,8 @@ def register():
 def login():
     """Login with session based authentication.
 
-    :returns: On success redircts to home, otherwise back to the login page.
+    :returns: Success - redircts to home
+    :returns: False - redirects to login page.
     """
     if g.user:
         return redirect(url_for("index"))
@@ -136,7 +138,8 @@ def logout():
 def get_token():
     """Get a new auth token (JWT).
 
-    :returns: Token or HTTP status code 401 on error.
+    :returns: Success - token
+    :returns: 401 - HTTP status code on error.
     """
     email = request.form.get("email")
     password = request.form.get("password")
