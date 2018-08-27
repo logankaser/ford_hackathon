@@ -119,7 +119,6 @@ class UserPublicSchema(ma.ModelSchema):
     class Meta:
         fields = (
             "username",
-            "email",
             "created",
             "dev",
             "admin")

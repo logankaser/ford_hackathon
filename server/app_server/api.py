@@ -22,6 +22,37 @@ bp = Blueprint("api/v1", __name__, url_prefix="/api/v1")
 CORS(bp)
 
 
+def random_hash256():
+    """Random 256bithash."""
+    hex_string = "0123456789abcdef"
+    output = ""
+    for _ in range(64):
+        output += hex_string[randbelow(16)]
+    return output
+
+
+def send_email(to, subject, message):
+    """Sends an email.
+    :param to: email address of reciever
+    :param subject: subject of email
+    :param message: body of email
+    """
+    res = requests.post(
+        "https://api.mailgun.net/v3/" +
+        current_app.config.get("MAILGUN_DOMAIN") +
+        "/messages",
+        auth=("api", current_app.config.get("MAILGUN_KEY")),
+        data={
+            "from": "No Reply <" +
+                    "noreply@" +
+                    current_app.config.get("MAILGUN_DOMAIN") +
+                    ">",
+            "to": [to],
+            "subject": subject,
+            "html": message
+        })
+
+
 @bp.route("/app/<app_id>")
 def app_json(app_id):
     """JSON for public App.
@@ -84,11 +115,14 @@ def approve(app_id):
     :param app_id: Application ID
     :returns: 200 - success, 404 - app does not exist
     """
-    try:
-        AppEntry.query.get(app_id).approved = True
-    except Exception as e:
-        return ("App not found", 404)
+    app = AppEntry.query.get(app_id)
+    if not app:
+        return ("App does not exist", 400)
+    app.approved = True
     db.session.commit()
+    send_email(User.query.get(app.dev_id).email,
+               "Congratulations, your app is now in our store!",
+               app.name + " was just accepted into our store.")
     return ("App approved", 200)
 
 
@@ -107,6 +141,10 @@ def delete_app(app_id):
         return ("Bad permissions", 401)
     os.remove(safe_join(current_app.instance_path, app_id + ".tar.gz"))
     os.remove(safe_join(current_app.instance_path, app_id + app.icon_ext))
+    if g.user.admin:
+        send_email(User.query.get(app.dev_id).email,
+                   "Your app was removed by an admin",
+                   app.name + " has just been removed from our store.")
     db.session.delete(app)
     db.session.commit()
     return ("App Deleted", 200)
@@ -137,6 +175,8 @@ def public_app_download(app_id):
     app = AppEntry.query.get(app_id)
     if not app or not app.approved:
         return ("App not found", 404)
+    app.downloads += 1
+    db.session.commit()
     file_path = safe_join(current_app.instance_path, str(app.id) + ".tar.gz")
     return send_file(file_path, conditional=True)
 
@@ -256,7 +296,7 @@ def demote_admin(user_id):
 
     :returns: 204 - success, 400 - user does not exist
     """
-    if int(user_id) == g.user.id or user.id == 1:
+    if int(user_id) == g.user.id or user_id == "1":
         return ("Cannot demote self", 401)
     try:
         User.query.get(user_id).admin = False
@@ -285,18 +325,13 @@ def delete_user(user_id):
         os.remove(
            safe_join(current_app.instance_path, str(app.id) + app.icon_ext))
         db.session.delete(app)
+    if g.user.admin:
+        send_email(user.email,
+                   "Your account was deleted by an admin",
+                   "We decided to delete your account. lol")
     db.session.delete(user)
     db.session.commit()
     return ("Success", 200)
-
-
-def random_hash256():
-    """Random 256bithash."""
-    hex_string = "0123456789abcdef"
-    output = ""
-    for _ in range(64):
-        output += hex_string[randbelow(16)]
-    return output
 
 
 @bp.route("user/<user_email>/password/reset", methods=["GET", "POST"])
@@ -312,13 +347,9 @@ def forgot_password(user_email):
         return ("User does not exist", 404)
     user.reset_hash = random_hash256()
     db.session.commit()
-    res = requests.post(
-        "https://api.mailgun.net/v3/" + current_app.config.get("MAILGUN_DOMAIN") + "/messages",
-        auth=("api", current_app.config.get("MAILGUN_KEY")),
-        data={
-            "from": "No Reply <" + "noreply@" + current_app.config.get("MAILGUN_DOMAIN") + ">",
-            "to": [user_email],
-            "subject": "FordApps password reset",
-            "html": f"<a href=\"{request.url_root}password/{user.reset_hash}\"> click here to reset your password</a>"
-        })
+    send_email(user_email,
+               "FordApps password reset",
+               f"""<a href=\"{request.url_root}
+               password/{user.reset_hash}
+               \"> click here to reset your password</a>""")
     return (res.text, 200)
