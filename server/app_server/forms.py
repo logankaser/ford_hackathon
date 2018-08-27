@@ -79,10 +79,13 @@ class DevTOSForm(FlaskForm):
     submit = SubmitField("Search")
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> edit for linter pycodestyle
 =======
 =======
 >>>>>>> edit for linter pycodestyle
+=======
+>>>>>>> server
 
 
 class DevTOSForm(FlaskForm):
@@ -95,9 +98,12 @@ class DevTOSForm(FlaskForm):
 >>>>>>> added tos form
 =======
     submit = SubmitField("I agree to the Terms of Service")
+<<<<<<< HEAD
 >>>>>>> added tos page
 =======
     submit = SubmitField("I agree to the Terms of Service")
 =======
 >>>>>>> edit for linter pycodestyle
 >>>>>>> edit for linter pycodestyle
+=======
+>>>>>>> server

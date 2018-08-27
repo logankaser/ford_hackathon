@@ -41,8 +41,7 @@ def app_json(app_id):
 def apps_json():
     """Top 100 public app profiles by downloads.
 
-    :returns: JSON of up to 100 public app profiles from most to least downloaded\n
-
+    :returns: JSON of up to 100 public app profiles from most to least downloaded
     **Limitations:** top 100 apps are calculated each api call and not stored
     anywhere
     """
@@ -61,8 +60,7 @@ def search(keyword):
     """Best 100 public app profiles that match search phrase.
 
     :param keyword: phrase used for searching
-    :returns: JSON of up to 100 public app profiles from most relevant to least relevant\n
-
+    :returns: JSON of up to 100 public app profiles from most relevant to least relevant
     **Limitations:** only words in the app name and description are matched
     """
     results = AppEntry.query.msearch(keyword, fields=["name", "description"]).\

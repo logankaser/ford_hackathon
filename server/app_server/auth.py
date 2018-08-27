@@ -30,8 +30,8 @@ def load_logged_in_user():
 def login_required(view):
     """Require a logged in user.
 
-    :param view: view to wrap
-    :returns: wrapped view
+    :param view: view to wrap.
+    :returns: wrapped view.
     """
     @functools.wraps(view)
     def wrapped_view(**kwargs):
@@ -44,8 +44,8 @@ def login_required(view):
 def dev_required(view):
     """Require a logged in dev user.
 
-    :param view: view to wrap
-    :returns: wrapped view
+    :param view: view to wrap.
+    :returns: wrapped view.
     """
     @functools.wraps(view)
     def wrapped_view(**kwargs):
@@ -59,8 +59,8 @@ def dev_required(view):
 def admin_required(view):
     """Require a logged in admin user.
 
-    :param view: view to wrap
-    :returns: wrapped view
+    :param view: view to wrap.
+    :returns: wrapped view.
     """
     @functools.wraps(view)
     def wrapped_view(**kwargs):
@@ -75,7 +75,7 @@ def admin_required(view):
 def register():
     """Registration form.
 
-    :returns: Registered user form data or False on failure
+    :returns: Registered user form data or False on failure.
     """
     form = RegisterForm()
     if form.validate_on_submit():
