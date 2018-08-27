@@ -1,4 +1,4 @@
-"""API for the client."""
+"""APIs."""
 
 import functools
 import datetime
@@ -16,16 +16,49 @@ from app_server.auth import login_required, admin_required
 from flask_cors import CORS
 from secrets import randbelow
 import requests
+import os
 
 bp = Blueprint("api/v1", __name__, url_prefix="/api/v1")
 CORS(bp)
+
+
+def random_hash256():
+    """Random 256bithash."""
+    hex_string = "0123456789abcdef"
+    output = ""
+    for _ in range(64):
+        output += hex_string[randbelow(16)]
+    return output
+
+
+def send_email(to, subject, message):
+    """Sends an email.
+
+    :param to: email address of reciever
+    :param subject: subject of email
+    :param message: body of email
+    """
+    res = requests.post(
+        "https://api.mailgun.net/v3/" +
+        current_app.config.get("MAILGUN_DOMAIN") +
+        "/messages",
+        auth=("api", current_app.config.get("MAILGUN_KEY")),
+        data={
+            "from": "No Reply <" +
+                    "noreply@" +
+                    current_app.config.get("MAILGUN_DOMAIN") +
+                    ">",
+            "to": [to],
+            "subject": subject,
+            "html": message
+        })
 
 
 @bp.route("/app/<app_id>")
 def app_json(app_id):
     """JSON for public App.
 
-    :param app_id: Application ID
+    :param app_id: AppEntry ID
     :returns: JSON string of the public App
     """
     app = AppEntry.query.get(app_id)
@@ -38,11 +71,11 @@ def app_json(app_id):
 
 @bp.route("/app/top")
 def apps_json():
-    """Top 100 public app profiles by downloads.
+    """Top 100 public App profiles by downloads.
 
     :returns: JSON of up to 100 public
     app profiles from most to least downloaded
-    :limitations: top 100 apps are calculated each api call and not stored
+    **limitations** top 100 apps are calculated each api call and not stored
     anywhere
     """
     apps = AppEntry.query.order_by(AppEntry.downloads.desc()).\
@@ -57,13 +90,13 @@ def apps_json():
 
 @bp.route("/app/search/<keyword>", methods=["GET"])
 def search(keyword):
-    """Best 100 public app profiles that match search phrase.
+    """Best 100 public App profiles that match search phrase.
 
     :param keyword: phrase used for searching
     :returns: JSON of up to 100 public app profiles from
     most relevent to least
     relevent
-    :limitations: only words in the app name and description are matched
+    **limitations** only words in the app name and description are matched
     """
     results = AppEntry.query.msearch(keyword, fields=["name", "description"]).\
         filter_by(approved=True).limit(100)
@@ -80,24 +113,28 @@ def search(keyword):
 def approve(app_id):
     """Approve an app.
 
-    :param app_id: Application ID
+    :param app_id: AppEntry ID
     :returns: 204 - success, 400 - app does not exist
     """
-    try:
-        AppEntry.query.get(app_id).approved = True
-    except Exception as e:
-        return ("", 400)
+    app = AppEntry.query.get(app_id)
+    if not app:
+        return ("App does not exist", 400)
+    app.approved = True
     db.session.commit()
+    send_email(User.query.get(app.dev_id).email,
+               "Congratulations, your app is now in our store!",
+               app.name + " was just accepted into our store.")
     return ("", 204)
 
 
 @bp.route("/app/<app_id>/delete", methods=["GET", "POST"])
 @login_required
 def delete_app(app_id):
-    """Delete any app of admin or owned app if dev.
+    """Delete any app if admin, or owned app if dev.
 
-    :param app_id: Application ID
+    :param app_id: AppEntry ID
     :returns: 204 - success, 400 - app does not exist, 401 - bad permission
+    Sends the user an email if an admin deleted their app.
     """
     app = AppEntry.query.get(app_id)
     if not app:
@@ -106,6 +143,10 @@ def delete_app(app_id):
         return ("Bad permissions", 401)
     os.remove(safe_join(current_app.instance_path, app_id + ".tar.gz"))
     os.remove(safe_join(current_app.instance_path, app_id + app.icon_ext))
+    if g.user.admin:
+        send_email(User.query.get(app.dev_id).email,
+                   "Your app was removed by an admin",
+                   app.name + " has just been removed from our store.")
     db.session.delete(app)
     db.session.commit()
     return ("", 204)
@@ -115,7 +156,7 @@ def delete_app(app_id):
 def public_app_icon(app_id):
     """Get the icon of an approved app.
 
-    :param app_id: Application ID
+    :param app_id: AppEntry ID
     :returns: file contents of image or 404 if app does not exist
     """
     app = AppEntry.query.get(app_id)
@@ -128,14 +169,16 @@ def public_app_icon(app_id):
 
 @bp.route("/app/<app_id>/download", methods=["GET"])
 def public_app_download(app_id):
-    """Get and app package.
+    """Get and app package and increment download count.
 
-    :param app_id: Application ID
+    :param app_id: AppEntry ID
     :returns: App package file or 404 if app does not exist
     """
     app = AppEntry.query.get(app_id)
     if not app or not app.approved:
         return ("App not found", 404)
+    app.downloads += 1
+    db.session.commit()
     file_path = safe_join(current_app.instance_path, str(app.id) + ".tar.gz")
     return send_file(file_path, conditional=True)
 
@@ -178,6 +221,7 @@ def make_dev():
 def private_user_info(user_id):
     """Get a user's private infomation as JSON.
 
+    :param user_id: User ID
     :returns: JSON of user - success, 400 - user does not exist,
     401 - bad permission
     """
@@ -192,6 +236,7 @@ def private_user_info(user_id):
 def public_user_info(user_id):
     """Get a JSON string of a user's public infomation.
 
+    :param user_id: User ID
     :returns: JSON of user - success, 400 - user does not exist
     """
     user = User.query.get(user_id)
@@ -205,6 +250,7 @@ def public_user_info(user_id):
 def public_user_apps(user_id):
     """Get a list of public App profiles belonging to user.
 
+    :param user_id: User ID
     :returns: JSON list of public app profiles
     """
     apps = AppEntry.query.filter_by(dev_id=user_id)
@@ -223,6 +269,7 @@ def public_user_apps(user_id):
 def private_user_apps(user_id):
     """Get a list of private App profiles belonging to user.
 
+    :param user_id: User ID
     :returns: JSON list of private app profiles or 401 if bad permissions
     only admins and the developer have valid permissions
     """
@@ -238,6 +285,7 @@ def private_user_apps(user_id):
 def promote_admin(user_id):
     """Promote user to admin.
 
+    :param user_id: User ID
     :returns: 204 - success, 400 - user does not exist
     """
     try:
@@ -253,6 +301,7 @@ def promote_admin(user_id):
 def demote_admin(user_id):
     """Demote user to admin.
 
+    :param user_id: User ID
     :returns: 204 - success, 400 - user does not exist
     """
     if int(user_id) == g.user.id:
@@ -270,6 +319,7 @@ def demote_admin(user_id):
 def delete_user(user_id):
     """Delete a user, requires admin or account ownership.
 
+    :param user_id: User ID
     :returns: 404 on user not found, 401 on bad permissions
     """
     user = User.query.get(user_id)
@@ -284,26 +334,22 @@ def delete_user(user_id):
         os.remove(
            safe_join(current_app.instance_path, str(app.id) + app.icon_ext))
         db.session.delete(app)
+    if g.user.admin:
+        send_email(user.email,
+                   "Your account was deleted by an admin",
+                   "We decided to delete your account. lol")
     db.session.delete(user)
     db.session.commit()
     return ("Success", 204)
-
-
-def random_hash256():
-    """Random 256bithash."""
-    hex_string = "0123456789abcdef"
-    output = ""
-    for _ in range(64):
-        output += hex_string[randbelow(16)]
-    return output
 
 
 @bp.route("user/<user_email>/password/reset", methods=["GET", "POST"])
 def forgot_password(user_email):
     """Send a password reset link to the users email.
 
+    :param user_email: User email
     :returns: 404 if no user has that email, or 200 if user exists.
-    :limitations: no cooldown, so a user could be blocked from changing their
+    **limitations** no cooldown, so a user could be blocked from changing their
     password if this api is spammed
     """
     user = User.query.filter_by(email=user_email).one_or_none()
@@ -311,13 +357,9 @@ def forgot_password(user_email):
         return ("User does not exist", 404)
     user.reset_hash = random_hash256()
     db.session.commit()
-    res = requests.post(
-        "https://api.mailgun.net/v3/" + current_app.config.get("MAILGUN_DOMAIN") + "/messages",
-        auth=("api", current_app.config.get("MAILGUN_KEY")),
-        data={
-            "from": "No Reply <" + "noreply@" + current_app.config.get("MAILGUN_DOMAIN") + ">",
-            "to": [user_email],
-            "subject": "FordApps password reset",
-            "html": f"<a href=\"{request.url_root}password/{user.reset_hash}\"> click here to reset your password</a>"
-        })
+    send_email(user_email,
+               "FordApps password reset",
+               f"""<a href=\"{request.url_root}
+               password/{user.reset_hash}
+               \"> click here to reset your password</a>""")
     return (res.text, 200)

@@ -1,7 +1,7 @@
 """Form validation classes."""
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, TextAreaField, SubmitField, BooleanField
+from wtforms import StringField, PasswordField, TextAreaField, SubmitField
 from wtforms.validators import DataRequired, Email, Length, Regexp
 from flask_wtf.file import FileField, FileRequired
 
