@@ -69,3 +69,10 @@ class DevTOSForm(FlaskForm):
     """Dev TOS acceptance form."""
 
     submit = SubmitField("I agree to the Terms of Service")
+
+
+class ForgottenPasswordForm(FlaskForm):
+    """Form for sending password reset link via email."""
+
+    email = StringField("Email", validators=[DataRequired(), Email()])
+    submit = SubmitField("Send me a reset link")
