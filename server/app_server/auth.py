@@ -11,7 +11,8 @@ from flask import (
 )
 from app_server import db, bcrypt
 from app_server.models import User, hash_password
-from app_server.forms import RegisterForm, LoginForm
+from app_server.forms import RegisterForm, LoginForm, ChangePasswordForm, ResetPasswordForm
+from secrets import randbelow
 
 bp = Blueprint("auth", __name__)
 
@@ -153,3 +154,55 @@ def get_token():
         {"WWWAuthenticate":
             "Basic realm=\"email and password must be present and valid\""}
     )
+
+
+@bp.route("/password/<reset_hash>", methods=["GET", "POST"])
+def reset_forgotten_password(reset_hash):
+    """A form where user can reset password.
+
+    :returns: Password reset form, or redirection when succesful
+
+    Does not require old password or user to be logged in.
+    """
+    if len(reset_hash) != 64:
+        return ("Page not found", 404)
+    user = User.query.filter_by(reset_hash=reset_hash).one_or_none()
+    if not user:
+        return ("Page not found", 404)
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        if request.form["newPassword1"] != request.form["newPassword2"]:
+            flash("Your passwords must match")
+        else:
+            user.password = hash_password(request.form["newPassword1"])
+            user.reset_hash = ""
+            db.session.commit()
+            flash("Password succesfully changed")
+            return redirect(url_for("auth.login"))
+    return render_template("password_reset.html", form=form)
+
+
+@bp.route("/password/change", methods=["GET", "POST"])
+@login_required
+def change_password():
+    """A form where user can change password.
+
+    :returns: Password change form
+
+    Requires old password and user to be logged in.
+    """
+    form = ChangePasswordForm()
+    if form.validate_on_submit():
+        if request.form["newPassword1"] != request.form["newPassword2"]:
+            flash("Your passwords must match")
+        elif hash_password(request.form["oldPassword"]) == g.user.password_hash:
+            User.query.get(g.user.id).password_hash = hash_password(request.form["newPassword1"])
+            db.session.commit()
+            flash("Password succesfully changed")
+        else:
+            flash("Old password incorrect")
+    return render_template("password_change.html", form=form)
+
+
+
+

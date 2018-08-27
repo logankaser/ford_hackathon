@@ -22,7 +22,9 @@ def create_app(test_config=None):
         MSEARCH_INDEX_NAME="search_index",
         MSEARCH_BACKEND="simple",
         MSEARCH_ENABLE=True,
-        ADMIN_PASSWORD="password"
+        ADMIN_PASSWORD="password",
+        MAILGUN_DOMAIN="mail.fordhackathon.com",
+        MAILGUN_KEY="key-88a8a25eb4a4b21be0150838cfe141c0"
     )
 
     if test_config is None:
@@ -79,6 +81,6 @@ def create_app(test_config=None):
     @app.route("/")
     @login_required
     def index():
-        return render_template("dev_home.html")
+        return render_template("home.html")
 
     return app

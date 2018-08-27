@@ -38,11 +38,32 @@ class AppCreationForm(FlaskForm):
 class AdminSearchForm(FlaskForm):
     """Admin Search Form."""
 
-    search = StringField("", validators=[DataRequired()])
+    search = StringField("", validators=[])
     submit = SubmitField("Search")
 
 
+class ChangePasswordForm(FlaskForm):
+    """Password Change Form."""
+
+    oldPassword = PasswordField("Old Password", validators=[DataRequired()])
+    newPassword1 = PasswordField(
+        "New Password", validators=[DataRequired(), Length(6)])
+    newPassword2 = PasswordField(
+        "Confirm New Password", validators=[DataRequired(), Length(6)])
+    submit = SubmitField("Change Password")
+
+
+class ResetPasswordForm(FlaskForm):
+    """Password Reset Form."""
+
+    newPassword1 = PasswordField(
+        "New Password", validators=[DataRequired(), Length(6)])
+    newPassword2 = PasswordField(
+        "Confirm New Password", validators=[DataRequired(), Length(6)])
+    submit = SubmitField("Set Password")
+
+
 class DevTOSForm(FlaskForm):
-    """Dev TOS acceptance form"""
+    """Dev TOS acceptance form."""
 
     submit = SubmitField("I agree to the Terms of Service")

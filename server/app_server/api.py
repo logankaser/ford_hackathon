@@ -1,12 +1,11 @@
 """API for the client."""
 
 import functools
-import os.path
 import datetime
 
 from flask import (
     Blueprint, g, redirect, render_template, request,
-    session, Response, current_app, send_file
+    session, Response, current_app, send_file, safe_join
 )
 from app_server import db
 from app_server.models import (
@@ -15,25 +14,25 @@ from app_server.models import (
 )
 from app_server.auth import login_required, admin_required
 from flask_cors import CORS
+from secrets import randbelow
+import requests
 
 bp = Blueprint("api/v1", __name__, url_prefix="/api/v1")
 CORS(bp)
 
 
 @bp.route("/app/<app_id>")
-@login_required
 def app_json(app_id):
-    """JSON for private app profile.
+    """JSON for public App.
 
     :param app_id: Application ID
-    :returns: JSON string of the private app profile
+    :returns: JSON string of the public App
     """
     app = AppEntry.query.get(app_id)
+    app.dev_name = User.query.get(app.dev_id).username
     if not app:
         return ("App not found", 404)
-    if g.user.id != app.dev_id and not g.user.admin:
-        return ("", 401)
-    app_schema = AppSchema()
+    app_schema = AppPublicSchema()
     return app_schema.jsonify(app)
 
 
@@ -103,12 +102,11 @@ def delete_app(app_id):
     """
     app = AppEntry.query.get(app_id)
     if not app:
-        return ("", 400)
+        return ("App not found", 404)
     if g.user.id != app.dev_id and not g.user.admin:
-        return ("", 401)
-    os.remove(os.path.join(current_app.instance_path, app_id + ".tar.gz"))
-    os.remove(
-        os.path.join(current_app.instance_path, app_id + app.icon_ext))
+        return ("Bad permissions", 401)
+    os.remove(safe_join(current_app.instance_path, app_id + ".tar.gz"))
+    os.remove(safe_join(current_app.instance_path, app_id + app.icon_ext))
     db.session.delete(app)
     db.session.commit()
     return ("", 204)
@@ -119,15 +117,33 @@ def public_app_icon(app_id):
     """Get the icon of an approved app.
 
     :param app_id: Application ID
+<<<<<<< HEAD
     :returns: Success - file contents of image
     :returns: 400 - app does not exist
+=======
+    :returns: file contents of image or 404 if app does not exist
+>>>>>>> 3c0c547e5ba4d5879bce131f680b03eb0438c6ff
     """
     app = AppEntry.query.get(app_id)
     if not app or not app.approved:
-        return ("App not found", 400)
-    file_path = os.path.join(
+        return ("App not found", 404)
+    file_path = safe_join(
         current_app.instance_path, str(app.id) + app.icon_ext)
     return send_file(file_path)
+
+
+@bp.route("/app/<app_id>/download", methods=["GET"])
+def public_app_download(app_id):
+    """Get and app package.
+
+    :param app_id: Application ID
+    :returns: App package file or 404 if app does not exist
+    """
+    app = AppEntry.query.get(app_id)
+    if not app or not app.approved:
+        return ("App not found", 404)
+    file_path = safe_join(current_app.instance_path, str(app.id) + ".tar.gz")
+    return send_file(file_path, conditional=True)
 
 
 @bp.route("/app/<app_id>/icon/private", methods=["GET"])
@@ -144,10 +160,10 @@ def private_app_icon(app_id):
     """
     app = AppEntry.query.get(app_id)
     if not app:
-        return ("App not found", 400)
+        return ("App not found", 404)
     if g.user.id != app.dev_id and not g.user.admin:
         return ("Bad permissions", 401)
-    file_path = os.path.join(
+    file_path = safe_join(
         current_app.instance_path, str(app.id) + app.icon_ext)
     return send_file(file_path)
 
@@ -277,10 +293,44 @@ def delete_user(user_id):
     apps = AppEntry.query.filter_by(dev_id=user_id)
     for app in apps:
         os.remove(
-            os.path.join(current_app.instance_path, str(app.id) + ".tar.gz"))
+            safe_join(current_app.instance_path, str(app.id) + ".tar.gz"))
         os.remove(
-           os.path.join(current_app.instance_path, str(app.id) + app.icon_ext))
+           safe_join(current_app.instance_path, str(app.id) + app.icon_ext))
         db.session.delete(app)
     db.session.delete(user)
     db.session.commit()
     return ("Success", 204)
+
+
+def random_hash256():
+    """Random 256bithash."""
+    hex_string = "0123456789abcdef"
+    output = ""
+    for _ in range(64):
+        output += hex_string[randbelow(16)]
+    return output
+
+
+@bp.route("user/<user_email>/password/reset", methods=["GET", "POST"])
+def forgot_password(user_email):
+    """Send a password reset link to the users email.
+
+    :returns: 404 if no user has that email, or 200 if user exists.
+    :limitations: no cooldown, so a user could be blocked from changing their
+    password if this api is spammed
+    """
+    user = User.query.filter_by(email=user_email).one_or_none()
+    if not user:
+        return ("User does not exist", 404)
+    user.reset_hash = random_hash256()
+    db.session.commit()
+    res = requests.post(
+        "https://api.mailgun.net/v3/" + current_app.config.get("MAILGUN_DOMAIN") + "/messages",
+        auth=("api", current_app.config.get("MAILGUN_KEY")),
+        data={
+            "from": "No Reply <" + "noreply@" + current_app.config.get("MAILGUN_DOMAIN") + ">",
+            "to": [user_email],
+            "subject": "FordApps password reset",
+            "html": f"<a href=\"{request.url_root}password/{user.reset_hash}\"> click here to reset your password</a>"
+        })
+    return (res.text, 200)

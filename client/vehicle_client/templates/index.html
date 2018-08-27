@@ -92,7 +92,7 @@ const detail = ({match, _}) => (state, actions) => {
 		div({class: "C(#191919) Fz(s4)"}, app.name),
 		div({class: "Lh(1.5) P (s03) Wob(ba)"}, app.description),
 		time({class: "Ff(Inconsolata) Mb(s02)"}, "Updated " + formatDate(app.updated)),
-		(state.installing ?
+		(state.installing ? 
 			div({
 				class: "Py(s04) C(green)"
 			}, "Installing " + state.installing) :
