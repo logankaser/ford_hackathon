@@ -110,9 +110,11 @@ def login():
         return redirect(url_for("index"))
     form = LoginForm()
     if form.validate_on_submit():
-        email = request.form["email"]
+        identity = request.form["identity"]
         password = request.form["password"]
-        user = User.query.filter_by(email=email).one_or_none()
+        user = User.query.filter_by(email=identity).one_or_none()
+        if not user:
+            user = User.query.filter_by(username=identity).one_or_none()
         if not user or not bcrypt.check_password_hash(
                 user.password_hash, password):
             flash("Login failed")

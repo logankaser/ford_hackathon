@@ -16,6 +16,7 @@ from app_server.auth import login_required, admin_required
 from flask_cors import CORS
 from secrets import randbelow
 import requests
+import os
 
 bp = Blueprint("api/v1", __name__, url_prefix="/api/v1")
 CORS(bp)
@@ -75,29 +76,29 @@ def search(keyword):
     return app_schema.jsonify(output)
 
 
-@bp.route("/app/<app_id>/approve", methods=["GET", "POST"])
+@bp.route("/app/<app_id>/approve", methods=["POST"])
 @admin_required
 def approve(app_id):
     """Approve an app.
 
     :param app_id: Application ID
-    :returns: 204 - success, 400 - app does not exist
+    :returns: 200 - success, 404 - app does not exist
     """
     try:
         AppEntry.query.get(app_id).approved = True
     except Exception as e:
-        return ("", 400)
+        return ("App not found", 404)
     db.session.commit()
-    return ("", 204)
+    return ("App approved", 200)
 
 
-@bp.route("/app/<app_id>/delete", methods=["GET", "POST"])
+@bp.route("/app/<app_id>/delete", methods=["DELETE", "POST"])
 @login_required
 def delete_app(app_id):
     """Delete any app of admin or owned app if dev.
 
     :param app_id: Application ID
-    :returns: 204 - success, 400 - app does not exist, 401 - bad permission
+    :returns: 200 - success, 404 - app does not exist, 401 - bad permission
     """
     app = AppEntry.query.get(app_id)
     if not app:
@@ -108,7 +109,7 @@ def delete_app(app_id):
     os.remove(safe_join(current_app.instance_path, app_id + app.icon_ext))
     db.session.delete(app)
     db.session.commit()
-    return ("", 204)
+    return ("App Deleted", 200)
 
 
 @bp.route("/app/<app_id>/icon", methods=["GET"])
@@ -233,7 +234,7 @@ def private_user_apps(user_id):
     return app_schema.jsonify(apps)
 
 
-@bp.route("user/<user_id>/admin/promote", methods=["GET", "POST"])
+@bp.route("user/<user_id>/admin/promote", methods=["POST"])
 @admin_required
 def promote_admin(user_id):
     """Promote user to admin.
@@ -243,29 +244,29 @@ def promote_admin(user_id):
     try:
         User.query.get(user_id).admin = True
     except Exception as e:
-        return ("", 400)
+        return ("User not found", 404)
     db.session.commit()
-    return ("", 204)
+    return ("User promoted", 200)
 
 
-@bp.route("user/<user_id>/admin/demote", methods=["GET", "POST"])
+@bp.route("user/<user_id>/admin/demote", methods=["POST"])
 @admin_required
 def demote_admin(user_id):
     """Demote user to admin.
 
     :returns: 204 - success, 400 - user does not exist
     """
-    if int(user_id) == g.user.id:
+    if int(user_id) == g.user.id or user.id == 1:
         return ("Cannot demote self", 401)
     try:
         User.query.get(user_id).admin = False
+        db.session.commit()
     except Exception as e:
-        return ("", 400)
-    db.session.commit()
-    return ("Success", 204)
+        return ("Database error", 500)
+    return ("Success", 200)
 
 
-@bp.route("user/<user_id>/delete", methods=["GET", "POST"])
+@bp.route("user/<user_id>/delete", methods=["DELETE", "POST"])
 @login_required
 def delete_user(user_id):
     """Delete a user, requires admin or account ownership.
@@ -273,7 +274,7 @@ def delete_user(user_id):
     :returns: 404 on user not found, 401 on bad permissions
     """
     user = User.query.get(user_id)
-    if not user:
+    if not user or user.id == 1:
         return ("User does not exist", 404)
     if user.id != g.user.id and not g.user.admin:
         return ("bad permission", 401)
@@ -286,7 +287,7 @@ def delete_user(user_id):
         db.session.delete(app)
     db.session.delete(user)
     db.session.commit()
-    return ("Success", 204)
+    return ("Success", 200)
 
 
 def random_hash256():

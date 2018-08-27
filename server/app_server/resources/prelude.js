@@ -27,7 +27,7 @@ $.cookies = function(r,c,i) {
 };
 
 /* Takes (cookie_name), Returns a cookie or null */
-$.cookie = function (n) {
+$.cookie = n => {
 	n = document.cookie.match(RegExp('(?:^|;\\s*)' + n + '=([^;]*)'));
 	return n ? n[1] : null;
 };
@@ -40,10 +40,11 @@ $.get = function(u,t,c,r) {
 	r = new XMLHttpRequest();
 	r.open("GET", u);
 	r.responseType = t;
-	r.onreadystatechange = function() {
-		if (r.readyState > 3) {
-			c(t == "json" && r.responseType !== t ? JSON.parse(r.response) : r.response);
-	}};
+	if (c) 
+		r.onreadystatechange = () => {
+			if(r.readyState > 3)
+				c(t == "json" && r.responseType !== t ? JSON.parse(r.response) : r.response)
+		};
 	r.send();
 };
 
@@ -56,6 +57,10 @@ $.post = function(u,t,d,c,r) {
 	r = new XMLHttpRequest();
 	r.open("POST", u);
 	r.setRequestHeader("Content-Type", t);
-	if (c) {r.onreadystatechange = function() {if(r.readyState > 3) {c(r)}}};
+	if (c) 
+		r.onreadystatechange = () => {
+			if(r.readyState > 3)
+				c(t == "json" && r.responseType !== t ? JSON.parse(r.response) : r.response)
+		};
 	r.send(d);
 };
