@@ -12,7 +12,7 @@ import subprocess
 import datetime
 import json
 from hashlib import sha256
-from vehicle_client.models import db, AppInstallation
+from vehicle_client.models import db, AppInstallation, AppInstallationSchema
 
 from flask import (
     Blueprint, flash, g, redirect, render_template,
@@ -22,13 +22,12 @@ from flask import (
 bp = Blueprint("local", __name__)
 
 
-@bp.route("/list")
+@bp.route("/installed_apps")
 def list_installed_apps():
-    """List installed apps.
-
-    :return: None
-    """
-    return "None"
+    """List installed apps."""
+    installs = AppInstallation.query.all()
+    install_schema = AppInstallationSchema(many=True)
+    return install_schema.jsonify(installs)
 
 
 @bp.route("/install_app/<app_id>", methods=["POST"])
@@ -36,7 +35,8 @@ def install_app(app_id):
     """Install an app.
 
     :returns: Success- App installed
-    :returns: 500 - Checksum not found; failed to fetch app package; unmatched checksum
+    :returns: 500 - Checksum not found;
+    failed to fetch app package; unmatched checksum
     :returns: 500 - Failed to fetch app package
     :returns: 500 - Unmatched checksum
     :returns: 500 - Error unpacking app package
@@ -54,7 +54,7 @@ def install_app(app_id):
     save_path = safe_join(
         current_app.instance_path, checksum + ".pkg")
     with open(save_path, "wb") as f:
-        app_pkg.raw.decode_contant = True
+        app_pkg.raw.decode_content = True
         shutil.copyfileobj(app_pkg.raw, f)
     with open(save_path, "rb") as f:
         actual_checksum = sha256(f.read()).hexdigest()
@@ -71,7 +71,7 @@ def install_app(app_id):
         os.remove(save_path)
         return ("Error unpacking app package", 500)
     os.remove(save_path)
-    if not AppInstallation.query.filter_by(checksum=checksum).count():
+    if not AppInstallation.query.filter_by(app_id=app_id).count():
         app_install = AppInstallation(
             app_id=app_json.get("id"),
             name=app_json.get("name"),
@@ -85,7 +85,7 @@ def install_app(app_id):
     return (actual_checksum + " Installed", 200)
 
 
-@bp.route("/run_app/<app_id>")#, methods=["POST"])
+@bp.route("/run_app/<app_id>", methods=["POST"])
 def run_app(app_id):
     """Run an installed app.
 

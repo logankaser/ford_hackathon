@@ -41,26 +41,53 @@ const {main, h1, span, div, button, section, img, article, time, a} = hyperappHt
 const state = {
 	location: location.state,
 	apps: new Map(),
-	installed: [],
+	installed: new Map(),
 	installing: false
+}
+
+const apps_to_map = array => {
+	map = new Map()
+	for (let item of array) {
+		map.set(item.id, item)
+	}
+	return map;
+}
+
+const installed_to_map = array => {
+	map = new Map()
+	for (let item of array) {
+		map.set(item.app_id, item)
+	}
+	return map;
 }
 
 const actions = {
 	location: location.actions,
-	load_apps: new_apps => state => ({apps: new_apps}),
+	load_apps: n => ({apps: apps_to_map(n)}),
+	update_apps: () => (state, actions) => {
+		$.get("{{api_domain}}/api/v1/app/top", "json", actions.load_apps);
+	},
+	load_installed: n => ({installed: installed_to_map(n)}),
+	update_installed: () => (state, actions) => {
+		$.get("/installed_apps", "json", actions.load_installed)
+	},
 	installed_apps: new_apps => state => ({apps: new_apps}),
 	finish_install: () => state => ({installing: false}),
 	install: app_id => (state, actions) => {
-		$.post("/install_app/" + app_id, "text", 0, actions.finish_install)
+		$.post("/install_app/" + app_id, "text", 0, () => {
+			actions.update_installed();
+			actions.finish_install()
+		})
 		return {installing: state.apps.get(app_id).name}
-	}
+	},
+	show_installed: () => state => {console.log(state)}
 }
 
 const app_short = (app) => (
-	article({class: "M(s03) P(s02) W(50%) Bxsh(0,0,s05,grey-5) Bgc(white) D(f) Ai(c) Fld(c) Flx(1)"}, [
+	article({class: "M(s03) W(50%) P(s02) Bxsh(0,0,s05,grey-7) Bgc(white) D(f) Ai(c) Fld(c) Flx(1)"}, [
 		img({
 			src: "{{api_domain}}/api/v1/app/" + app.id + "/icon",
-			class: "Maw(60%) D(b) Bdrus(s05) Cur(p)",
+			class: "D(b) Mah(20rem) W(80%) My(s2) Mx(a) Bdrus(s05) Bxsh(0,0,s05,grey-7) Cur(p)",
 			onclick: () => history.pushState(location.pathname, "", "/" + app.id)
 		}),
 		Link({
@@ -68,8 +95,10 @@ const app_short = (app) => (
 			to: "/" + app.id,
 			class: "_rLink() C(blue) Op(.7):h Fz(s3)"
 		}, app.name),
-		div({class: "Ellip() Ov(h) W(20rem) P(s04)"}, app.description),
-		time({class: "Ff(Inconsolata)"}, "Updated " + formatDate(app.updated))
+		div({class: "Ff(Inconsolata) M(s03) Bxsh(0,0,s05,grey-7) Ellip() Ov(h) W(100%) P(s04)"}, app.description),
+		div({class: "Py(s04) Mt(s03) C(grey-2)"},[
+			"Updated: ", time({class: "C(black) Ff(Inconsolata)"}, formatDate(app.updated))
+		])
 	])
 )
 
@@ -79,27 +108,38 @@ const home = () => (state, actions) => (
 	)
 );
 
+const install_button = (app, app_id) => (state, actions) => {
+	if (state.installed.has(app_id))
+		return div({
+			class: "Mx(a) Bgc(green) Ta(c) My(s02) C(white) Bdrus(s05) P(s04) Maw(50%)@lg"
+		}, "Installed")
+	if (state.installing)
+		return div({
+			class: "Mx(a) Bgc(green) Ta(c) My(s02) C(white) Bdrus(s05) P(s04) Maw(50%)@lg"
+		}, "Installing " + state.installing)
+	else
+		return div({onclick: () => actions.install(app.id),
+			class: "Mx(a) Bgc(blue) Cur(p) Op(.8):h Ta(c) My(s02) C(white) Bdrus(s05) P(s04) Maw(50%)@lg"
+		}, "Install")
+}
+
 const detail = ({match, _}) => (state, actions) => {
-	const app = state.apps.get(parseInt(match.params["app_id"]))
+	app_id = parseInt(match.params["app_id"])
+	const app = state.apps.get(app_id)
 	if (!app)
 		return div("Loading..")
-	return article({class: "M(s03) P(s1) Bxsh(0,0,s05,grey-5) Bgc(white)"}, [
+	return main({class: "Maw(40rem) Mx(a) Mt(s2) Px(s2) Px(s5)@md Py(s4) Bgc(white) Bxsh(0,0,s05,grey-7) Fz(s2)"}, [
 		Link({to: "/", class: "_rLink() Fz(s3) Ff(Inconsolata) Td(u) C(grey-3) C(blue):h"}, "← Back"),
 		img({
 			src: "{{api_domain}}/api/v1/app/" + app.id + "/icon",
-			class: "Maw(100%) Mx(a) D(b) Bdrus(s05) Bd(s,s05,grey-5) My(s02)"
+			class: "D(b) Mah(20rem) W(80%) My(s2) Mx(a) Bdrus(s05) Bxsh(0,0,s05,grey-7)"
 		}),
-		div({class: "C(#191919) Fz(s4)"}, app.name),
-		div({class: "Lh(1.5) P (s03) Wob(ba)"}, app.description),
-		time({class: "Ff(Inconsolata) Mb(s02)"}, "Updated " + formatDate(app.updated)),
-		(state.installing ? 
-			div({
-				class: "Py(s04) C(green)"
-			}, "Installing " + state.installing) :
-			div({onclick: () => actions.install(app.id),
-				class: "Py(s04) Bd(s,s05,grey-5)"
-			}, "Install")
-		)
+		div({class: "Fz(s3) C(black) Fw(b) Ff(Inconsolata) Py(s03)"}, app.name),
+		div({class: "Ff(Inconsolata) Mih(6rem) P(s03) Mt(s03) Lh(s3) Bxsh(0,0,s05,grey-7) Wob(ba)"}, app.description),
+		div({class: "Py(s04) Mt(s03) C(grey-2)"},[
+			"Updated: ", time({class: "C(black) Ff(Inconsolata)"}, formatDate(app.updated))
+		]),
+		install_button(app, app_id)
 	])
 };
 
@@ -108,7 +148,7 @@ const installed = () => (
 );
 
 const view = (state, actions) => (
-	main({class: "Mx(a) W(100%) H(100%) Maw(50rem)"}, [
+	main({class: "Mx(a) W(100%) H(100%) Maw(40rem)"}, [
 		div({class: "D(f) Jc(space-evenly) P(s04) Fz(s3)"}, [
 			Link({to: "/installed", class: "_rLink() C(grey-2) P(s04) C(blue):h"}, "Installed Apps"),
 			Link({to: "/", class: "_rLink() C(grey-2) P(s04) C(blue):h"}, "Home")
@@ -123,15 +163,8 @@ return hyperapp.app(state, actions, view, document.body)
 })();
 
 hyperappRouter.location.subscribe(main.location);
-
-$.get("{{api_domain}}/api/v1/app/top", "json", apps => {
-	app_map = new Map()
-	for (let app of apps) {
-		app_map.set(app.id, app)
-	}
-	window.app_map = app_map;
-	main.load_apps(app_map);
-})
+main.update_apps();
+main.update_installed();
 </script>
 
 {% endblock %}
