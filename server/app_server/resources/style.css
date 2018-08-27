@@ -19,7 +19,6 @@
 .Bgc\(red\) {background-color: rgb(255,65,54);}
 .Bgc\(rgba\(255\,255\,255\,\.4\)\) {background-color: rgba(255,255,255,.4);}
 .Bgc\(white\) {background-color: rgb(255,255,255);}
-.Bgc\(yellow-washed\) {background-color: rgb(255,252,235);}
 .Bgc\(yellow-washed\)\:f:focus {background-color: rgb(255,252,235);}
 .Bxsh\(0\,0\,s04\,grey-5\) {box-shadow: 0 0 .25rem rgb(153,153,153);}
 .Bxsh\(0\,0\,s05\,grey-5\) {box-shadow: 0 0 .125rem rgb(153,153,153);}
@@ -72,6 +71,7 @@
 .Mt\(s04\) {margin-top: .25rem;}
 .Mt\(s1\) {margin-top: 1rem;}
 .Mt\(s2\) {margin-top: 1.2rem;}
+.Mt\(s3\) {margin-top: 1.44rem;}
 .Mt\(s4\) {margin-top: 2rem;}
 .Mx\(a\) {margin-left: auto; margin-right: auto;}
 .My\(0\) {margin-top: 0; margin-bottom: 0;}
@@ -101,6 +101,7 @@
 .Py\(\.5rem\) {padding-top: .5rem; padding-bottom: .5rem;}
 .Py\(s03\) {padding-top: .5rem; padding-bottom: .5rem;}
 .Py\(s04\) {padding-top: .25rem; padding-bottom: .25rem;}
+.Py\(s05\) {padding-top: .125rem; padding-bottom: .125rem;}
 .Py\(s2\) {padding-top: 1.2rem; padding-bottom: 1.2rem;}
 .Py\(s4\) {padding-top: 2rem; padding-bottom: 2rem;}
 .T\(0\) {top: 0;}
