@@ -40,7 +40,7 @@ $.get = function(u,t,c,r) {
 	r = new XMLHttpRequest();
 	r.open("GET", u);
 	r.responseType = t;
-	if (c)
+	if (c) 
 		r.onreadystatechange = () => {
 			if(r.readyState > 3)
 				c(t == "json" && r.responseType !== t ? JSON.parse(r.response) : r.response)
@@ -57,7 +57,7 @@ $.post = function(u,t,d,c,r) {
 	r = new XMLHttpRequest();
 	r.open("POST", u);
 	r.setRequestHeader("Content-Type", t);
-	if (c)
+	if (c) 
 		r.onreadystatechange = () => {
 			if(r.readyState > 3)
 				c(t == "json" && r.responseType !== t ? JSON.parse(r.response) : r.response)

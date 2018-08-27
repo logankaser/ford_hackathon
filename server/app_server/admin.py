@@ -22,19 +22,16 @@ def admin_home():
     :return: Renders the admin homepage with the query search options and admin powers
     """
     apps = AppEntry.query.filter_by(approved=False).limit(20)
-    output = []
-    for app in apps:
-        app.dev_name = User.query.get(app.dev_id).username
-        output.append(app)
 
     form = AdminSearchForm()
     results = []
-    if form.validate_on_submit():
+    if form.validate_on_submit() and request.form["search"]:
         appResults = list(AppEntry.query.msearch(
-            request.form["search"], fields=["id", "name", "description"]).limit(10))
+            request.form["search"],
+            fields=["id", "name", "description"]).limit(10))
         userResults = list(User.query.msearch(
-            request.form["search"], fields=["id", "username", "email"]).limit(10))
-
+            request.form["search"],
+            fields=["id", "username", "email"]).limit(10))
         pushApp = False
         while appResults or userResults:
             if appResults and pushApp is True:
@@ -46,7 +43,8 @@ def admin_home():
             else:
                 pushApp = True
 
-    return render_template("admin_profile.html", apps=output, form=form, results=results)
+    return render_template(
+        "admin_profile.html", apps=apps, form=form, results=results)
 
 
 @bp.route("/app/<app_id>", methods=["GET"])
