@@ -92,7 +92,9 @@ def run_app(app_id):
             stdout=subprocess.PIPE, shell=True)
         result = process.communicate()[0]
         print(result.decode("ascii"))
+        return (result, 200)
     elif app_type == "gui":
-        subprocess.call(
+        subprocess.Popen(
             [safe_join(app_path, "app/" + app_meta.get("executable", "app"))])
-    return (result, 200)
+        return ("Running..", 200)
+    return ("Unsupported app type", 500)
