@@ -40,19 +40,26 @@ const {main, h1, span, div, button, section, img, article, time, a} = hyperappHt
 
 const state = {
 	location: location.state,
-	test: "bird is the word",
-	apps: new Map()
+	apps: new Map(),
+	installed: [],
+	installing: false
 }
 
 const actions = {
 	location: location.actions,
-	load_apps: new_apps => state => ({apps: new_apps})
+	load_apps: new_apps => state => ({apps: new_apps}),
+	installed_apps: new_apps => state => ({apps: new_apps}),
+	finish_install: () => state => ({installing: false}),
+	install: app_id => (state, actions) => {
+		$.post("/install_app/" + app_id, "text", 0, actions.finish_install)
+		return {installing: state.apps.get(app_id).name}
+	}
 }
 
 const app_short = (app) => (
 	article({class: "M(s03) P(s02) W(50%) Bxsh(0,0,s05,grey-5) Bgc(white) D(f) Ai(c) Fld(c) Flx(1)"}, [
 		img({
-			src: "http://localhost:5000/api/v1/app/" + app.id + "/icon",
+			src: "{{api_domain}}/api/v1/app/" + app.id + "/icon",
 			class: "Maw(60%) D(b) Bdrus(s05) Cur(p)",
 			onclick: () => history.pushState(location.pathname, "", "/" + app.id)
 		}),
@@ -74,18 +81,25 @@ const home = () => (state, actions) => (
 
 const detail = ({match, _}) => (state, actions) => {
 	const app = state.apps.get(parseInt(match.params["app_id"]))
-	return article({class: "M(s03) P(s1) Bxsh(0,0,s05,grey-5) Bgc(white) D(f) Fld(c)"}, [
+	if (!app)
+		return div("Loading..")
+	return article({class: "M(s03) P(s1) Bxsh(0,0,s05,grey-5) Bgc(white)"}, [
 		Link({to: "/", class: "_rLink() Fz(s3) Ff(Inconsolata) Td(u) C(grey-3) C(blue):h"}, "← Back"),
 		img({
-			src: "http://localhost:5000/api/v1/app/" + app.id + "/icon",
+			src: "{{api_domain}}/api/v1/app/" + app.id + "/icon",
 			class: "Maw(100%) Mx(a) D(b) Bdrus(s05) Bd(s,s05,grey-5) My(s02)"
 		}),
-		Link({
-			to: "/" + app.id,
-			class: "_rLink() C(#191919) Fz(s4)"
-		}, app.name),
-		div({class: "Lh(1.5) P (s03)"}, app.description),
-		time({class: "Ff(Inconsolata)"}, "Updated " + formatDate(app.updated))
+		div({class: "C(#191919) Fz(s4)"}, app.name),
+		div({class: "Lh(1.5) P (s03) Wob(ba)"}, app.description),
+		time({class: "Ff(Inconsolata) Mb(s02)"}, "Updated " + formatDate(app.updated)),
+		(state.installing ? 
+			div({
+				class: "Py(s04) C(green)"
+			}, "Installing " + state.installing) :
+			div({onclick: () => actions.install(app.id),
+				class: "Py(s04) Bd(s,s05,grey-5)"
+			}, "Install")
+		)
 	])
 };
 

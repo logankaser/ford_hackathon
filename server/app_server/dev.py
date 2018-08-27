@@ -1,19 +1,18 @@
 """Developer mangement blueprint."""
 
 import functools
-import os.path
 import datetime
 import hashlib
+import os.path
 
 from flask import (
     Blueprint, flash, g, redirect, render_template, request,
-    session, url_for, Response, current_app, send_file
+    session, url_for, Response, current_app, send_file, safe_join
 )
 from app_server import db
-from app_server.models import AppEntry
-from sqlalchemy import *
+from app_server.models import db, AppEntry, User
 from app_server.auth import login_required
-from app_server.forms import AppCreationForm
+from app_server.forms import AppCreationForm, DevTOSForm
 
 bp = Blueprint("dev", __name__, url_prefix="/dev")
 
@@ -21,15 +20,17 @@ bp = Blueprint("dev", __name__, url_prefix="/dev")
 @bp.route("/app/new", methods=["GET", "POST"])
 @login_required
 def new_app():
-    """Create a new app.
+    """Page for uploading new apps.
 
-    :returns: New app added to the form and render templates
+    :returns: app creation page,
+    or redirection to app page on succesful form submission
     """
+    if not g.user.dev:
+        return redirect(url_for("dev.dev_tos"))
     form = AppCreationForm()
     if form.validate_on_submit():
         imageFile = request.files["icon"]
         appFile = request.files["app"]
-        print(type(imageFile))
         ext = os.path.splitext(imageFile.filename)[1]
 
         date = datetime.datetime.now()
@@ -46,24 +47,26 @@ def new_app():
         db.session.add(app)
         db.session.commit()
 
-        appPath = os.path.join(
+        appPath = safe_join(
             current_app.instance_path, str(app.id) + ".tar.gz")
         appFile.seek(0)
         appFile.save(appPath)
-        imagePath = os.path.join(current_app.instance_path, str(app.id) + ext)
+        imagePath = safe_join(current_app.instance_path, str(app.id) + ext)
         imageFile.save(imagePath)
         return redirect(url_for("dev.dev_app_page", app_id=app.id))
-    print(form.errors)
+
+    for fieldName, errorMessages in form.errors.items():
+        for error in errorMessages:
+            flash(fieldName.capitalize() + ": " + error)
     return render_template("dev_app_new.html", form=form)
 
 
 @bp.route("/app/<app_id>")
 @login_required
 def dev_app_page(app_id):
-    """Developer status page.
+    """App view page.
 
-    :raises 400: Wrong user access to the app.
-    :returns: Information of app metadata
+    :returns: app page for developer or 403/404 if invalid id/bad permission
     """
     app = AppEntry.query.get(int(app_id))
     if not app:
@@ -76,10 +79,25 @@ def dev_app_page(app_id):
 @bp.route("/")
 @login_required
 def dev_profile():
-    """Developer's profile.
+    """My Apps page for the developer.
 
-    :returns: Renders to new template of the developer user
+    :returns: My Apps page
     """
     apps = AppEntry.query.filter_by(dev_id=g.user.id)
     return render_template(
         "dev_app_list.html", apps=apps, username=g.user.username)
+
+
+@bp.route("/tos", methods=["GET", "POST"])
+@login_required
+def dev_tos():
+    """Form for User to accept developer ToS.
+
+    :returns: ToS Form, or redirection to profile if form filled out
+    """
+    form = DevTOSForm()
+    if form.validate_on_submit():
+        User.query.get(g.user.id).dev = True
+        db.session.commit()
+        return redirect(url_for("index"))
+    return render_template("dev_tos.html", form=form)

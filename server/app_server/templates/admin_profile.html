@@ -1,66 +1,22 @@
 {% extends "layout.html" %}
 
 {% block head %}
-<<<<<<< HEAD
-
-<style>
-input.button1 { /*Make it into cellcss */
-	background-color: #4CAF50; /* Bgc(rgba(12, 150, 88, .9)) */
-	border: none; /* Bd(n) */
-	color: white; /* C(white) */
-	padding: 15px 32px; /*P(15px 32px)*/
-	text-align: center; /* Ta(c) */
-	display: inline-block; /* D(ib) */
-	font-size: 16px; /* Fz(16px) */
-	margin: 4px 2px; /* M(4px 2px) */
-	cursor: pointer; /* Cur(p) */
-}
-input.button2 { /*Make it into cellcss */
-	background-color: #f44336; /* Bgc(rgba(255, 0, 0, .9)) */
-	border: none;/* Bd(n) */
-	color: white; /* C(white) */
-	padding: 15px 32px; /*P(15px 32px)*/
-	text-align: center; /* Ta(c) */
-	display: inline-block; /* D(ib) */
-	font-size: 16px; /* Fz(16px) */
-	margin: 4px 2px; /* M(4px 2px) */
-	cursor: pointer; /* Cur(p) */
-	}
-
-</style>
-
-=======
->>>>>>> ea86cd4bec32324eb20abf718d2a87c9baab7140
 {% endblock %}
 
 {% block content %}
 
-<<<<<<< HEAD
-=======
 
-<<<<<<< HEAD
->>>>>>> ea86cd4bec32324eb20abf718d2a87c9baab7140
 <main class="Mx(a) Maw(50rem) D(f) Fld(c) H(100%)">
 	{% for app in apps %}
 	<section class="W(80%) Mx(a) Mt(s2) Px(s5) Py(s4) Bgc(white) Bxsh(0,0,s05,grey-5)">
 		<div>
-<<<<<<< HEAD
-			<a class="_rLink() Fz(s3) Ff(Inconsolata) Td(u) C(grey-3) C(blue):h" href="app/{{ app.id }}">{{app.name}}</a>
-		</div>
-		<p>Approve: {{ app.description }} </p>
-		<form method=post enctype=multipart/form-data>
-			<input class="button1" type="button" value="Yes" onclick="window.location.href='https://www.facebook.com/'"/> <!--Yes to approve-->
-			<input class="button2" type="button" value="No" onclick="window.location.href='https://myspace.com/'"> <!--No to disapprove-->
-=======
 			<a class="_rLink() Fz(s3) Ff(Inconsolata) Td(u) C(grey-3) C(blue):h">{{app.name}}</a>
 		</div>
 		<p>{{ app.description }}</p>
 		<form method=post enctype=multipart/form-data>
 			<a href="/api/v1/app/{{app.id}}/approve">Approve</a>
->>>>>>> ea86cd4bec32324eb20abf718d2a87c9baab7140
 		</form>
 	</section>
-=======
 <main class="Mx(a) Maw(50rem) D(f)">
 
 <div class="Bgc(red) Flx(.5)">
@@ -76,7 +32,7 @@ input.button2 { /*Make it into cellcss */
 		<div>
 			<a href="/admin/app/{{result.app.id}}">{{result.app.name}}</a>
 		</div>
-		<img class="D(b) W(100%)" src="/api/v1/app/{{result.app.id}}/icon/private"></img> 
+		<img class="D(b) W(100%)" src="/api/v1/app/{{result.app.id}}/icon/private"></img>
 		</section>
 		{% endif %}
 		{% if result.user %}
@@ -84,10 +40,9 @@ input.button2 { /*Make it into cellcss */
 		<div>
 			Username: <a href="/admin/user/{{result.user.id}}">{{result.user.username}}</a>
 		</div>
-		<p>Email: {{ result.user.email }} </p> 
+		<p>Email: {{ result.user.email }} </p>
 		</section>
 		{% endif %}
->>>>>>> 9b7826b8bc9d05144e04bf06d8ccf596b8621f4f
 	{% endfor %}
 </div>
 
@@ -105,8 +60,4 @@ input.button2 { /*Make it into cellcss */
 
 </main>
 
-<<<<<<< HEAD
 {% endblock %}
-=======
-{% endblock %}
->>>>>>> ea86cd4bec32324eb20abf718d2a87c9baab7140

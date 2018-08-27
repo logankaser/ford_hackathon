@@ -1,26 +1,73 @@
-{% extends "layout.html" %}
-	
-{% block head %}
+{% extends "layout_page.html" %}
+
+{% block title %}
+Admin User View
 {% endblock %}
 
-{% block content %}
+{% block nav %}
+<a href="/admin" class="_rLink() Fz(s3) Ff(Inconsolata) Td(u) C(grey-3) C(blue):h">← Back</a>
+<a href="/" class="_rLink() Fz(s3) Ff(Inconsolata) Td(u) C(grey-3) C(blue):h Ml(s1)">Home</a>
+{% endblock %}
 
+{% block body %}
 
-<main class="Mx(a) Maw(50rem) D(f) Fld(c) H(100%)">
-	<section class="W(80%) Mx(a) Mt(s2) Px(s5) Py(s4) Bgc(white) Bxsh(0,0,s05,grey-5)">
-		<h1>{{user.username}}</h1>
-		<h5>User ID: {{user.id}}</h5>
-		<h5>Email: {{user.email}}</h5>
-		<h5>Created On: <time>{{user.created}}</time></h5>
-		<h5>Admin: {{user.admin}}</h5>
-		<h5>Developer: {{user.dev}}</h5>
-		<hr>
-		<a href="/api/v1/user/{{user.id}}/delete">Delete Account</a>
-		<br>
-		<a href="/api/v1/user/{{user.id}}/admin/promote">Promote to Admin</a>
-		<br>
-		<a href="/api/v1/user/{{user.id}}/admin/demote">Demote from Admin</a>
-	</section>
+<main class="Maw(40rem) Mx(a) Mt(s2) Px(s2) Px(s5)@md Py(s4) Bgc(white) Bxsh(0,0,s05,grey-7) Fz(s2)">
+	<div class="Fz(s3) C(black) Fw(b) Ff(Inconsolata) Py(s03)">
+		{{user.username}}
+	</div>
+	<div class="Py(s04) Mt(s03) C(grey-2)">
+		ID: <span class="C(grey-1) Ff(Inconsolata)">{{user.id}}</span>
+	</div>
+	<div class="Py(s04) Mt(s03) C(grey-2)">
+		Email: <span class="C(grey-1) Ff(Inconsolata)">{{user.email}}</span>
+	</div>
+	<div class="Py(s04) Mt(s03) C(grey-2)">
+		Created: <span class="C(grey-1) Ff(Inconsolata)">{{ user.created.strftime("%B %d, %Y @ %I:%M%p") }}</span>
+	</div>
+	<div class="Fz(s3) C(black) Fw(b) Ff(Inconsolata) Py(s03)">
+		Roles
+	</div>
+	{% if not user.dev and not user.admin %}
+	<div class="Maw(50%)@lg Ta(c) P(s04) Mt(s03) C(white) Bgc(orange) Bdrus(s05)">
+		None
+	</div>
+	{% endif %}
+	{% if user.dev %}
+	<div class="Maw(50%)@lg Ta(c) P(s04) Mt(s03) C(white) Bgc(blue) Bdrus(s05)">
+		Developer
+	</div>
+	{% endif %}
+	{% if user.admin %}
+	<div class="Maw(50%)@lg Ta(c) P(s04) Mt(s03) C(white) Bgc(green) Bdrus(s05)">
+		Admin
+	</div>
+	{% if user.id != 1 %}
+	<div class="Fz(s3) C(black) Fw(b) Ff(Inconsolata) Py(s03)">
+		Controls
+	</div>
+	{% endif %}
+	{% endif %}
+	{% if user.admin and user.id != g.user.id %}
+	<div 
+		onclick="$.post('/api/v1/user/{{user.id}}/admin/demote', 'text', 0, () => location.reload())"
+		class="Bgc(orange) Cur(p) Op(.8):h Ta(c) My(s02) C(white) Bdrus(s05) P(s04) Maw(50%)@lg">
+		Demote from Admin
+	</div>
+	{% endif %}
+	{% if not user.admin %}
+	<div 
+		onclick="$.post('/api/v1/user/{{user.id}}/admin/promote', 'text', 0, () => location.reload())"
+		class="Bgc(orange) Cur(p) Op(.8):h Ta(c) My(s02) C(white) Bdrus(s05) P(s04) Maw(50%)@lg">
+		Promote to Admin
+	</div>
+	{% endif %}
+	{% if user.id != 1 %}
+	<div 
+		onclick="$.post('/api/v1/user/{{user.id}}/delete', 'text', 0, () => location.reload())"
+		class="Bgc(red) Cur(p) Op(.8):h Ta(c) My(s02) C(white) Bdrus(s05) P(s04) Maw(50%)@lg">
+		Delete User
+	</div>
+	{% endif %}
 </main>
 
 {% endblock %}

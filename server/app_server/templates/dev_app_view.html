@@ -1,36 +1,45 @@
-{% extends "layout.html" %}
+{% extends "layout_page.html" %}
 	
-{% block head %}
+{% block title %}
+Developer App View
 {% endblock %}
 
-{% block content %}
+{% block nav %}
+<a href="/dev" class="_rLink() Fz(s3) Ff(Inconsolata) Td(u) C(grey-3) C(blue):h">← Back</a>
+<a href="/" class="_rLink() Fz(s3) Ff(Inconsolata) Td(u) C(grey-3) C(blue):h Ml(s1)">Home</a>
+{% endblock %}
 
-<main class="Mx(a) W(100%) Maw(40rem)">
-	<section class="Px(s2) W(100%) W(80%)@sm W(a)@md Px(s5)@md Py(s2) Py(s4)@md Bgc(white) Bxsh(0,0,s05,grey-5) Fz(s2)">
-		<a href="/dev" class="_rLink() Fz(s3) Ff(Inconsolata) Td(u) C(grey-3) C(blue):h">← Back</a>
-		<a href="/" class="_rLink() Fz(s3) Ff(Inconsolata) Td(u) C(grey-3) C(blue):h Ml(s1)">Home</a>
-		<div class="Fz(s3) C(black) Fw(b) Ff(Inconsolata) Py(s03) Mt(s03)">
-			{{ app.name }}
-		</div>
-		<img src="/api/v1/app/{{app.id}}/icon/private" 
-			class="D(b) Mah(20rem) Maw(100%) My(s2) Mx(s04) Bdrus(s04) Bxsh(0,0,s05,grey-5)"
-		>	
-		</img>
-		<div class="C(grey-2)">Description</div>
-		<div class="Ff(Inconsolata) Py(s1) Mih(6rem) Px(s04) Mt(s03) Lh(s3) Bdrus(s05) Bxsh(0,0,s05,grey-5)">
-			{{ app.description }}
-		</div>
-		<div class="Py(s04) Mt(s03) C(grey-2)">
-			Created: <span class="C(black) Ff(Inconsolata)">{{ app.created.strftime("%B %d, %Y @ %I:%M%p") }}</span>
-		</div>
-		<div class="Py(s04) Mt(s03) C(grey-2)">
-			Updated: <span class="C(black) Ff(Inconsolata)">{{ app.updated.strftime("%B %d, %Y @ %I:%M%p") }}</span>
-		</div>
-		<div class="Py(s04) Mt(s03) C(grey-2)">
-			Downloads:
-			<span class="C(black) Ff(Inconsolata)">{{app.downloads}}</span>
-		</div>
-	</section>
+{% block body %}
+
+<main class="Maw(40rem) Mx(a) Mt(s2) Px(s2) Px(s5)@md Py(s4) Bgc(white) Bxsh(0,0,s05,grey-7) Fz(s2)">
+	<div class="Fz(s3) C(black) Fw(b) Ff(Inconsolata) Py(s03)">
+		{{ app.name }}
+	</div>
+	<img src="/api/v1/app/{{app.id}}/icon/private" 
+		class="D(b) Mah(20rem) W(80%) My(s2) Mx(a) Bdrus(s05) Bxsh(0,0,s05,grey-7)"
+	>	
+	</img>
+	<div class="C(grey-2)">Description</div>
+	<div class="Ff(Inconsolata) Mih(6rem) P(s03) Mt(s03) Lh(s3) Bxsh(0,0,s05,grey-7) Wob(ba)">
+		{{ app.description }}
+	</div>
+	<div class="Py(s04) Mt(s03) C(grey-2)">
+		Created: <span class="C(black) Ff(Inconsolata)">{{ app.created.strftime("%B %d, %Y @ %I:%M%p") }}</span>
+	</div>
+	<div class="Py(s04) Mt(s03) C(grey-2)">
+		Updated: <span class="C(black) Ff(Inconsolata)">{{ app.updated.strftime("%B %d, %Y @ %I:%M%p") }}</span>
+	</div>
+	{% if app.approved %}
+	<div class="Py(s04) Mt(s03) C(grey-2)">
+		Downloads:
+		<span class="C(black) Ff(Inconsolata)">{{app.downloads}}</span>
+	</div>
+	{% endif %}
+	{% if not app.approved %}
+	<div class="Maw(50%)@lg Mx(a) Ta(c) P(s03) Mt(s03) C(white) Bgc(orange) Bdrus(s05)">
+		Approval Pending
+	</div>
+	{% endif %}
 </main>
 
 {% endblock %}

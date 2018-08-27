@@ -44,14 +44,16 @@ class User(db.Model):
     __tablename__ = "user"
     __searchable__ = ["id", "username", "email"]
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(255), nullable=False)
+    username = db.Column(db.String(255), unique=True, nullable=False)
     email = db.Column(db.String(255), unique=True, nullable=False)
     password_hash = db.Column(db.String(255), nullable=False)
     created = db.Column(db.DateTime, nullable=False)
     dev = db.Column(db.Boolean, nullable=False, default=False)
     admin = db.Column(db.Boolean, nullable=False, default=False)
+    reset_hash = db.Column(db.String(64), nullable=False, default="")
 
-    def __init__(self, email, username, password, dev=False, admin=False):
+    def __init__(self, email, username, password, dev=False, admin=False,
+                 reset_hash=""):
         """Create a new user.
 
         :returns: A new user
@@ -62,6 +64,7 @@ class User(db.Model):
         self.created = datetime.now()
         self.admin = admin
         self.dev = dev
+        self.reset_hash = reset_hash
 
     def get_token(self):
         """Get a new API token.
@@ -135,7 +138,7 @@ class AppEntry(db.Model):
     downloads = db.Column(db.Integer, nullable=False)
     icon_ext = db.Column(db.String(), nullable=False)
     approved = db.Column(db.Boolean, nullable=False)
-    checksum = db.Column(db.String(), nullable=True)
+    checksum = db.Column(db.String(64), nullable=True)
     dev_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
 
 
@@ -163,8 +166,8 @@ class AppPublicSchema(ma.ModelSchema):
         fields = (
             "id",
             "name",
+            "checksum",
             "description",
             "created",
             "updated",
-            "dev_id",
             "dev_name")
