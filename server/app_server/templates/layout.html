@@ -25,6 +25,10 @@
 	{% if g.user %}
 	<div class="C(grey-3) P(s04) Ta(c) Bgc(rgba(255,255,255,.4))" > 
 		<span class="Ff(Inconsolata) Fw(n) Fs(n) Fz(s2) C(grey-4)">{{ g.user.username }}</span> —
+		<a class="_rLink() Fs(n) C(grey-3) C(blue):h Fw(n) Td(u):h Td(u)"
+		href="/password/change">
+		Change Password</a>
+		—
 		<a class="_rLink() Fs(n) C(grey-3) C(blue):h Fw(n) Td(u):h Td(u)" href="/logout">Signout →</a>
 	</div>
 	{% endif %}

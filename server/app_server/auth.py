@@ -7,13 +7,15 @@ import functools
 
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for,
-    Response
+    Response, current_app
 )
 from app_server import db, bcrypt
 from app_server.models import User, hash_password
 from app_server.forms import (
-    RegisterForm, LoginForm, ChangePasswordForm, ResetPasswordForm
+    RegisterForm, LoginForm, ChangePasswordForm, ResetPasswordForm,
+    ForgottenPasswordForm
 )
+from app_server.utility import random_hash256, send_email
 from secrets import randbelow
 
 bp = Blueprint("auth", __name__)
@@ -157,6 +159,24 @@ def get_token():
     )
 
 
+@bp.route("/password/forgot", methods=["GET", "POST"])
+def forgotten_password():
+    form = ForgottenPasswordForm()
+    if form.validate_on_submit():
+        user_email = request.form["email"]
+        user = User.query.filter_by(email=user_email).one_or_none()
+        if not user:
+            flash("Email sent")  # so users can't tell what emails we have
+            return render_template("forgotten_password.html", form=form)
+        user.reset_hash = random_hash256()
+        db.session.commit()
+        send_email(user_email,
+                   "FordApps password reset",
+                   f"<a href=\"{request.url_root}password/{user.reset_hash}\"> click here to reset your password</a>")
+        flash("Email sent")
+    return render_template("forgotten_password.html", form=form)
+
+
 @bp.route("/password/<reset_hash>", methods=["GET", "POST"])
 def reset_forgotten_password(reset_hash):
     """A form where user can reset password.
@@ -175,7 +195,7 @@ def reset_forgotten_password(reset_hash):
         if request.form["newPassword1"] != request.form["newPassword2"]:
             flash("Your passwords must match")
         else:
-            user.password = hash_password(request.form["newPassword1"])
+            user.password_hash = hash_password(request.form["newPassword1"])
             user.reset_hash = ""
             db.session.commit()
             flash("Password succesfully changed")
@@ -196,8 +216,8 @@ def change_password():
     if form.validate_on_submit():
         if request.form["newPassword1"] != request.form["newPassword2"]:
             flash("Your passwords must match")
-        elif hash_password(request.form["oldPassword"]) ==\
-                g.user.password_hash:
+        elif bcrypt.check_password_hash(g.user.password_hash,
+                                        request.form["oldPassword"]):
             User.query.get(g.user.id).password_hash =\
                 hash_password(request.form["newPassword1"])
             db.session.commit()
@@ -205,7 +225,3 @@ def change_password():
         else:
             flash("Old password incorrect")
     return render_template("password_change.html", form=form)
-
-
-
-
