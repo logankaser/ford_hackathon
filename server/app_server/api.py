@@ -16,7 +16,6 @@ from app_server.auth import login_required, admin_required
 from flask_cors import CORS
 from secrets import randbelow
 import requests
-import os
 
 bp = Blueprint("api/v1", __name__, url_prefix="/api/v1")
 CORS(bp)
@@ -73,41 +72,33 @@ def search(keyword):
     return app_schema.jsonify(output)
 
 
-@bp.route("/app/<app_id>/approve", methods=["POST"])
+@bp.route("/app/<app_id>/approve", methods=["GET", "POST"])
 @admin_required
 def approve(app_id):
     """Approve an app.
 
     :param app_id: Application ID
-<<<<<<< HEAD
-    :returns: 200 - success, 404 - app does not exist
-=======
     :returns: 200 - success
     :returns: 404 - app does not exist
     :returns: 401 - bad permission
->>>>>>> changed 'raises' into 'returns'
     """
     try:
         AppEntry.query.get(app_id).approved = True
     except Exception as e:
-        return ("App not found", 404)
+        return ("", 400)
     db.session.commit()
-    return ("App approved", 200)
+    return ("", 204)
 
 
-@bp.route("/app/<app_id>/delete", methods=["DELETE", "POST"])
+@bp.route("/app/<app_id>/delete", methods=["GET", "POST"])
 @login_required
 def delete_app(app_id):
     """Delete any app of admin or owned app if dev.
 
     :param app_id: Application ID
-<<<<<<< HEAD
-    :returns: 200 - success, 404 - app does not exist, 401 - bad permission
-=======
     :returns: 200 - success
     :returns: 404 - app does not exist
     :returns: 401 - bad permission
->>>>>>> changed 'raises' into 'returns'
     """
     app = AppEntry.query.get(app_id)
     if not app:
@@ -118,7 +109,7 @@ def delete_app(app_id):
     os.remove(safe_join(current_app.instance_path, app_id + app.icon_ext))
     db.session.delete(app)
     db.session.commit()
-    return ("App Deleted", 200)
+    return ("", 204)
 
 
 @bp.route("/app/<app_id>/icon", methods=["GET"])
@@ -126,12 +117,8 @@ def public_app_icon(app_id):
     """Get the icon of an approved app.
 
     :param app_id: Application ID
-<<<<<<< HEAD
-    :returns: file contents of image or 404 if app does not exist
-=======
     :returns: Success - file contents of image
     :returns: 400 - app does not exist
->>>>>>> changed 'raises' into 'returns'
     """
     app = AppEntry.query.get(app_id)
     if not app or not app.approved:
@@ -253,7 +240,7 @@ def private_user_apps(user_id):
     return app_schema.jsonify(apps)
 
 
-@bp.route("user/<user_id>/admin/promote", methods=["POST"])
+@bp.route("user/<user_id>/admin/promote", methods=["GET", "POST"])
 @admin_required
 def promote_admin(user_id):
     """Promote user to admin.
@@ -263,12 +250,12 @@ def promote_admin(user_id):
     try:
         User.query.get(user_id).admin = True
     except Exception as e:
-        return ("User not found", 404)
+        return ("", 400)
     db.session.commit()
-    return ("User promoted", 200)
+    return ("", 204)
 
 
-@bp.route("user/<user_id>/admin/demote", methods=["POST"])
+@bp.route("user/<user_id>/admin/demote", methods=["GET", "POST"])
 @admin_required
 def demote_admin(user_id):
     """Demote user to admin.
@@ -276,17 +263,17 @@ def demote_admin(user_id):
     :returns: 204 - success
     :returns: 400 - user does not exist
     """
-    if int(user_id) == g.user.id or user.id == 1:
+    if int(user_id) == g.user.id:
         return ("Cannot demote self", 401)
     try:
         User.query.get(user_id).admin = False
-        db.session.commit()
     except Exception as e:
-        return ("Database error", 500)
-    return ("Success", 200)
+        return ("", 400)
+    db.session.commit()
+    return ("Success", 204)
 
 
-@bp.route("user/<user_id>/delete", methods=["DELETE", "POST"])
+@bp.route("user/<user_id>/delete", methods=["GET", "POST"])
 @login_required
 def delete_user(user_id):
     """Delete a user, requires admin or account ownership.
@@ -295,7 +282,7 @@ def delete_user(user_id):
     :returns: 401 on bad permissions
     """
     user = User.query.get(user_id)
-    if not user or user.id == 1:
+    if not user:
         return ("User does not exist", 404)
     if user.id != g.user.id and not g.user.admin:
         return ("bad permission", 401)
@@ -308,7 +295,7 @@ def delete_user(user_id):
         db.session.delete(app)
     db.session.delete(user)
     db.session.commit()
-    return ("Success", 200)
+    return ("Success", 204)
 
 
 def random_hash256():

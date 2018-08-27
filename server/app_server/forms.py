@@ -1,13 +1,7 @@
 """Form validation classes."""
 
 from flask_wtf import FlaskForm
-<<<<<<< HEAD
-from wtforms import (
-    StringField, PasswordField, TextAreaField, SubmitField, BooleanField
-)
-=======
 from wtforms import StringField, PasswordField, TextAreaField, SubmitField, BooleanField
->>>>>>> added tos form
 from wtforms.validators import DataRequired, Email, Length, Regexp
 from flask_wtf.file import FileField, FileRequired
 
@@ -25,7 +19,7 @@ class RegisterForm(FlaskForm):
 class LoginForm(FlaskForm):
     """Login Form."""
 
-    identity = StringField("identity", validators=[DataRequired()])
+    email = StringField("email", validators=[DataRequired(), Email()])
     password = PasswordField("password", validators=[DataRequired()])
     submit = SubmitField("Continue")
 
@@ -44,7 +38,6 @@ class AppCreationForm(FlaskForm):
 class AdminSearchForm(FlaskForm):
     """Admin Search Form."""
 
-<<<<<<< HEAD
     search = StringField("", validators=[])
     submit = SubmitField("Search")
 
@@ -74,36 +67,3 @@ class DevTOSForm(FlaskForm):
     """Dev TOS acceptance form."""
 
     submit = SubmitField("I agree to the Terms of Service")
-=======
-    search = StringField("", validators=[DataRequired()])
-    submit = SubmitField("Search")
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> edit for linter pycodestyle
-=======
-=======
->>>>>>> edit for linter pycodestyle
-=======
->>>>>>> server
-
-
-class DevTOSForm(FlaskForm):
-    """Dev TOS acceptance form"""
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-    accept = BooleanField("I Accept Developer TOS")
-    sumbit = SubmitField("")
->>>>>>> added tos form
-=======
-    submit = SubmitField("I agree to the Terms of Service")
-<<<<<<< HEAD
->>>>>>> added tos page
-=======
-    submit = SubmitField("I agree to the Terms of Service")
-=======
->>>>>>> edit for linter pycodestyle
->>>>>>> edit for linter pycodestyle
-=======
->>>>>>> server

@@ -5,23 +5,7 @@
 
 {% block content %}
 
-<<<<<<< HEAD
-
-<main class="Mx(a) Maw(50rem) D(f) Fld(c) H(100%)">
-	{% for app in apps %}
-	<section class="W(80%) Mx(a) Mt(s2) Px(s5) Py(s4) Bgc(white) Bxsh(0,0,s05,grey-5)">
-		<div>
-			<a class="_rLink() Fz(s3) Ff(Inconsolata) Td(u) C(grey-3) C(blue):h">{{app.name}}</a>
-		</div>
-		<p>{{ app.description }}</p>
-		<form method=post enctype=multipart/form-data>
-			<a href="/api/v1/app/{{app.id}}/approve">Approve</a>
-		</form>
-	</section>
-<main class="Mx(a) Maw(50rem) D(f)">
-=======
 <main class="Mx(a) W(100%) Maw(50rem) D(f) Pt(s04) Px(s04) Flx(1) Ov(h)">
->>>>>>> added right admin_profile from master
 
 <div class="Flx(.5) Bgc(white) Bxsh(0,0,s05,grey-7) Mr(s02)">
 	<form method="POST" class="D(f) P(s03) Bdb(s,s05,grey-7)">
@@ -41,12 +25,7 @@
 				{{result.app.name}}
 			</a>
 		</div>
-<<<<<<< HEAD
-		<img class="D(b) W(100%)" src="/api/v1/app/{{result.app.id}}/icon/private"></img>
-		</section>
-=======
 	</article>
->>>>>>> added right admin_profile from master
 		{% endif %}
 		{% if result.user %}
 		<section class="W(80%) Mx(a) Mt(s2) Px(s5) Py(s4) Bgc(yellow-washed) Bxsh(0,0,s05,grey-7)">
