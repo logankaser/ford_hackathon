@@ -16,6 +16,7 @@ from app_server.auth import login_required, admin_required
 from flask_cors import CORS
 from secrets import randbelow
 import requests
+import os
 
 bp = Blueprint("api/v1", __name__, url_prefix="/api/v1")
 CORS(bp)
@@ -233,7 +234,7 @@ def private_user_apps(user_id):
     return app_schema.jsonify(apps)
 
 
-@bp.route("user/<user_id>/admin/promote", methods=["GET", "POST"])
+@bp.route("user/<user_id>/admin/promote", methods=["POST"])
 @admin_required
 def promote_admin(user_id):
     """Promote user to admin.
@@ -243,9 +244,9 @@ def promote_admin(user_id):
     try:
         User.query.get(user_id).admin = True
     except Exception as e:
-        return ("", 400)
+        return ("User not found", 404)
     db.session.commit()
-    return ("", 204)
+    return ("User promoted", 200)
 
 
 @bp.route("user/<user_id>/admin/demote", methods=["POST"])
@@ -255,14 +256,14 @@ def demote_admin(user_id):
 
     :returns: 204 - success, 400 - user does not exist
     """
-    if int(user_id) == g.user.id:
+    if int(user_id) == g.user.id or user.id == 1:
         return ("Cannot demote self", 401)
     try:
         User.query.get(user_id).admin = False
+        db.session.commit()
     except Exception as e:
-        return ("", 400)
-    db.session.commit()
-    return ("Success", 204)
+        return ("Database error", 500)
+    return ("Success", 200)
 
 
 @bp.route("user/<user_id>/delete", methods=["DELETE", "POST"])
@@ -273,7 +274,7 @@ def delete_user(user_id):
     :returns: 404 on user not found, 401 on bad permissions
     """
     user = User.query.get(user_id)
-    if not user:
+    if not user or user.id == 1:
         return ("User does not exist", 404)
     if user.id != g.user.id and not g.user.admin:
         return ("bad permission", 401)

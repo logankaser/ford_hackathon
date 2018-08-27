@@ -1,7 +1,9 @@
 """Form validation classes."""
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, TextAreaField, SubmitField, BooleanField
+from wtforms import (
+    StringField, PasswordField, TextAreaField, SubmitField, BooleanField
+)
 from wtforms.validators import DataRequired, Email, Length, Regexp
 from flask_wtf.file import FileField, FileRequired
 
@@ -19,7 +21,7 @@ class RegisterForm(FlaskForm):
 class LoginForm(FlaskForm):
     """Login Form."""
 
-    email = StringField("email", validators=[DataRequired(), Email()])
+    identity = StringField("identity", validators=[DataRequired()])
     password = PasswordField("password", validators=[DataRequired()])
     submit = SubmitField("Continue")
 

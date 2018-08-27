@@ -22,23 +22,29 @@ Admin Panel
 	<div class="Ovy(s) H(100%)">
 	{% for result in results %}
 		{% if result.app %}
-	<article class="My(s1) P(s2) Bgc(white) Bxsh(0,0,s05,grey-7) D(f) Js(sb)">
-		<img class="W(30%) H(30%) Bdrus(s2) D(b) M(s05) Bxsh(0,0,s05,grey-6)" src="/api/v1/app/{{result.app.id}}/icon/private">
-		<div class="W(100%) D(f) Fld(c) Jc(c)">
-			<a href="/admin/app/{{result.app.id}}"
-				class="Pl(s03) _rLink() Fz(s3) Tt(c) C(grey-2) C(blue):h D(b)">
-				{{result.app.name}}
-			</a>
-		</div>
-	</article>
+			<article class="My(s1) P(s2) Bgc(white) Bxsh(0,0,s05,grey-7) D(f) Js(sb)">
+				<img class="W(30%) H(30%) Bdrus(s2) D(b) M(s05) Bxsh(0,0,s05,grey-6)" src="/api/v1/app/{{result.app.id}}/icon/private">
+				<div class="W(100%) D(f) Fld(c) Jc(c)">
+					<a href="/admin/app/{{result.app.id}}"
+						class="Pl(s03) _rLink() Fz(s3) Tt(c) C(grey-2) C(blue):h D(b)">
+						{{result.app.name}}
+					</a>
+				</div>
+			</article>
 		{% endif %}
 		{% if result.user %}
-		<section class="W(80%) Mx(a) Mt(s2) Px(s5) Py(s4) Bgc(yellow-washed) Bxsh(0,0,s05,grey-7)">
-		<div>
-			Username: <a href="/admin/user/{{result.user.id}}">{{result.user.username}}</a>
-		</div>
-		<p>Email: {{ result.user.email }} </p> 
-		</section>
+			<a class="_rLink()" href="/admin/user/{{result.user.id}}">
+			<article class="My(s1) P(s02) Bgc(white) Bxsh(0,0,s05,grey-7)">
+				<div class="Py(s05) C(grey-3)">
+					User 
+					<span class="C(grey-1) Ff(Inconsolata)">{{result.user.username}}</span>
+				</div>
+				<div class="Py(s05) C(grey-3)">
+					Email
+					<span class="C(grey-1) Ff(Inconsolata)">{{result.user.email}}</span>
+				</div>
+			</article>
+			</a>
 		{% endif %}
 	{% endfor %}
 	</div>
