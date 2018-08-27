@@ -256,7 +256,7 @@ def demote_admin(user_id):
 
     :returns: 204 - success, 400 - user does not exist
     """
-    if int(user_id) == g.user.id or user.id == 1:
+    if int(user_id) == g.user.id or user_id == "1":
         return ("Cannot demote self", 401)
     try:
         User.query.get(user_id).admin = False

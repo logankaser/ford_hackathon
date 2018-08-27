@@ -41,11 +41,11 @@ Admin User View
 	<div class="Maw(50%)@lg Ta(c) P(s04) Mt(s03) C(white) Bgc(green) Bdrus(s05)">
 		Admin
 	</div>
+	{% endif %}
 	{% if user.id != 1 %}
 	<div class="Fz(s3) C(black) Fw(b) Ff(Inconsolata) Py(s03)">
 		Controls
 	</div>
-	{% endif %}
 	{% endif %}
 	{% if user.admin and user.id != g.user.id %}
 	<div 
