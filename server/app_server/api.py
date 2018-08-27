@@ -334,15 +334,6 @@ def delete_user(user_id):
     return ("Success", 200)
 
 
-def random_hash256():
-    """Random 256bithash."""
-    hex_string = "0123456789abcdef"
-    output = ""
-    for _ in range(64):
-        output += hex_string[randbelow(16)]
-    return output
-
-
 @bp.route("user/<user_email>/password/reset", methods=["GET", "POST"])
 def forgot_password(user_email):
     """Send a password reset link to the users email.
