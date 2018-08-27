@@ -3,17 +3,15 @@
 import os
 
 from flask import Flask, render_template
-from vehicle_client.models import db
+from vehicle_client.models import db, ma
 
 
 def create_app(test_config=None):
     """Create a new app.
 
-    :param test_config: Optionaly load configuration from python dict, useful
-    for testing.
-    :type test_config: object.
-    :returns: New app -> **Flask**
-
+    :param test_config: Optionaly load configuration from python dict,
+    useful for testing.
+    :returns: New app:
     """
     app = Flask(__name__,
                 instance_relative_config=True,
@@ -40,6 +38,9 @@ def create_app(test_config=None):
     # Initialize DB
     db.init_app(app)
     db.create_all(app=app)
+
+    # Initialize Marshmallow Serialization
+    ma.init_app(app)
 
     # Initialize Blueprints
     from . import local

@@ -121,11 +121,11 @@ class UserPublicSchema(ma.ModelSchema):
     class Meta:
         """Public safe fields."""
 
-    fields = (
-        "username",
-        "created",
-        "dev",
-        "admin")
+        fields = (
+            "username",
+            "created",
+            "dev",
+            "admin")
 
 
 class AppEntry(db.Model):
@@ -146,7 +146,7 @@ class AppEntry(db.Model):
 
 
 class AppSchema(ma.ModelSchema):
-    """Serialize an AppEntry to json."""
+    """Serialize an AppEntry to JSON."""
 
     created = JsTime()
     updated = JsTime()
