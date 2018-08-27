@@ -134,7 +134,7 @@ const detail = ({match, _}) => (state, actions) => {
 			src: "{{api_domain}}/api/v1/app/" + app.id + "/icon",
 			class: "D(b) Mah(20rem) W(80%) My(s2) Mx(a) Bdrus(s05) Bxsh(0,0,s05,grey-7)"
 		}),
-		div({class: "Fz(s3) C(black) Fw(b) Ff(Inconsolata) Py(s03)"}, app.name),
+		div({class: "Ta(c) Fz(s3) C(black) Fw(b) Ff(Inconsolata) Py(s03)"}, app.name),
 		div({class: "Ff(Inconsolata) Mih(6rem) P(s03) Mt(s03) Lh(s3) Bxsh(0,0,s05,grey-7) Wob(ba)"}, app.description),
 		div({class: "Py(s04) Mt(s03) C(grey-2)"},[
 			"Updated: ", time({class: "C(black) Ff(Inconsolata)"}, formatDate(app.updated))
