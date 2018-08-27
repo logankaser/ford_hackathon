@@ -40,12 +40,9 @@ class AdminSearchForm(FlaskForm):
 
     search = StringField("", validators=[DataRequired()])
     submit = SubmitField("Search")
-<<<<<<< HEAD
 
 
 class DevTOSForm(FlaskForm):
     """Dev TOS acceptance form"""
 
     submit = SubmitField("I agree to the Terms of Service")
-=======
->>>>>>> edit for linter pycodestyle
