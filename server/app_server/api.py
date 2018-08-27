@@ -78,9 +78,9 @@ def approve(app_id):
     """Approve an app.
 
     :param app_id: Application ID
-    :returns: 200 - success
-    :returns: 404 - app does not exist
-    :returns: 401 - bad permission
+    :returns: 200 - Success
+    :returns: 404 - App does not exist
+    :returns: 401 - Bad permission
     """
     try:
         AppEntry.query.get(app_id).approved = True
@@ -96,9 +96,9 @@ def delete_app(app_id):
     """Delete any app of admin or owned app if dev.
 
     :param app_id: Application ID
-    :returns: 200 - success
-    :returns: 404 - app does not exist
-    :returns: 401 - bad permission
+    :returns: 200 - Success
+    :returns: 404 - App does not exist
+    :returns: 401 - Bad permission
     """
     app = AppEntry.query.get(app_id)
     if not app:
@@ -148,9 +148,9 @@ def private_app_icon(app_id):
     """Get the icon of any app.
 
     :param app_id: AppEntry ID
-    :returns: Success - file contents of image
-    :returns: 400 - app does not exist
-    :returns: 401 - bad permission
+    :returns: Success - File contents of image
+    :returns: 400 - App does not exist
+    :returns: 401 - Bad permission
 
     only admins or the developer of the app have valid permissions
     """
@@ -169,7 +169,7 @@ def private_app_icon(app_id):
 def make_dev():
     """Make the user a developer.
 
-    :returns: 204 - always succeeds
+    :returns: 204 - Always succeeds
     """
     User.query.get(g.user.id).dev = True
     db.session.commit()
@@ -182,8 +182,8 @@ def private_user_info(user_id):
     """Get a user's private infomation as JSON.
 
     :returns: Success - JSON of user
-    :returns: 400 - user does not exist
-    :returns: 401 - bad permission
+    :returns: 400 - User does not exist
+    :returns: 401 - Bad permission
     """
     user = User.query.get(user_id)
     if not user:
@@ -197,7 +197,7 @@ def public_user_info(user_id):
     """Get a JSON string of a user's public infomation.
 
     :returns: Success - JSON of user
-    :returns: 400 - user does not exist
+    :returns: 400 - User does not exist
     """
     user = User.query.get(user_id)
     if not user:
@@ -229,7 +229,7 @@ def private_user_apps(user_id):
     """Get a list of private App profiles belonging to user.
 
     :returns: Success - JSON list of private app profiles
-    :returns: 401 - bad permissions
+    :returns: 401 - Bad permissions
 
     only admins and the developer have valid permissions
     """
@@ -245,7 +245,8 @@ def private_user_apps(user_id):
 def promote_admin(user_id):
     """Promote user to admin.
 
-    :returns: 204 - success, 400 - user does not exist
+    :returns: 204 - Success
+    :returns: 400 - User does not exist
     """
     try:
         User.query.get(user_id).admin = True
@@ -260,8 +261,8 @@ def promote_admin(user_id):
 def demote_admin(user_id):
     """Demote user to admin.
 
-    :returns: 204 - success
-    :returns: 400 - user does not exist
+    :returns: 204 - Success
+    :returns: 400 - User does not exist
     """
     if int(user_id) == g.user.id:
         return ("Cannot demote self", 401)
@@ -278,8 +279,8 @@ def demote_admin(user_id):
 def delete_user(user_id):
     """Delete a user, requires admin or account ownership.
 
-    :returns: 404 on user not found
-    :returns: 401 on bad permissions
+    :returns: 404 - User not found
+    :returns: 401 - Bad permissions
     """
     user = User.query.get(user_id)
     if not user:
@@ -311,9 +312,9 @@ def random_hash256():
 def forgot_password(user_email):
     """Send a password reset link to the users email.
 
-    :returns: 404 if no user has that email, or 200 if user exists.
-    :limitations: no cooldown, so a user could be blocked from changing their
-    password if this api is spammed
+    :returns: 404 - No user has that email
+    :returns: 200 - User exists
+    **Limitations** no cooldown, so a user could be blocked from changing their password if this api is spammed
     """
     user = User.query.filter_by(email=user_email).one_or_none()
     if not user:

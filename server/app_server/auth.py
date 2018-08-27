@@ -105,8 +105,8 @@ def register():
 def login():
     """Login with session based authentication.
 
-    :returns: Success - redircts to home
-    :returns: False - redirects to login page.
+    :returns: Success - Redircts to home
+    :returns: False - Redirects to login page.
     """
     if g.user:
         return redirect(url_for("index"))
@@ -141,7 +141,7 @@ def logout():
 def get_token():
     """Get a new auth token (JWT).
 
-    :returns: Success - token
+    :returns: Success - Token
     :returns: 401 - HTTP status code on error.
     """
     email = request.form.get("email")
@@ -204,7 +204,3 @@ def change_password():
         else:
             flash("Old password incorrect")
     return render_template("password_change.html", form=form)
-
-
-
-
