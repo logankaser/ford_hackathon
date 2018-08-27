@@ -44,6 +44,7 @@ def install_app(app_id):
     save_path = safe_join(
         current_app.instance_path, checksum + ".pkg")
     with open(save_path, "wb") as f:
+        app_pkg.raw.decode_contant = True
         shutil.copyfileobj(app_pkg.raw, f)
     with open(save_path, "rb") as f:
         actual_checksum = sha256(f.read()).hexdigest()
@@ -91,4 +92,7 @@ def run_app(app_id):
             stdout=subprocess.PIPE, shell=True)
         result = process.communicate()[0]
         print(result.decode("ascii"))
+    elif app_type == "gui":
+        subprocess.call(
+            [safe_join(app_path, "app/" + app_meta.get("executable", "app"))])
     return (result, 200)
