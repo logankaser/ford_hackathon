@@ -22,7 +22,7 @@ bp = Blueprint("dev", __name__, url_prefix="/dev")
 def new_app():
     """Page for uploading new apps.
 
-    :returns: app creation page,
+    :returns: App creation page,
     or redirection to app page on succesful form submission
     """
     if not g.user.dev:
@@ -66,7 +66,9 @@ def new_app():
 def dev_app_page(app_id):
     """App view page.
 
-    :returns: app page for developer or 403/404 if invalid id/bad permission
+    :returns: Success - Information of app metadata
+    :returns: 403 - Wrong user access to the app.
+    :returns: 404 - Not the right app
     """
     app = AppEntry.query.get(int(app_id))
     if not app:
