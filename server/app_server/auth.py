@@ -162,7 +162,7 @@ def get_token():
 
 @bp.route("/password/<reset_hash>", methods=["GET", "POST"])
 def reset_forgotten_password(reset_hash):
-    """A form where user can reset password.
+    """Form where user can reset password.
 
     :returns: Password reset form, or redirection when succesful
 
@@ -189,7 +189,7 @@ def reset_forgotten_password(reset_hash):
 @bp.route("/password/change", methods=["GET", "POST"])
 @login_required
 def change_password():
-    """A form where user can change password.
+    """Form where user can change password.
 
     :returns: Password change form
 

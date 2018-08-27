@@ -33,7 +33,8 @@ def random_hash256():
 
 def send_email(to, subject, message):
     """
-    Sends an email.
+    Send an email.
+
     :param to: Email address of reciever
     :param subject: Subject of email
     :param message: Body of email
@@ -73,7 +74,8 @@ def app_json(app_id):
 def apps_json():
     """Top 100 public app profiles by downloads.
 
-    :returns: Success - JSON of up to 100 public app profiles from most to least downloaded
+    :returns: Success - JSON of up to 100 public app profiles from most to
+    least downloaded.
     **Limitations:** top 100 apps are calculated each api call and not stored
     anywhere
     """
@@ -92,7 +94,8 @@ def search(keyword):
     """Best 100 public app profiles that match search phrase.
 
     :param keyword: phrase used for searching
-    :returns: JSON of up to 100 public app profiles from most relevant to least relevant
+    :returns: JSON of up to 100 public app profiles from most relevant to least
+    relevant.
     **Limitations:** only words in the app name and description are matched
     """
     results = AppEntry.query.msearch(keyword, fields=["name", "description"]).\
@@ -351,7 +354,8 @@ def forgot_password(user_email):
 
     :returns: 404 - No user has that email
     :returns: 200 - User exists
-    **Limitations** no cooldown, so a user could be blocked from changing their password if this api is spammed
+    **Limitations** no cooldown, so a user could be blocked from changing their
+    password if this api is spammed.
     """
     user = User.query.filter_by(email=user_email).one_or_none()
     if not user:

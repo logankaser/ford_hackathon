@@ -17,9 +17,10 @@ bp = Blueprint("admin", __name__, url_prefix="/admin")
 @admin_required
 def admin_home():
     """
-    Admin homepage screen
+    Admin homepage screen.
 
-    :return: Renders the admin homepage with the query search options and admin powers
+    :return: Renders the admin homepage with the query search options and admin
+    powers
     """
     apps = AppEntry.query.filter_by(approved=False).limit(20)
 
@@ -51,7 +52,7 @@ def admin_home():
 @admin_required
 def admin_app_view(app_id):
     """
-    Admin user viewer
+    Admin user viewer.
 
     :return: Views the developer app with admin powers
     """
@@ -66,7 +67,7 @@ def admin_app_view(app_id):
 @admin_required
 def admmin_app_view(user_id):
     """
-    Admin user viewer
+    Admin user viewer.
 
     :return: Views the developer app with admin powers
     """
