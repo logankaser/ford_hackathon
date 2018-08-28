@@ -10,11 +10,12 @@ Car Appstore from scratch for the Ford hackathon using Flask.
 <img src="resources/admin_panel.png" width="50%">
 
 ### Features
-* User creation
 * User roles
-* Application submission and approval
-* Application checksum verification
-* Multiple Application Types
+* Restful JSON API with JWT based auth
+* Client designed to handle poor internet conectivity / signal dropping.
+* App submission and approval flow
+* App checksum verification by client
+* Multiple Application Types (console, GUI, deamon, etc..)
 * Password recovery
 * SPA Client
 
