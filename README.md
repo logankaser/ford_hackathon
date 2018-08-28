@@ -6,10 +6,7 @@
 
 Car Appstore from scratch for the Ford hackathon using Flask.
 
-<img src="resources/login.png" width="40%">
-
-<img src="resources/app_overview.png" width="40%">
-
+<img src="resources/login.png" width="40%"><img src="resources/app_overview.png" width="40%">
 <img src="resources/admin_panel.png" width="50%">
 
 ### Features
@@ -21,13 +18,13 @@ Car Appstore from scratch for the Ford hackathon using Flask.
 * Password recovery
 * SPA Client
 
-### Dependecies
-* [Flask](http://flask.pocoo.org/docs/1.0/)
-* [Flask-SQLAlchemy](http://flask-sqlalchemy.pocoo.org/2.3/)
-* [Hyperapp](https://hyperapp.js.org/)
-* [Werkzeug](http://werkzeug.pocoo.org/)
-* [flask-marshmallow](https://flask-marshmallow.readthedocs.io/en/latest/)
-* [Jinja2](http://jinja.pocoo.org/docs/2.10/)
+### Major Dependecies
+* [Flask (HTTPS Handlers)](http://flask.pocoo.org/docs/1.0/)
+* [Flask-Bcrypt (Password hashing and salting)](https://flask-bcrypt.readthedocs.io/en/latest/)
+* [Flask-SQLAlchemy (SQL ORM)](http://flask-sqlalchemy.pocoo.org/2.3/)
+* [Flask-Marshmallow (JSON Serialization)](https://flask-marshmallow.readthedocs.io/en/latest/)
+* [Hyperapp (Javascript SPA client)](https://hyperapp.js.org/)
+
 
 ## Client
 
