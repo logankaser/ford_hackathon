@@ -18,7 +18,7 @@ MarkupSafe==1.0
 marshmallow==2.15.4
 marshmallow-sqlalchemy==0.14.1
 pycparser==2.18
-PyJWT==1.6.4
+PyJWT==2.4.0
 requests==2.19.1
 six==1.11.0
 SQLAlchemy==1.3.0
